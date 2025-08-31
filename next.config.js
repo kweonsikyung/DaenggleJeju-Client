@@ -3,6 +3,11 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+
+  basePath: "/DaenggleJeju-Client",
+  assetPrefix: "/DaenggleJeju-Client/",
+
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/i,
