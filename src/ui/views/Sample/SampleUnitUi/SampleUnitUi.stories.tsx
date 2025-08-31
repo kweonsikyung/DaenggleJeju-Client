@@ -1,5 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { fn } from 'storybook/test';
+import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { SampleUnitUi } from "./SampleUnitUi";
 
 const meta = {
@@ -17,7 +16,8 @@ export const Default: Story = {
     imageUrl: "https://placehold.co/400x200",
     title: "SampleUnitUi",
     description: "This is a sample unit UI component.",
-    onClick: () => { alert('Card clicked!'); }, 
+    onClick: () => {
+      alert("Card clicked!");
+    },
   },
 };
-

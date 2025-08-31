@@ -2,7 +2,6 @@
 
 import React from "react";
 import * as s from "./FilterSection.css";
-import Header from "@/ui/atoms/Header/Header";
 import FilterChipExpand from "@/ui/atoms/FilterChipExpand/FilterChipExpand";
 
 export interface FilterSectionProps {
