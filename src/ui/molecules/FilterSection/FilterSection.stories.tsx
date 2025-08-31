@@ -16,10 +16,10 @@ const meta = {
     multiSelect: true,
     chips: [
       { id: "s1", title: "소형견", caption: "10kg 미만" },
-      { id: "s2", title: "소형견", caption: "10~24kg" },
-      { id: "s3", title: "소형견", caption: "25~44kg" },
-      { id: "s4", title: "소형견", caption: "45kg 이상" },
-      { id: "s5", title: "소형견", caption: "(소형~초대형 모두)" },
+      { id: "s2", title: "중형견", caption: "10~24kg" },
+      { id: "s3", title: "대형견", caption: "25~44kg" },
+      { id: "s4", title: "초대형견", caption: "45kg 이상" },
+      { id: "s5", title: "모든 크기", caption: "(소형~초대형 모두)" },
     ],
   },
   tags: ["autodocs"],
@@ -45,7 +45,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const InteractiveFilterSection = (args: any) => {
+const InteractiveFilterSection = (
+  args: React.ComponentProps<typeof FilterSection>
+) => {
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
 
   const handleChipClick = (chipId: string) => {
@@ -60,7 +62,7 @@ const InteractiveFilterSection = (args: any) => {
         return prevSelected.includes(chipId) ? [] : [chipId];
       }
     });
-    args.onChipClick(chipId);
+    args.onChipClick?.(chipId);
   };
 
   return (
@@ -79,10 +81,10 @@ export const Default: Story = {
     multiSelect: true,
     chips: [
       { id: "s1", title: "소형견", caption: "10kg 미만" },
-      { id: "s2", title: "소형견", caption: "10~24kg" },
-      { id: "s3", title: "소형견", caption: "25~44kg" },
-      { id: "s4", title: "소형견", caption: "45kg 이상" },
-      { id: "s5", title: "소형견", caption: "(소형~초대형 모두)" },
+      { id: "s2", title: "중형견", caption: "10~24kg" },
+      { id: "s3", title: "대형견", caption: "25~44kg" },
+      { id: "s4", title: "초대형견", caption: "45kg 이상" },
+      { id: "s5", title: "모든 크기", caption: "(소형~초대형 모두)" },
     ],
     selectedChips: [],
     onChipClick: fn(),

@@ -29,7 +29,8 @@ export function SearchField({
   id,
   ...rest
 }: SearchFieldProps) {
-  const inputId = id ?? useId();
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
 
   const isControlled = value != null;
   const [inner, setInner] = useState(defaultValue ?? "");

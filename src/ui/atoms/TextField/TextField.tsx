@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useRef, useState } from "react";
+import React, { useId, useMemo, useState } from "react";
 import * as s from "./TextField.css";
 
 export interface TextFieldProps
@@ -35,7 +35,8 @@ export function TextField({
   id,
   ...rest
 }: TextFieldProps) {
-  const inputId = id ?? useId();
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   const descId = `${inputId}-desc`;
 
   // 내부 상태
