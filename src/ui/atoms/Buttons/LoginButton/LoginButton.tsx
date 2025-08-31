@@ -1,6 +1,6 @@
 import Image from "next/image";
 import * as s from "./LoginButton.css";
-import { LOGIN_TYPE, LoginType } from "@/types/LoginType";
+import { LoginType } from "@/types/LoginType";
 
 export interface LoginButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {

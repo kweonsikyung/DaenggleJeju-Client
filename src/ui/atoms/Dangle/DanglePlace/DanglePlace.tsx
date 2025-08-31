@@ -40,7 +40,6 @@ export function DanglePlace({
   tags,
   details,
   onClick,
-  onBookmarkClick,
 }: DanglePlaceProps) {
   return (
     <div

@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import { COLORS } from "@/styles/colors.css";
 
 export const wrapper = style({
   position: "relative",

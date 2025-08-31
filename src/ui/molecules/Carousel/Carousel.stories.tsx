@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React from "react";
-import { fn } from "@storybook/test";
 import { Carousel } from "./Carousel";
 
 const generateItems = (count: number, width: number = 200) => {

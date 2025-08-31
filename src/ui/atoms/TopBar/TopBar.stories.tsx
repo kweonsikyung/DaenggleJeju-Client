@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Image from "next/image";
-import { fn } from "@storybook/test";
 import { TopBar } from "./TopBar";
 
 const meta = {

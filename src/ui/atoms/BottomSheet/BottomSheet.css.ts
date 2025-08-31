@@ -1,6 +1,5 @@
 import { TYPO } from "@/styles/typography.css";
 import { style } from "@vanilla-extract/css";
-import { T } from "vitest/dist/chunks/reporters.d.BFLkQcL6.js";
 
 export const overlay = style({
   position: "fixed",
