@@ -1,12 +1,14 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function Home() {
-  return (
-    <div>
-      <main>
-        <h1>Welcome to DaenggleJeju Client</h1>
-      </main>
-      <footer>
-        <p>Powered by Next.js</p>
-      </footer>
-    </div>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/splash");
+  }, [router]);
+
+  return null;
 }
