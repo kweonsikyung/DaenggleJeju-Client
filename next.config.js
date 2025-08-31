@@ -1,12 +1,14 @@
 const { createVanillaExtractPlugin } = require("@vanilla-extract/next-plugin");
 const withVanillaExtract = createVanillaExtractPlugin();
 
+const isProd = process.env.NODE_ENV === "production";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
 
-  basePath: "/DaenggleJeju-Client",
-  assetPrefix: "/DaenggleJeju-Client/",
+  basePath: isProd ? "/DaenggleJeju-Client" : "",
+  assetPrefix: isProd ? "/DaenggleJeju-Client/" : "",
 
   webpack(config) {
     config.module.rules.push({
