@@ -61,3 +61,13 @@ export const bottomSheetFooter = style({
   padding: "40px 18px 16px 18px",
   gap: "16px",
 });
+
+/** loading */
+export const loadingContainer = style({
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  ...TYPO.BODY1B,
+});
