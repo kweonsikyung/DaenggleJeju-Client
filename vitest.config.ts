@@ -5,7 +5,6 @@ import { defineConfig } from "vitest/config";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
-import svgr from "vite-plugin-svgr";
 
 const dirname =
   typeof __dirname !== "undefined"
@@ -14,7 +13,7 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [vanillaExtractPlugin(), svgr()],
+  plugins: [vanillaExtractPlugin()],
   test: {
     projects: [
       {

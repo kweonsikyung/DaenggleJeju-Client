@@ -12,17 +12,11 @@ import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { PLAY_DATA } from "@/utils/dummy_data";
 import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 
-type DetailPageProps = {
-  params: {
-    id: string;
-  };
-};
-
 /**
  * 장소 상세 페이지
  * * style/ page = topbar + container + nav(near)
  */
-export default function DetailPage({ params }: DetailPageProps) {
+export default function DetailPage() {
   const router = useRouter();
   const [isBookmarked, setIsBookmarked] = useState(false);
 
