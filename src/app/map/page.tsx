@@ -24,7 +24,7 @@ declare global {
 
 /**
  * 내근처(지도) 페이지
- * * style/ page = top(absolute) + map + bottom(absolute) + nav(near) + bottomSheet
+ * * style/ page = top(absolute) + map + bottom(absolute) + nav(near) + bottomheet
  */
 export default function MapPage() {
   const router = useRouter();
@@ -93,7 +93,7 @@ export default function MapPage() {
   };
 
   const handleLocationListClick = () => {
-    router.push(`/map/list?filter=${activeFilter}`);
+    router.push(`/list?filter=${activeFilter}`);
   };
 
   const handleDangleRecommendClick = () => {
