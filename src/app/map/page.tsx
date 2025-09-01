@@ -18,6 +18,7 @@ import { MARKER_DATA } from "@/utils/dummy_data";
 type Place = (typeof MARKER_DATA.dangle)[0];
 declare global {
   interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     kakao: any;
   }
 }
@@ -29,12 +30,14 @@ declare global {
 export default function MapPage() {
   const router = useRouter();
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [map, setMap] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<any[]>([]);
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
 

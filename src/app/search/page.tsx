@@ -25,7 +25,9 @@ export default function SearchPage() {
   const router = useRouter();
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [searchResult, setSearchResult] = useState<any | null>(null);
+  const [searchResult, setSearchResult] = useState<
+    typeof SEARCH_RESULTS | null
+  >(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
 
   useEffect(() => {
