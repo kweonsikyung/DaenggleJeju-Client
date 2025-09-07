@@ -18,7 +18,7 @@ export const NAV_ITEMS = [
     text: "AI여행케어",
     iconFill: "/assets/nav/ai_active.svg",
     iconLine: "/assets/nav/ai.svg",
-    path: "/ai",
+    path: "/chat",
   },
   {
     id: "jeju",

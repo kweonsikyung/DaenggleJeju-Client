@@ -1,0 +1,14 @@
+import { style } from "@vanilla-extract/css";
+
+export const page = style({
+  width: "100%",
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+});
+
+export const container = style({
+  flex: 1,
+  width: "100%",
+  overflowY: "auto",
+});
