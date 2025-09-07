@@ -10,10 +10,8 @@ import TopicSelector from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
 import { travelCareData, Topic } from "./_util";
 import * as s from "./style.css";
 
-// --- 아래 2개 컴포넌트는 util 또는 hooks 폴더에 있다고 가정합니다 ---
 import ThinkingBubble from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
 import { useTypingEffect } from "@/hooks/useTypingEffect";
-// -----------------------------------------------------------------
 
 const initialTopics = Object.keys(travelCareData) as Topic[];
 
@@ -27,8 +25,6 @@ export default function Page() {
   const [aiResponse, setAiResponse] = useState("");
   const [finalAnswer, setFinalAnswer] = useState("");
 
-  // [버그 수정] useTypingEffect 훅의 버그를 우회하기 위한 로직
-  // 원본 문자열의 두 번째 글자를 복제하여 새로운 문자열을 만듭니다.
   const patchText = (text: string) => {
     if (text.length > 1) {
       return text.substring(0, 1) + text.substring(1, 2) + text.substring(1);
@@ -41,7 +37,6 @@ export default function Page() {
 
   const typedResponse = useTypingEffect(patchedAiResponse, 30);
   const typedFinalAnswer = useTypingEffect(patchedFinalAnswer, 30);
-  // --- 수정 끝 ---
 
   const userTopicRef = useRef<HTMLDivElement>(null);
   const userSubTopicRef = useRef<HTMLDivElement>(null);
@@ -115,9 +110,7 @@ export default function Page() {
 
   return (
     <div className={s.page}>
-      <TopBar
-        title={currentTopic ? `AI 여행케어 - ${currentTopic}` : "AI 여행케어"}
-      />
+      <TopBar title={"AI 여행케어"} />
 
       <div className={s.container}>
         <AiProfileHeader
