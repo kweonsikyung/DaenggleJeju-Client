@@ -61,7 +61,7 @@ export const TYPO = {
   BODY3: {
     fontSize: "14px",
     fontWeight: 500,
-    lineHeight: "18px",
+    lineHeight: "24px",
     letterSpacing: "-1.2%",
   },
 
