@@ -7,11 +7,12 @@ import NavBar from "@/ui/atoms/NavBar/NavBar";
 import AiProfileHeader from "@/ui/atoms/Chat/AiProfileHeader/AiProfileHeader";
 import MessageBox from "@/ui/atoms/Chat/MessageBox/MessageBox";
 import TopicSelector from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
+import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
 import { travelCareData, Topic } from "./_util";
 import * as s from "./style.css";
-
 import ThinkingBubble from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
 import { useTypingEffect } from "@/hooks/useTypingEffect";
+import { useNotice } from "@/hooks/useNotice";
 
 const initialTopics = Object.keys(travelCareData) as Topic[];
 
@@ -20,6 +21,13 @@ export default function Page() {
   const searchParams = useSearchParams();
   const currentTopic = searchParams.get("topic") as Topic | null;
   const currentSubTopic = searchParams.get("subTopic") as string | null;
+
+  // useNotice 훅을 사용하여 NoticeBox 상태 관리
+  const {
+    shouldRender: shouldNoticeRender,
+    animation: noticeAnimation,
+    hideNotice,
+  } = useNotice(true); // 초기에 보이도록 true 전달
 
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
@@ -110,9 +118,23 @@ export default function Page() {
 
   return (
     <div className={s.page}>
-      <TopBar title={"AI 여행케어"} />
+      <TopBar title={"AI 여행케어"} className={s.topBarWithBorder} />
 
       <div className={s.container}>
+        <div className={s.notice_container}>
+          <NoticeBox
+            shouldRender={shouldNoticeRender}
+            animation={noticeAnimation}
+            onClose={hideNotice}
+            variant="blue"
+          >
+            본 챗봇은 자동화된 정보 제공 시스템으로, 간혹 부정확하거나 불완전한
+            내용이 포함될 수 있습니다. 제공되는 정보에 대해 본 서비스를 통해
+            책임을 지지 않으며, 최종 판단은 사용자가 직접 확인 후 진행해 주시기
+            바랍니다.
+          </NoticeBox>
+        </div>
+
         <AiProfileHeader
           imageUrl="/assets/curation/avatar.svg"
           title="여행케어 AI"

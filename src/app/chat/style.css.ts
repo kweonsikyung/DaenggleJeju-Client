@@ -12,3 +12,12 @@ export const container = style({
   width: "100%",
   overflowY: "auto",
 });
+
+export const topBarWithBorder = style({
+  borderBottom: "1px solid #F5F5F5",
+  boxShadow: "1.8px 0px 6px 0px #0000001A",
+});
+
+export const notice_container = style({
+  padding: "8px 18px",
+});
