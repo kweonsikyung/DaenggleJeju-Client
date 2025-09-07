@@ -9,8 +9,8 @@ import TopBar from "@/ui/atoms/TopBar/TopBar";
 import { VideoData } from "@/utils/dummy_data";
 import * as s from "./style.css";
 import { useRouter } from "next/navigation";
-import ShortsOverlay from "@/ui/molecules/ShortsOverlay";
-import ShortsBottomInfo from "@/ui/atoms/ShortsBottomInfo";
+import ShortsOverlay from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
+import ShortsBottomInfo from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
 
 declare global {
   interface Window {
