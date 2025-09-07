@@ -11,7 +11,7 @@ export const NAV_ITEMS = [
     text: "댕글영상",
     iconFill: "/assets/nav/video_active.svg",
     iconLine: "/assets/nav/video.svg",
-    path: "/dangle",
+    path: "/shorts",
   },
   {
     id: "ai",
@@ -21,11 +21,11 @@ export const NAV_ITEMS = [
     path: "/ai",
   },
   {
-    id: "search",
-    text: "장소이동",
+    id: "jeju",
+    text: "제주이동",
     iconFill: "/assets/nav/move_active.svg",
     iconLine: "/assets/nav/move.svg",
-    path: "/search?param=내근처",
+    path: "/jeju",
   },
   {
     id: "my",
