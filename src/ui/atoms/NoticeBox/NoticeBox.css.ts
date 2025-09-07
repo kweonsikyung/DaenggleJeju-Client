@@ -44,6 +44,7 @@ export const content = style({
   flexGrow: 1,
   ...TYPO.CAPTION1M,
   color: NOTICE_COLORS.text,
+  margin: 0,
 });
 
 export const closeButton = style({

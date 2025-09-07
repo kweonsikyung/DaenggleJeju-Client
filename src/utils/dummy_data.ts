@@ -547,6 +547,7 @@ export const FILTER_CHIPS = [
 ];
 
 export interface VideoData {
+  id: number;
   loc: string;
   videoId: string;
   thumbnailUrl: string;
@@ -562,6 +563,7 @@ export interface VideoData {
 export const shortsData: { [key: string]: VideoData[] } = {
   "강아지 여행": [
     {
+      id: 1,
       loc: "오름 산책길",
       videoId: "RJE6M9P5N7Y",
       thumbnailUrl: "https://i.ytimg.com/vi/RJE6M9P5N7Y/hqdefault.jpg",
@@ -575,6 +577,7 @@ export const shortsData: { [key: string]: VideoData[] } = {
       likes: 2193,
     },
     {
+      id: 2,
       loc: "오름 산책길",
       videoId: "kJpSzlWDOHI",
       thumbnailUrl: "https://i.ytimg.com/vi/kJpSzlWDOHI/hqdefault.jpg",
@@ -588,6 +591,7 @@ export const shortsData: { [key: string]: VideoData[] } = {
       likes: 3128,
     },
     {
+      id: 3,
       loc: "오름 산책길",
       videoId: "x5sBUxFiGVw",
       thumbnailUrl: "https://i.ytimg.com/vi/x5sBUxFiGVw/hqdefault.jpg",

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { DangleReview } from "./DangleReview";
 
-const meta: Meta<typeof DangleReview> = {
+const meta = {
   title: "Dangle/DangleReview",
   component: DangleReview,
   tags: ["autodocs"],
@@ -13,7 +13,14 @@ const meta: Meta<typeof DangleReview> = {
       control: { type: "range", min: 0, max: 5, step: 1 },
     },
   },
-};
+  decorators: [
+    (Story) => (
+      <div style={{ width: 375 }}>
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof DangleReview>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
