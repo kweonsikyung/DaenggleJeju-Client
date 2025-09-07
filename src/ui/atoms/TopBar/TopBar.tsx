@@ -16,6 +16,10 @@ export type TopBarProps = {
   }[];
   /** 상단 고정 여부 */
   sticky?: boolean;
+  /** 배경 투명 여부 */
+  transparent?: boolean;
+  /** 아이콘 흰색 여부 */
+  whiteIcon?: boolean;
   /** 추가 클래스 */
   className?: string;
 };
@@ -31,11 +35,18 @@ export function TopBar({
   isShowLogo = false,
   rightIcons = [],
   sticky = false,
+  transparent = false,
+  whiteIcon = false,
   className,
 }: TopBarProps) {
   return (
     <header
-      className={[s.root, sticky && s.sticky, className]
+      className={[
+        s.root,
+        sticky && s.sticky,
+        transparent && s.transparent,
+        className,
+      ]
         .filter(Boolean)
         .join(" ")}
       role="banner"
@@ -45,7 +56,9 @@ export function TopBar({
         {backIconHandler ? (
           <button
             type="button"
-            className={s.iconButton}
+            className={[s.iconButton, whiteIcon && s.whiteIcon]
+              .filter(Boolean)
+              .join(" ")}
             onClick={backIconHandler}
             aria-label="뒤로가기"
           >
@@ -81,7 +94,9 @@ export function TopBar({
           <button
             key={idx}
             type="button"
-            className={s.iconButton}
+            className={[s.iconButton, whiteIcon && s.whiteIcon]
+              .filter(Boolean)
+              .join(" ")}
             onClick={onClick}
             aria-label={`action-${idx + 1}`}
           >

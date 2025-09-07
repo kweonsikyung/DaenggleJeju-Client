@@ -18,6 +18,14 @@ export const sticky = style({
   zIndex: 50,
 });
 
+export const transparent = style({
+  background: "transparent",
+});
+
+export const whiteIcon = style({
+  filter: "brightness(0) invert(1)",
+});
+
 export const iconBox = style({
   width: 24,
   height: 24,
