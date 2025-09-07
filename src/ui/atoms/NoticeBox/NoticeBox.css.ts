@@ -1,9 +1,14 @@
 import { style, keyframes } from "@vanilla-extract/css";
 import { TYPO } from "@/styles/typography.css";
 
-const NOTICE_COLORS = {
+const YELLOW_COLORS = {
   background: "#FEFCE8",
   text: "#D08700",
+};
+
+const BLUE_COLORS = {
+  background: "#EFF6FF",
+  text: "#525252",
 };
 
 const slideDown = keyframes({
@@ -30,7 +35,6 @@ export const container = style({
   alignItems: "flex-start",
   gap: "10px",
   padding: "12px",
-  backgroundColor: NOTICE_COLORS.background,
   borderRadius: "16px",
 });
 
@@ -38,12 +42,12 @@ export const iconWrapper = style({
   flexShrink: 0,
   width: "20px",
   height: "20px",
+  marginTop: "1px",
 });
 
 export const content = style({
   flexGrow: 1,
   ...TYPO.CAPTION1M,
-  color: NOTICE_COLORS.text,
   margin: 0,
 });
 
@@ -55,4 +59,15 @@ export const closeButton = style({
   background: "transparent",
   border: "none",
   cursor: "pointer",
+  marginTop: "1px",
+});
+
+export const yellowTheme = style({
+  backgroundColor: YELLOW_COLORS.background,
+  color: YELLOW_COLORS.text,
+});
+
+export const blueTheme = style({
+  backgroundColor: BLUE_COLORS.background,
+  color: BLUE_COLORS.text,
 });

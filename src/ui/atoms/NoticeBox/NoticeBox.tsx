@@ -13,6 +13,8 @@ interface NoticeBoxProps {
   onClose: () => void;
   /** 내부에 표시될 텍스트 또는 React 요소 */
   children: React.ReactNode;
+  /** 색상 테마 ('yellow' 또는 'blue') */
+  variant?: "yellow" | "blue";
 }
 
 const NoticeBox = ({
@@ -20,6 +22,7 @@ const NoticeBox = ({
   animation,
   onClose,
   children,
+  variant = "yellow",
 }: NoticeBoxProps) => {
   if (!shouldRender) {
     return null;
@@ -28,15 +31,23 @@ const NoticeBox = ({
   const animationClass =
     animation === "in" ? s.animateIn : animation === "out" ? s.animateOut : "";
 
+  const themeClass = variant === "blue" ? s.blueTheme : s.yellowTheme;
+  const emphasisIconSrc =
+    variant === "blue"
+      ? "/assets/icon16/circle-emphasis_line_blue.svg"
+      : "/assets/icon16/circle-emphasis_line_yellow.svg";
+  const closeIconSrc =
+    variant === "blue"
+      ? "/assets/icon16/x_line.svg"
+      : "/assets/icon16/x_line_yellow.svg";
+
   return (
-    <div className={`${s.container} ${animationClass}`} role="alert">
+    <div
+      className={`${s.container} ${themeClass} ${animationClass}`}
+      role="alert"
+    >
       <div className={s.iconWrapper}>
-        <Image
-          src={"/assets/icon16/circle-emphasis_line_yellow.svg"}
-          alt="icon"
-          width={16}
-          height={16}
-        />
+        <Image src={emphasisIconSrc} alt="icon" width={16} height={16} />
       </div>
       <p className={s.content}>{children}</p>
       <button
@@ -45,12 +56,7 @@ const NoticeBox = ({
         onClick={onClose}
         aria-label="알림 닫기"
       >
-        <Image
-          src={"/assets/icon16/x_line_yellow.svg"}
-          alt="icon"
-          width={16}
-          height={16}
-        />
+        <Image src={closeIconSrc} alt="close icon" width={16} height={16} />
       </button>
     </div>
   );
