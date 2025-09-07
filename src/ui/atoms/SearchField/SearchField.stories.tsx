@@ -1,7 +1,7 @@
 "use client";
 
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import { fn, userEvent, within } from "@storybook/test";
+import { fn, userEvent, within } from "storybook/test";
 import { SearchField } from "./SearchField";
 
 const meta = {

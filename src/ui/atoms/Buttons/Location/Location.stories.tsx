@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React, { useState } from "react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import { Location } from "./Location";
 
 const meta = {
