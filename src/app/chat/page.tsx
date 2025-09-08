@@ -14,25 +14,33 @@ import ThinkingBubble from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
 import { useTypingEffect } from "@/hooks/useTypingEffect";
 import { useNotice } from "@/hooks/useNotice";
 
+/** type */
 const initialTopics = Object.keys(travelCareData) as Topic[];
 
+/**
+ * AI 여행케어 페이지
+ * * style/ page = topbar + container + nav(ai)
+ */
 export default function Page() {
+  /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTopic = searchParams.get("topic") as Topic | null;
   const currentSubTopic = searchParams.get("subTopic") as string | null;
 
-  // useNotice 훅을 사용하여 NoticeBox 상태 관리
+  /** hooks */
   const {
     shouldRender: shouldNoticeRender,
     animation: noticeAnimation,
     hideNotice,
-  } = useNotice(true); // 초기에 보이도록 true 전달
+  } = useNotice(true);
 
+  /** chat state */
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [aiResponse, setAiResponse] = useState("");
   const [finalAnswer, setFinalAnswer] = useState("");
 
+  /** chat patch */
   const patchText = (text: string) => {
     if (text.length > 1) {
       return text.substring(0, 1) + text.substring(1, 2) + text.substring(1);
@@ -50,6 +58,9 @@ export default function Page() {
   const userSubTopicRef = useRef<HTMLDivElement>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  const conversation = currentTopic ? travelCareData[currentTopic] : null;
+
+  /** route handler */
   const handleSelectTopic = (topic: string) => {
     router.push(`?topic=${encodeURIComponent(topic)}`);
   };
@@ -64,8 +75,7 @@ export default function Page() {
     }
   };
 
-  const conversation = currentTopic ? travelCareData[currentTopic] : null;
-
+  /** lifecycle */
   useEffect(() => {
     if (currentTopic) {
       const isSubTopicSelected = searchParams.has("subTopic");

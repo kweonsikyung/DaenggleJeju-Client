@@ -12,7 +12,9 @@ const LOGIN_CONFIG = [
   { type: LOGIN_TYPE.GOOGLE, title: "Google로 시작하기" },
 ];
 
+/** 로그인 페이지 */
 export default function Login() {
+  /** router */
   const router = useRouter();
   return (
     <div className={s.page}>

@@ -11,26 +11,35 @@ import * as s from "./style.css";
 import { slides } from "./_util";
 
 export default function Onboarding() {
+  /** router */
   const router = useRouter();
+
+  /** state */
   const [index, setIndex] = useState(0);
+
+  /** variables */
   const total = slides.length;
   const buttonLabel = index === total - 1 ? "로그인하기" : "건너뛰기";
 
+  /** hooks */
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: "trimSnaps",
     loop: false,
   });
 
+  /** click handler */
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setIndex(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
+  /** route handler */
   const goLogin = useCallback(() => {
     router.replace("/login");
   }, [router]);
 
+  /** lifecycle */
   useEffect(() => {
     if (!emblaApi) return;
     onSelect();

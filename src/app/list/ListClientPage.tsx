@@ -21,19 +21,25 @@ import NavBar from "@/ui/atoms/NavBar/NavBar";
  * * style/ page = top + container + nav(near) + bottomSheet
  */
 export default function ListClientPage() {
+  /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialFilter = searchParams.get("filter") || "dangle";
+
+  /** state */
   const [activeFilter, setActiveFilter] = useState(initialFilter);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
 
-  const handleBack = () => {
-    router.back();
-  };
+  /** variables */
+  const listData = MARKER_DATA[activeFilter as keyof typeof MARKER_DATA] || [];
+  const isAnyFilterSelected = Object.values(selectedFilters).some(
+    (arr) => arr.length > 0
+  );
 
+  /** filter handler */
   const handleFilterSelect = (group: string, id: string) => {
     setSelectedFilters((prev) => {
       const data = OPTION_DATA.find((d) => d.group === group);
@@ -63,11 +69,10 @@ export default function ListClientPage() {
     setIsBottomSheetOpen(false);
   };
 
-  const isAnyFilterSelected = Object.values(selectedFilters).some(
-    (arr) => arr.length > 0
-  );
-
-  const listData = MARKER_DATA[activeFilter as keyof typeof MARKER_DATA] || [];
+  /** route handler */
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <div className={s.page}>

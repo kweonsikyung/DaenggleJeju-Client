@@ -17,7 +17,10 @@ import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
  * * style/ page = topbar + container + nav(near)
  */
 export default function DetailPage() {
+  /** router */
   const router = useRouter();
+
+  /** state */
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   return (

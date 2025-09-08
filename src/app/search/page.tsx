@@ -22,7 +22,10 @@ import NavBar from "@/ui/atoms/NavBar/NavBar";
  * * style/ page = top(searchBar) + container(sections) + nav(near)
  */
 export default function SearchPage() {
+  /** router */
   const router = useRouter();
+
+  /** state */
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [searchResult, setSearchResult] = useState<
@@ -30,21 +33,7 @@ export default function SearchPage() {
   >(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
 
-  useEffect(() => {
-    const storedKeywords = localStorage.getItem("recentKeywords");
-    if (storedKeywords) {
-      setRecentKeywords(JSON.parse(storedKeywords));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("recentKeywords", JSON.stringify(recentKeywords));
-  }, [recentKeywords]);
-
-  const handleBack = () => {
-    router.back();
-  };
-
+  /** search util handler */
   const handleSearch = (keyword: string) => {
     if (keyword.trim() === "") return;
     setSearchValue(keyword);
@@ -52,7 +41,6 @@ export default function SearchPage() {
       const newKeywords = prev.filter((item) => item !== keyword);
       return [keyword, ...newKeywords.slice(0, 4)];
     });
-    // 더미 검색 결과 로드
     setSearchResult(SEARCH_RESULTS);
   };
 
@@ -65,6 +53,23 @@ export default function SearchPage() {
       handleSearch(searchValue);
     }
   };
+
+  /** router handler */
+  const handleBack = () => {
+    router.back();
+  };
+
+  /** lifecycle */
+  useEffect(() => {
+    const storedKeywords = localStorage.getItem("recentKeywords");
+    if (storedKeywords) {
+      setRecentKeywords(JSON.parse(storedKeywords));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("recentKeywords", JSON.stringify(recentKeywords));
+  }, [recentKeywords]);
 
   return (
     <div className={s.page}>

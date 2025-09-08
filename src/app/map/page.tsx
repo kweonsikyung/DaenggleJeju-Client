@@ -15,6 +15,7 @@ import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
 import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { MARKER_DATA } from "@/utils/dummy_data";
 
+/** type (related KAKAO) */
 type Place = (typeof MARKER_DATA.dangle)[0];
 declare global {
   interface Window {
@@ -28,20 +29,29 @@ declare global {
  * * style/ page = top(absolute) + map + bottom(absolute) + nav(near) + bottomheet
  */
 export default function MapPage() {
+  /** router */
   const router = useRouter();
-  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  /** state */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [map, setMap] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
+
+  const mapContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<any[]>([]);
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
 
-  // 마커를 로드하고 지도에 추가하는 함수
+  /** variables */
+  const isAnyFilterSelected = Object.values(selectedFilters).some(
+    (arr) => arr.length > 0
+  );
+
+  /** map load handler */
   const loadMarkers = (filter: string) => {
     if (!map || !window.kakao) return;
 
@@ -87,22 +97,7 @@ export default function MapPage() {
     }
   };
 
-  const handleGpsClick = () => {
-    if (!map || !window.kakao) return;
-    const swLatLng = new window.kakao.maps.LatLng(33.1, 126.1);
-    const neLatLng = new window.kakao.maps.LatLng(33.6, 126.9);
-    const bounds = new window.kakao.maps.LatLngBounds(swLatLng, neLatLng);
-    map.setBounds(bounds);
-  };
-
-  const handleLocationListClick = () => {
-    router.push(`/list?filter=${activeFilter}`);
-  };
-
-  const handleDangleRecommendClick = () => {
-    router.push("/dangle");
-  };
-
+  /** filter handler */
   const handleFilterSelect = (group: string, id: string) => {
     setSelectedFilters((prev) => {
       const existing = prev[group] || [];
@@ -127,14 +122,27 @@ export default function MapPage() {
   };
 
   const handleApplyFilters = () => {
-    console.log("필터 적용:", selectedFilters);
     setIsBottomSheetOpen(false);
   };
 
-  const isAnyFilterSelected = Object.values(selectedFilters).some(
-    (arr) => arr.length > 0
-  );
+  /** map util handler */
+  const handleGpsClick = () => {
+    if (!map || !window.kakao) return;
+    const swLatLng = new window.kakao.maps.LatLng(33.1, 126.1);
+    const neLatLng = new window.kakao.maps.LatLng(33.6, 126.9);
+    const bounds = new window.kakao.maps.LatLngBounds(swLatLng, neLatLng);
+    map.setBounds(bounds);
+  };
 
+  const handleLocationListClick = () => {
+    router.push(`/list?filter=${activeFilter}`);
+  };
+
+  const handleDangleRecommendClick = () => {
+    router.push("/dangle");
+  };
+
+  /** lifecycle */
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;

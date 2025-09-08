@@ -6,10 +6,17 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import * as s from "./style.css";
 
+/**
+ * 스플래시 (앱 엔트리)
+ */
 export default function Splash() {
-  const [show, setShow] = useState(true);
+  /** router */
   const router = useRouter();
 
+  /** state */
+  const [show, setShow] = useState(true);
+
+  /** useEffect */
   useEffect(() => {
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)"

@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import ShortsOverlay from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
 import ShortsBottomInfo from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
 
+/** type (related YOUTUBE) */
 declare global {
   interface Window {
     YT?: { Player: new (el: string, opts: YT.PlayerOptions) => YT.Player };
@@ -46,10 +47,16 @@ interface ShortsClientPageProps {
   videos: VideoData[];
 }
 
+/**
+ * 영상 재생 페이지
+ */
 export default function ShortsClientPage({ videos }: ShortsClientPageProps) {
+  /** router */
   const router = useRouter();
+
+  /** state */
   const [isStarted, setIsStarted] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false); // 재생 상태 관리
+  const [isPlaying, setIsPlaying] = useState(false);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 
   const playerRef = useRef<YT.Player | null>(null);
@@ -59,6 +66,41 @@ export default function ShortsClientPage({ videos }: ShortsClientPageProps) {
     [videoId: string]: { liked: boolean; saved: boolean };
   }>({});
 
+  /** variables */
+  const currentVideo = videos[activeSlideIndex];
+  const isCurrentVideoLiked = videoStates[currentVideo.videoId]?.liked ?? false;
+  const isCurrentVideoSaved = videoStates[currentVideo.videoId]?.saved ?? false;
+  const formatNumber = (num: number) => num.toLocaleString();
+
+  /** short util handler */
+  const handleStartPlaying = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsStarted(true);
+  };
+
+  const handleTogglePlay = () => {
+    if (isStarted) {
+      setIsPlaying((prev) => !prev);
+    }
+  };
+
+  const handleToggleLike = (e: React.MouseEvent, videoId: string) => {
+    e.stopPropagation();
+    setVideoStates((prev) => ({
+      ...prev,
+      [videoId]: { ...prev[videoId], liked: !prev[videoId]?.liked },
+    }));
+  };
+
+  const handleToggleSave = (e: React.MouseEvent, videoId: string) => {
+    e.stopPropagation();
+    setVideoStates((prev) => ({
+      ...prev,
+      [videoId]: { ...prev[videoId], saved: !prev[videoId]?.saved },
+    }));
+  };
+
+  /** lifecycle */
   useEffect(() => {
     if (!window.YT) {
       const script = document.createElement("script");
@@ -67,7 +109,6 @@ export default function ShortsClientPage({ videos }: ShortsClientPageProps) {
     }
   }, []);
 
-  // 플레이어 생성/파괴를 담당하는 useEffect
   useEffect(() => {
     if (!isStarted || !window.YT?.Player) return;
 
@@ -107,7 +148,6 @@ export default function ShortsClientPage({ videos }: ShortsClientPageProps) {
     };
   }, [isStarted, activeSlideIndex, videos]);
 
-  // isPlaying 상태에 따라 플레이어 제어
   useEffect(() => {
     if (!isStarted || !playerRef.current?.playVideo) return;
 
@@ -118,46 +158,11 @@ export default function ShortsClientPage({ videos }: ShortsClientPageProps) {
     }
   }, [isPlaying]);
 
+  /** render */
+
   if (!videos || videos.length === 0) {
     return <div>영상을 불러올 수 없습니다.</div>;
   }
-
-  const currentVideo = videos[activeSlideIndex];
-  const isCurrentVideoLiked = videoStates[currentVideo.videoId]?.liked ?? false;
-  const isCurrentVideoSaved = videoStates[currentVideo.videoId]?.saved ?? false;
-
-  // 시작 버튼 클릭 핸들러
-  const handleStartPlaying = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsStarted(true);
-  };
-
-  // 재생/일시정지 토글 핸들러
-  const handleTogglePlay = () => {
-    if (isStarted) {
-      setIsPlaying((prev) => !prev);
-    }
-  };
-
-  // 좋아요/저장 핸들러 (이벤트 전파 중단 추가)
-  const handleToggleLike = (e: React.MouseEvent, videoId: string) => {
-    e.stopPropagation();
-    setVideoStates((prev) => ({
-      ...prev,
-      [videoId]: { ...prev[videoId], liked: !prev[videoId]?.liked },
-    }));
-  };
-
-  const handleToggleSave = (e: React.MouseEvent, videoId: string) => {
-    e.stopPropagation();
-    setVideoStates((prev) => ({
-      ...prev,
-      [videoId]: { ...prev[videoId], saved: !prev[videoId]?.saved },
-    }));
-  };
-
-  const formatNumber = (num: number) => num.toLocaleString();
-
   // 시작 전 UI
   if (!isStarted) {
     const firstVideo = videos[0];

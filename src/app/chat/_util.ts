@@ -1,5 +1,3 @@
-// as const를 사용하여 travelCareData 객체를 읽기 전용으로 만들고,
-// TypeScript가 문자열 리터럴 타입을 정확하게 추론하도록 합니다.
 export const travelCareData = {
   "이동 스트레스 관리": {
     aiResponse:

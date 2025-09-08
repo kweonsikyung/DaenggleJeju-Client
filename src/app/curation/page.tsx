@@ -12,11 +12,29 @@ import { currentStepTitle } from "./_util";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+/**
+ * curation 질문 페이지
+ * * style/ page = topbar + container + footer(btn)
+ */
 export default function Curation() {
+  /** form state */
   const [step, setStep] = useState<number>(1);
   const [isStepValid, setIsStepValid] = useState<boolean>(false);
+
+  /** router */
   const router = useRouter();
 
+  /** router handler */
+  const handleNextStep = () => {
+    if (step < 3) {
+      setStep((prev) => prev + 1);
+      setIsStepValid(false);
+    } else {
+      router.push("/map");
+    }
+  };
+
+  /** render function */
   const renderStepComponent = () => {
     switch (step) {
       case 1:
@@ -27,15 +45,6 @@ export default function Curation() {
         return <Step3 setIsValid={setIsStepValid} />;
       default:
         return null;
-    }
-  };
-
-  const handleNextStep = () => {
-    if (step < 3) {
-      setStep((prev) => prev + 1);
-      setIsStepValid(false);
-    } else {
-      router.push("/map");
     }
   };
 

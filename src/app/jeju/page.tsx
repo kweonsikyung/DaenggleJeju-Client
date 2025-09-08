@@ -13,14 +13,19 @@ import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
 
 /**
  * 제주 이동 방법 메인 & 상세 페이지
+ * * style/ page = topbar + container + nav(jeju)
  */
 export default function JejuPage() {
+  /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get("type") as string | null;
+
+  /** hooks */
   const { share } = useWebShare();
   const { shouldRender, animation, hideNotice } = useNotice();
 
+  /** share handler */
   const handleShare = () => {
     share({
       title: "[댕글제주] 제주이동의 모든 것",
@@ -28,6 +33,7 @@ export default function JejuPage() {
     });
   };
 
+  /** render detail page */
   const renderDetailPage = (currentType: string) => {
     const currentOption = jejuOptions.find(
       (option) => option.type === currentType
@@ -94,7 +100,7 @@ export default function JejuPage() {
     );
   };
 
-  // 메인 페이지 렌더링 함수
+  /** render main page */
   const renderMainPage = () => {
     return (
       <>
