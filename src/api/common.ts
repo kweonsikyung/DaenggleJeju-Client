@@ -8,25 +8,63 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import api from "./client";
 
 /**
+ * API 공통 성공 응답 래퍼 타입
+ */
+export interface ApiResponse<T = unknown> {
+  code: string;
+  message: string;
+  result: T;
+}
+
+/**
+ * API 공통 에러 응답 타입
+ * HTTP 4xx, 5xx 에러 발생 시 response.data에 포함되는 공통 에러 구조
+ */
+export interface ApiErrorResponse {
+  message: string;
+  statusCode: number;
+  code: string;
+  errors?: unknown;
+}
+
+/**
+ * 응답 데이터가 공통 에러 응답(ApiErrorResponse) 타입인지 확인하는 타입 가드
+ */
+function isApiErrorPayload(data: unknown): data is ApiErrorResponse {
+  return (
+    data != null &&
+    typeof data === "object" &&
+    "message" in data &&
+    "code" in data &&
+    "statusCode" in data
+  );
+}
+
+/**
  * API 에러 정보를 담는 커스텀 에러 클래스
  */
 export class ApiError extends Error {
   readonly code?: string;
   readonly status?: number;
+  readonly errors?: unknown;
 
-  constructor(message: string, status?: number, code?: string) {
+  constructor(
+    message: string,
+    status?: number,
+    code?: string,
+    errors?: unknown
+  ) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
+    this.errors = errors;
   }
 }
 
 /**
  * @function extractApiErrorMessage
  * @description 예측 불가능한 API 에러 응답에서 최대한 의미있는 메시지를 추출하는 헬퍼 함수
- * @param {unknown} data - Axios 에러의 `error.response.data`
- * @returns {string} 추출된 에러 메시지 문자열
  */
 function extractApiErrorMessage(data: unknown): string {
   // 1. data가 문자열이면, 그대로 반환
@@ -61,19 +99,33 @@ export async function getRequest<T>(
   config?: AxiosRequestConfig
 ): Promise<T> {
   try {
-    const response: AxiosResponse<T> = await api.get(endpoint, config);
-    return response.data;
+    const response: AxiosResponse<ApiResponse<T>> = await api.get(
+      endpoint,
+      config
+    );
+    const data = response.data;
+
+    if (data.code === "200") {
+      return data.result;
+    } else {
+      throw new ApiError(data.message, response.status, data.code);
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const responseData = error.response?.data;
-      const message = extractApiErrorMessage(responseData);
-      const code =
-        responseData &&
-        typeof responseData === "object" &&
-        "code" in responseData
-          ? String(responseData.code)
-          : undefined;
-      throw new ApiError(message, error.response?.status, code);
+      const status = error.response?.status;
+
+      if (isApiErrorPayload(responseData)) {
+        throw new ApiError(
+          responseData.message,
+          status,
+          responseData.code,
+          responseData.errors
+        );
+      } else {
+        const message = extractApiErrorMessage(responseData);
+        throw new ApiError(message, status);
+      }
     }
     throw error;
   }
@@ -90,19 +142,34 @@ export async function postRequest<T, B = unknown>(
   config?: AxiosRequestConfig
 ): Promise<T> {
   try {
-    const response: AxiosResponse<T> = await api.post(endpoint, body, config);
-    return response.data;
+    const response: AxiosResponse<ApiResponse<T>> = await api.post(
+      endpoint,
+      body,
+      config
+    );
+    const data = response.data;
+
+    if (data.code === "200") {
+      return data.result;
+    } else {
+      throw new ApiError(data.message, response.status, data.code);
+    }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       const responseData = error.response?.data;
-      const message = extractApiErrorMessage(responseData);
-      const code =
-        responseData &&
-        typeof responseData === "object" &&
-        "code" in responseData
-          ? String(responseData.code)
-          : undefined;
-      throw new ApiError(message, error.response?.status, code);
+      const status = error.response?.status;
+
+      if (isApiErrorPayload(responseData)) {
+        throw new ApiError(
+          responseData.message,
+          status,
+          responseData.code,
+          responseData.errors
+        );
+      } else {
+        const message = extractApiErrorMessage(responseData);
+        throw new ApiError(message, status);
+      }
     }
     throw error;
   }
