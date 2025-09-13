@@ -1,25 +1,68 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Location } from "@/ui/atoms/Buttons/Location/Location";
 import * as s from "../style.css";
-import { LOCATION_OPTION } from "../_util";
+import {
+  LOCATION_OPTION,
+  JEJU_OVERALL_ID,
+  ALL_REGION_IDS,
+  ALL_SPECIFIC_REGION_IDS,
+} from "../_util";
 
 interface Step2Props {
   setIsValid: (isValid: boolean) => void;
+  selectedItems: number[];
+  setSelectedItems: (items: number[]) => void;
 }
 
-export default function Step2({ setIsValid }: Step2Props) {
-  /** form state */
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  /** click handler */
+export default function Step2({
+  setIsValid,
+  selectedItems,
+  setSelectedItems,
+}: Step2Props) {
+  /** click handler - '제주 전체' 선택/해제 로직 */
   const handleSelect = (id: number) => {
-    if (selectedItems.includes(id)) {
-      setSelectedItems(selectedItems.filter((i) => i !== id));
-    } else {
-      setSelectedItems([...selectedItems, id]);
+    // 1. '제주 전체' (ID 1)를 클릭한 경우
+    if (id === JEJU_OVERALL_ID) {
+      if (selectedItems.includes(JEJU_OVERALL_ID)) {
+        setSelectedItems([]);
+      } else {
+        setSelectedItems(ALL_REGION_IDS);
+      }
+      return;
     }
+
+    // 2. 특정 지역 (ID 1이 아님)을 클릭한 경우
+    let newSelectedItems = [...selectedItems];
+
+    if (newSelectedItems.includes(id)) {
+      newSelectedItems = newSelectedItems.filter((i) => i !== id);
+      if (newSelectedItems.includes(JEJU_OVERALL_ID)) {
+        newSelectedItems = newSelectedItems.filter(
+          (i) => i !== JEJU_OVERALL_ID
+        );
+      }
+    } else {
+      newSelectedItems.push(id);
+    }
+
+    // 3. 클릭 후 상태 확인: 모든 '특정' 지역이 선택되었는지 검사
+    const allSpecificRegionsSelected = ALL_SPECIFIC_REGION_IDS.every(
+      (regionId) => newSelectedItems.includes(regionId)
+    );
+
+    // 모든 특정 지역이 선택되었다면 -> '제주 전체'도 자동으로 선택
+    if (
+      allSpecificRegionsSelected &&
+      !newSelectedItems.includes(JEJU_OVERALL_ID)
+    ) {
+      newSelectedItems.push(JEJU_OVERALL_ID);
+    }
+
+    setSelectedItems(newSelectedItems);
   };
+
   /** lifecycle */
   useEffect(() => {
     setIsValid(selectedItems.length > 0);

@@ -10,17 +10,24 @@ import { AvatarPicker } from "@/ui/atoms/AvatarPicker/AvatarPicker";
 
 interface Step1Props {
   setIsValid: (isValid: boolean) => void;
+  formData: { name: string; breed: string; weight: string };
+  setFormData: (
+    updater: (prev: { name: string; breed: string; weight: string }) => {
+      name: string;
+      breed: string;
+      weight: string;
+    }
+  ) => void;
+  setAvatarFile: (file: File | null) => void;
 }
 
-export default function Step1({ setIsValid }: Step1Props) {
-  /** form state */
+export default function Step1({
+  setIsValid,
+  formData,
+  setFormData,
+  setAvatarFile,
+}: Step1Props) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    breed: "",
-    weight: "",
-  });
-  /** bottom-sheet state */
   const [activeSheet, setActiveSheet] = useState<"breed" | "weight" | null>(
     null
   );
@@ -28,9 +35,9 @@ export default function Step1({ setIsValid }: Step1Props) {
   /** dynamic variable */
   const { title: sheetTitle, options: sheetOptions } =
     activeSheet === "breed"
-      ? { title: "견종 선택", options: BREED_OPTIONS }
+      ? { title: "견종 선택", options: BREED_OPTIONS.map((b) => b.label) }
       : activeSheet === "weight"
-      ? { title: "몸무게 선택", options: WEIGHT_OPTIONS }
+      ? { title: "몸무게 선택", options: WEIGHT_OPTIONS.map((w) => w.label) }
       : { title: "", options: [] };
 
   /** click handler */
@@ -40,7 +47,6 @@ export default function Step1({ setIsValid }: Step1Props) {
   };
 
   /** lifecycle */
-  /* 유효성 */
   useEffect(() => {
     setIsValid(!!formData.name && !!formData.breed && !!formData.weight);
   }, [formData, setIsValid]);
@@ -57,11 +63,10 @@ export default function Step1({ setIsValid }: Step1Props) {
       <AvatarPicker
         value={avatarUrl ?? undefined}
         accept="image/*"
-        onChange={(_file, url) => {
-          setAvatarUrl((prev) => {
-            if (prev?.startsWith("blob:")) URL.revokeObjectURL(prev);
-            return url;
-          });
+        onChange={(file, url) => {
+          if (avatarUrl?.startsWith("blob:")) URL.revokeObjectURL(avatarUrl);
+          setAvatarUrl(url);
+          setAvatarFile(file);
         }}
       />
 
