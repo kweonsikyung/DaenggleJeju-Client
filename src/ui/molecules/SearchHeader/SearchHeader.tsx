@@ -12,12 +12,15 @@ export interface SearchHeaderProps {
   backIconColor?: "black" | "white";
   /** SearchField의 props */
   searchFieldProps?: React.ComponentProps<typeof SearchField>;
+  /** 클릭 핸들러: 전달하면 SearchField가 버튼처럼 동작 */
+  onClick?: () => void;
 }
 
 export function SearchHeader({
   backIconHandler,
   backIconColor = "black",
   searchFieldProps,
+  onClick,
 }: SearchHeaderProps) {
   const iconSrc =
     backIconColor === "white"
@@ -36,7 +39,8 @@ export function SearchHeader({
           s.searchFieldWrapper[backIconHandler ? "withBackButton" : "fullWidth"]
         }
       >
-        <SearchField {...searchFieldProps} />
+        <SearchField {...searchFieldProps} readOnly={!!onClick} />
+        {onClick && <div className={s.clickOverlay} onClick={onClick} />}
       </div>
     </div>
   );

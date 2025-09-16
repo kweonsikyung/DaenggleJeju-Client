@@ -19,9 +19,20 @@ export const backButton = style({
 
 const searchFieldWrapperBase = style({
   flex: 1,
+  position: "relative",
 });
 
 export const searchFieldWrapper = styleVariants({
   fullWidth: [searchFieldWrapperBase, { width: "100%" }],
   withBackButton: [searchFieldWrapperBase, { width: "calc(100% - 48px)" }],
+});
+
+export const clickOverlay = style({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  width: "100%",
+  height: "100%",
+  cursor: "pointer",
+  background: "transparent",
 });
