@@ -26,6 +26,7 @@ import { useVisitedRegions } from "@/hooks/useVisitedRegions";
 //utils
 import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
 import { JEJU_DATA } from "@/utils/dummy_data";
+import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 
 /**
  * 댕글추천 페이지
@@ -189,24 +190,47 @@ export default function Page() {
         )}
         {daenggleTrendingData && (
           <Grid className={s.pd}>
-            {daenggleTrendingData.items.map((item, index) => (
-              <DanglePlay
-                key={item.video_id}
-                type="medium"
-                imageUrl={getThumbnailUrl(item.video_id)}
-                profileImageUrl={"/assets/dangle/dog.png"}
-                name={item.authorName}
-                location={item.placePill || "제주 어딘가"}
-                title={item.title}
-                views={item.loveCount || 0}
-                comments={item.scrapCount || 0}
-                timeAgo={item.published_at}
-                tags={item.tags}
-                onClick={() => {
-                  router.push(`/shorts?listType=trending&startIndex=${index}`);
-                }}
-              />
-            ))}
+            {daenggleTrendingData.items.map((item, index) => {
+              const { cleanTitle, tags: extractedTags } = extractHashtags(
+                item.title
+              );
+
+              const { place: extractedPlace, region: extractedRegion } =
+                findLocationInfo(item.title);
+
+              // --- 로케이션/주소 추출 시도 ---
+              const finalPlace = extractedPlace || "";
+              const finalRegion =
+                extractedRegion || item.placePill || "제주 전체";
+
+              // --- 태그 병합  ---
+              const finalTags = [
+                ...new Set([...extractedTags, ...(item.tags || [])]),
+              ];
+
+              return (
+                <DanglePlay
+                  key={`${item.video_id}-${index}`}
+                  type="medium"
+                  width="100%"
+                  imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
+                  profileImageUrl={"/assets/profile-default.png"}
+                  name={item.authorName}
+                  location={finalRegion}
+                  address={finalPlace}
+                  title={cleanTitle}
+                  tags={finalTags}
+                  views={item.loveCount || 0}
+                  comments={item.scrapCount || 0}
+                  timeAgo={item.published_at}
+                  onClick={() => {
+                    router.push(
+                      `/shorts?listType=trending&startIndex=${index}`
+                    );
+                  }}
+                />
+              );
+            })}
           </Grid>
         )}
       </div>
