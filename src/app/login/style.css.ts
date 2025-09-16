@@ -8,7 +8,7 @@ export const page = style({
   alignItems: "center",
   justifyContent: "center",
   padding: "0px 20px",
-  gap: "100px",
+  gap: "175px",
 });
 
 export const btns = style({

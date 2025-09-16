@@ -76,3 +76,21 @@ export function useDevLogout() {
     logoutError: error,
   };
 }
+
+/**
+ * @hook useKakaoLogin
+ * @description 카카오 로그인
+ */
+export function useKakaoLogin() {
+  const kakaoLogin = () => {
+    const api = process.env.NEXT_PUBLIC_API_URL;
+    if (!api) {
+      console.error("NEXT_PUBLIC_API_URL 누락");
+      alert("환경설정 오류: API 주소가 없습니다.");
+      return;
+    }
+    window.location.href = `${api}/auth/kakao/login`;
+  };
+
+  return { kakaoLogin };
+}
