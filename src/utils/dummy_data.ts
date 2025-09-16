@@ -547,7 +547,7 @@ export const FILTER_CHIPS = [
 ];
 
 export interface VideoData {
-  id: number;
+  id: string;
   loc: string;
   videoId: string;
   thumbnailUrl: string;
@@ -559,50 +559,3 @@ export interface VideoData {
   comments: number;
   likes?: number;
 }
-
-export const shortsData: { [key: string]: VideoData[] } = {
-  "강아지 여행": [
-    {
-      id: 1,
-      loc: "오름 산책길",
-      videoId: "RJE6M9P5N7Y",
-      thumbnailUrl: "https://i.ytimg.com/vi/RJE6M9P5N7Y/hqdefault.jpg",
-      profileImageUrl: "/assets/dangle/dog.png",
-      userName: "제주하이쩡",
-      description:
-        "제주도 애견동반 펜션 서귀포 숙소 제주 애견동반 숙소 야외 자쿠지 스테이모슬",
-      tags: ["제주도", "애견동반", "자쿠지"],
-      bookmarks: 7427,
-      comments: 100,
-      likes: 2193,
-    },
-    {
-      id: 2,
-      loc: "오름 산책길",
-      videoId: "kJpSzlWDOHI",
-      thumbnailUrl: "https://i.ytimg.com/vi/kJpSzlWDOHI/hqdefault.jpg",
-      profileImageUrl: "/assets/curation/avatar.svg",
-      userName: "제주 반려견동반숙소 [호텔핀코]",
-      description:
-        "제주도 반려견 동반 숙소 [호텔핀코] #잔디마당 #제주대형견숙소",
-      tags: ["제주도", "대형견", "애견펜션", "잔디마당"],
-      bookmarks: 6179,
-      comments: 200,
-      likes: 3128,
-    },
-    {
-      id: 3,
-      loc: "오름 산책길",
-      videoId: "x5sBUxFiGVw",
-      thumbnailUrl: "https://i.ytimg.com/vi/x5sBUxFiGVw/hqdefault.jpg",
-      profileImageUrl: "/assets/dangle/dog.png",
-      userName: "박쥬쥬",
-      description:
-        "작년 11월에 오픈한 신축 애견펜션🐶 #강아지 #애견 #애견동반펜션 #여행",
-      tags: ["신축", "애견펜션", "여행"],
-      bookmarks: 25324,
-      comments: 300,
-      likes: 9123,
-    },
-  ],
-};
