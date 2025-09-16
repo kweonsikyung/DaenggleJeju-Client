@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "@/ui/atoms/Skeleton/Skeleton";
-import { DanglePlaceSkeletonContent } from "./DanglePlaceSkeletonContent";
+import { DanglePlaceSkeleton } from "./DangleSkeletons";
 import * as s from "@/app/list/style.css";
 
 export default function ListSkeleton() {
@@ -33,7 +33,7 @@ export default function ListSkeleton() {
       <div className={s.container}>
         {Array.from({ length: 5 }).map((_, index) => (
           <div className={s.cardWrapper} key={`skeleton-${index}`}>
-            <DanglePlaceSkeletonContent />
+            <DanglePlaceSkeleton />
           </div>
         ))}
       </div>
