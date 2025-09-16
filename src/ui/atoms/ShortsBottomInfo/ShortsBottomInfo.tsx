@@ -15,7 +15,7 @@ export default function ShortsBottomInfo({ video }: ShortsBottomInfoProps) {
       <div className={s.userInfo}>
         <Image
           src={video.profileImageUrl}
-          alt={video.userName}
+          alt={"비디오 정보"}
           width={40}
           height={40}
           className={s.profileImage}

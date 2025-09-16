@@ -52,11 +52,17 @@ export function DanglePlay({
   const imageWidth = isMedium ? 162 : 150;
   const imageHeight = isMedium ? 242 : 225;
 
+  const isValidImageUrl =
+    typeof imageUrl === "string" &&
+    imageUrl !== "사진 없음" &&
+    /^https?:\/\//i.test(imageUrl);
+  const imageSrc = isValidImageUrl ? imageUrl : "/assets/jeju.png";
+
   return (
     <div className={s.root[type]} style={{ width }} onClick={onClick}>
       <div className={s.imageWrapper[type]}>
         <Image
-          src={imageUrl}
+          src={imageSrc}
           alt={name}
           width={imageWidth}
           height={imageHeight}
@@ -79,7 +85,13 @@ export function DanglePlay({
         <div className={s.content}>
           <div className={s.textInfo}>
             <div className={s.location}>
-              {location} · <span className={s.address}>{address}</span>
+              {location}
+              {address && (
+                <>
+                  {" · "}
+                  <span className={s.address}>{address}</span>
+                </>
+              )}
             </div>
             <div className={s.title}>{title}</div>
             <div className={s.tagWrapper}>

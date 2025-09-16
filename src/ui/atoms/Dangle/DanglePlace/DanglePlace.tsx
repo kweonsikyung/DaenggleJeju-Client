@@ -6,19 +6,19 @@ import * as s from "./DanglePlace.css";
 
 export interface DanglePlaceProps {
   /** 썸네일 이미지 URL */
-  thumbnailUrl: string;
+  thumbnailUrl: string | null;
   /** 위치 및 카테고리 정보 */
   locationCategory: string;
   /** 장소명 */
   name: string;
   /** 거리 */
-  distance: number;
+  distance: string | null;
   /** 재생 수 */
   playCount: number;
   /** 북마크 수 */
   bookmarkCount: number;
   /** 태그 목록 */
-  tags: string[];
+  tags?: string[];
   /** 카드 확장 여부 */
   isExpanded?: boolean;
   /** 상세 정보 (확장 시) */
@@ -37,10 +37,16 @@ export function DanglePlace({
   playCount,
   bookmarkCount,
   isExpanded = false,
-  tags,
+  tags = [],
   details,
   onClick,
 }: DanglePlaceProps) {
+  const isValidUrl =
+    typeof thumbnailUrl === "string" &&
+    thumbnailUrl !== "사진 없음" &&
+    /^https?:\/\//i.test(thumbnailUrl);
+  const imageSrc = isValidUrl ? thumbnailUrl : "/assets/jeju.png";
+
   return (
     <div
       className={s.root[isExpanded ? "isExpanded" : "default"]}
@@ -49,7 +55,7 @@ export function DanglePlace({
       <div className={s.headerContainer}>
         <div className={s.thumbnailWrapper}>
           <Image
-            src={thumbnailUrl}
+            src={imageSrc}
             alt={name}
             width={80}
             height={80}
@@ -60,11 +66,15 @@ export function DanglePlace({
           <span className={s.locationCategory}>{locationCategory}</span>
           <h3 className={s.name}>{name}</h3>
           <div className={s.stats}>
-            <span className={s.statValue}>{distance}km</span>
-            <div className={s.statItem}>·</div>
+            {distance && (
+              <>
+                <span className={s.statValue}>{distance}km</span>
+                <div className={s.statItem}>·</div>
+              </>
+            )}
             <div className={s.statItem}>
               <Image
-                alt="댓글"
+                alt="재생 수"
                 width={12}
                 height={12}
                 src="/assets/icon12/play_filled.svg"
@@ -74,7 +84,7 @@ export function DanglePlace({
             <div className={s.statItem}>·</div>
             <div className={s.statItem}>
               <Image
-                alt="댓글"
+                alt="북마크"
                 width={12}
                 height={12}
                 src="/assets/icon12/bookmark_filled.svg"
