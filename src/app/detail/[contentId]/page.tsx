@@ -3,25 +3,25 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
+import * as s from "./style.css";
+
+// components
 import TopBar from "@/ui/atoms/TopBar/TopBar";
 import NavBar from "@/ui/atoms/NavBar/NavBar";
-import * as s from "./style.css";
-import { REVIEW_DATA } from "@/utils/dummy_data";
-import Carousel from "@/ui/molecules/Carousel/Carousel";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
-import {
-  PlaceInfoSkeleton,
-  VideoCarouselSkeleton,
-} from "@/ui/views/Skeletons/DetailPageSkeletons";
-import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
+import Carousel from "@/ui/molecules/Carousel/Carousel";
 
+// hooks
+import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
 import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
 import { usePostScrap } from "@/hooks/api/useScraps";
 
+// utils
 import { normalizeChipsArray } from "@/utils/normalizeChipsArray";
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
+import { REVIEW_DATA } from "@/utils/dummy_data";
 
 /**
  * 장소 상세 페이지
@@ -53,13 +53,12 @@ export default function DetailPage() {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
   /** api handler */
-  const { data, isLoading, error, mutate } = usePlaceFullDetail({
+  const { data, error, mutate } = usePlaceFullDetail({
     contentId: contentId,
   });
 
   const {
     daengglePlaceRecommendationsData: recommendationsData,
-    isLoading: isRecsLoading,
     error: recsError,
   } = useDaengglePlaceRecommendations({
     contentId: String(contentId),
@@ -111,7 +110,6 @@ export default function DetailPage() {
       />
 
       <div className={s.container}>
-        {isLoading && <PlaceInfoSkeleton />}
         {error && (
           <EmptyState
             title="데이터 로드 실패"
@@ -256,17 +254,15 @@ export default function DetailPage() {
         <section className={s.section}>
           <div className={s.sectionHeader}>
             <h2 className={s.sectionTitle}>
-              연관 댕글 영상 (
-              {isRecsLoading ? "" : recommendationsData?.total ?? 0})
+              연관 댕글 영상 ({recommendationsData?.total})
             </h2>
           </div>
 
-          {isRecsLoading && <VideoCarouselSkeleton />}
-
           {recsError && (
-            <div style={{ padding: "0 16px", fontSize: "14px", color: "red" }}>
-              연관 영상 로딩 실패
-            </div>
+            <EmptyState
+              title="데이터 로드 실패"
+              description="서버와 통신 중 문제가 발생했습니다."
+            />
           )}
 
           {recommendationsData && recommendationsData.items.length > 0 && (
@@ -288,17 +284,6 @@ export default function DetailPage() {
               ))}
             </Carousel>
           )}
-
-          {recommendationsData &&
-            recommendationsData.items.length === 0 &&
-            !isRecsLoading &&
-            !recsError && (
-              <div
-                style={{ padding: "0 16px", fontSize: "14px", color: "#888" }}
-              >
-                연관된 댕글 영상이 없습니다.
-              </div>
-            )}
         </section>
 
         <section className={s.section}>
