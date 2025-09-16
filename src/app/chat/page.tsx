@@ -2,17 +2,23 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import * as s from "./style.css";
+
+//components
 import TopBar from "@/ui/atoms/TopBar/TopBar";
 import NavBar from "@/ui/atoms/NavBar/NavBar";
 import AiProfileHeader from "@/ui/atoms/Chat/AiProfileHeader/AiProfileHeader";
 import MessageBox from "@/ui/atoms/Chat/MessageBox/MessageBox";
 import TopicSelector from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
 import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
-import { travelCareData, Topic } from "./_util";
-import * as s from "./style.css";
 import ThinkingBubble from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
+
+//hooks
 import { useTypingEffect } from "@/hooks/useTypingEffect";
 import { useNotice } from "@/hooks/useNotice";
+
+//utils
+import { travelCareData, Topic } from "./_util";
 
 /** type */
 const initialTopics = Object.keys(travelCareData) as Topic[];
