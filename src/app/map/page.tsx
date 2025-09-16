@@ -10,13 +10,20 @@ import MapFloatingButtons from "@/ui/molecules/MapFloatingButtons/MapFloatingBut
 import FilterSection from "@/ui/molecules/FilterSection/FilterSection";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-import { MARKER_IMAGES, FILTER_CHIPS, OPTION_DATA } from "./_util";
+import {
+  MARKER_IMAGES,
+  FILTER_CHIPS,
+  OPTION_DATA,
+  JEJU_BBOX,
+  FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
+  FILTER_OPTION_ID_TO_API_PARAM,
+} from "./_util";
 import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
 import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { MARKER_DATA } from "@/utils/dummy_data";
+import { usePlaceMap } from "@/hooks/api/usePlaces";
+import { GetPlaceMapReq, PlaceItem } from "@/types/place";
 
 /** type (related KAKAO) */
-type Place = (typeof MARKER_DATA.dangle)[0];
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,35 +43,41 @@ export default function MapPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [map, setMap] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState<
     Record<string, string[]>
   >({});
+  const [apiParams, setApiParams] = useState<GetPlaceMapReq>({
+    bbox: JEJU_BBOX,
+  });
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markersRef = useRef<any[]>([]);
 
   /** variables */
+  const { data: placeData, isLoading } = usePlaceMap(apiParams);
+  const places = placeData?.items || [];
+
   const isAnyFilterSelected = Object.values(selectedFilters).some(
     (arr) => arr.length > 0
   );
 
   /** map load handler */
-  const loadMarkers = (filter: string) => {
-    if (!map || !window.kakao) return;
+  const loadMarkers = (data: PlaceItem[]) => {
+    if (!map || !window.kakao || !Array.isArray(data)) return;
 
     markersRef.current.forEach((marker) => marker.setMap(null));
     markersRef.current = [];
 
-    const data = MARKER_DATA[filter as keyof typeof MARKER_DATA] || [];
-    const imageUrl = MARKER_IMAGES[filter as keyof typeof MARKER_IMAGES];
-    const bounds = new window.kakao.maps.LatLngBounds();
-
-    if (!imageUrl) return;
+    if (data.length === 0) return;
 
     data.forEach((item) => {
+      const imageUrl =
+        MARKER_IMAGES[item.contentType.id.toString()] || MARKER_IMAGES.dangle;
+      if (!imageUrl) return;
+
       const markerPosition = new window.kakao.maps.LatLng(item.lat, item.lng);
       const markerImage = new window.kakao.maps.MarkerImage(
         imageUrl,
@@ -82,19 +95,14 @@ export default function MapPage() {
 
       marker.setMap(map);
       markersRef.current.push(marker);
-
-      const content = `<div style="font-size:11px; font-weight:bold; color:#00A63E; white-space:nowrap; text-align:center; text-shadow: 1px 0 #fff, -1px 0 #fff, 0 1px #fff, 0 -1px #fff;">${item.name}</div>`;
-      new window.kakao.maps.CustomOverlay({
-        position: markerPosition,
-        content: content,
-      }).setMap(map);
-
-      bounds.extend(markerPosition);
     });
 
-    if (data.length > 0) {
-      map.setBounds(bounds);
-    }
+    const firstItemPosition = new window.kakao.maps.LatLng(
+      data[0].lat,
+      data[0].lng
+    );
+    map.setCenter(firstItemPosition);
+    map.setLevel(8);
   };
 
   /** filter handler */
@@ -106,11 +114,12 @@ export default function MapPage() {
       )?.multiSelect;
 
       if (multiSelect) {
-        if (existing.includes(id)) {
-          return { ...prev, [group]: existing.filter((item) => item !== id) };
-        } else {
-          return { ...prev, [group]: [...existing, id] };
-        }
+        return {
+          ...prev,
+          [group]: existing.includes(id)
+            ? existing.filter((item) => item !== id)
+            : [...existing, id],
+        };
       } else {
         return { ...prev, [group]: existing.includes(id) ? [] : [id] };
       }
@@ -122,6 +131,26 @@ export default function MapPage() {
   };
 
   const handleApplyFilters = () => {
+    setApiParams((prev) => {
+      const newParams: GetPlaceMapReq = { bbox: JEJU_BBOX };
+      const contentTypeId = FILTER_CHIP_ID_TO_CONTENT_TYPE_ID[activeFilter];
+      if (contentTypeId) {
+        newParams.contentTypeId = contentTypeId;
+      }
+      for (const group in selectedFilters) {
+        if (selectedFilters[group].length > 0) {
+          const paramKey = group as keyof typeof FILTER_OPTION_ID_TO_API_PARAM;
+          const paramValues = selectedFilters[group].map(
+            (id) =>
+              FILTER_OPTION_ID_TO_API_PARAM[paramKey][
+                id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
+              ]
+          );
+          (newParams as any)[paramKey] = paramValues;
+        }
+      }
+      return newParams;
+    });
     setIsBottomSheetOpen(false);
   };
 
@@ -153,8 +182,8 @@ export default function MapPage() {
       window.kakao.maps.load(() => {
         if (mapContainerRef.current) {
           const options = {
-            center: new window.kakao.maps.LatLng(33.5359, 126.8365),
-            level: 3,
+            center: new window.kakao.maps.LatLng(33.36, 126.57),
+            level: 8,
           };
           const newMap = new window.kakao.maps.Map(
             mapContainerRef.current,
@@ -166,32 +195,42 @@ export default function MapPage() {
           });
 
           setMap(newMap);
-
-          const swLatLng = new window.kakao.maps.LatLng(33.1, 126.1);
-          const neLatLng = new window.kakao.maps.LatLng(33.6, 126.9);
-          const bounds = new window.kakao.maps.LatLngBounds(swLatLng, neLatLng);
-          newMap.setBounds(bounds);
-
-          loadMarkers(activeFilter);
         }
       });
+    };
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
     };
   }, []);
 
   useEffect(() => {
-    if (map) {
-      loadMarkers(activeFilter);
+    setApiParams((prev) => {
+      const newParams = { ...prev };
+      const contentTypeId = FILTER_CHIP_ID_TO_CONTENT_TYPE_ID[activeFilter];
+      if (contentTypeId) {
+        newParams.contentTypeId = contentTypeId;
+      } else {
+        delete newParams.contentTypeId;
+      }
+      return newParams;
+    });
+  }, [activeFilter]);
+
+  useEffect(() => {
+    if (map && places) {
+      loadMarkers(places);
     }
-  }, [activeFilter, map]);
+  }, [places, map]);
 
   return (
     <div className={s.page}>
       {/* top */}
       <div className={s.topContainer}>
         <SearchHeader
-          searchFieldProps={{
-            placeholder: "제주 지역 또는 장소명 검색",
-          }}
+          onClick={() => router.push("/search")}
+          searchFieldProps={{ placeholder: "제주 지역 또는 장소명 검색" }}
         />
         <div className={s.filterWrapper}>
           <div className={s.filterChipsContainer}>
@@ -219,14 +258,14 @@ export default function MapPage() {
       {selectedPlace && (
         <div className={s.placeCardContainer}>
           <DanglePlace
-            thumbnailUrl={selectedPlace.thumbnailUrl}
-            locationCategory={selectedPlace.locationCategory}
-            name={selectedPlace.name}
-            distance={selectedPlace.distance}
-            playCount={selectedPlace.playCount}
-            bookmarkCount={selectedPlace.bookmarkCount}
-            tags={selectedPlace.tags}
-            onClick={() => router.push(`/detail/${selectedPlace.id}`)}
+            thumbnailUrl={selectedPlace.thumbnail}
+            locationCategory={selectedPlace.metaLine}
+            name={selectedPlace.title}
+            distance={selectedPlace.distanceText}
+            playCount={0}
+            bookmarkCount={selectedPlace.scrapCount}
+            tags={selectedPlace.chips}
+            onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
           />
         </div>
       )}
@@ -237,12 +276,10 @@ export default function MapPage() {
           onGpsClick={handleGpsClick}
           chipMapListProps={{
             text: "장소 목록",
-            cnt: 7,
+            cnt: placeData?.total || 0,
             onLocationListClick: handleLocationListClick,
           }}
-          fabProps={{
-            onClick: handleDangleRecommendClick,
-          }}
+          fabProps={{ onClick: handleDangleRecommendClick }}
         />
       </div>
 
@@ -252,7 +289,7 @@ export default function MapPage() {
       {/* bottomSheet */}
       <BottomSheet
         open={isBottomSheetOpen}
-        onOpenChange={(isOpen) => setIsBottomSheetOpen(isOpen)}
+        onOpenChange={setIsBottomSheetOpen}
         title="필터"
       >
         <div className={s.bottomSheetContent}>

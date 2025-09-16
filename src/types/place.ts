@@ -19,6 +19,9 @@ export interface ContentType {
  * @property thumbnail - 썸네일 이미지 URL (없을 경우 null)
  * @property isScrapped - 사용자가 해당 장소를 스크랩했는지 여부
  * @property scrapCount - 해당 장소의 총 스크랩 수
+ * @property metaLine - 위치/카테고리 정보 (e.g., "서귀포시 남원읍 · 숙소")
+ * @property chips - 태그 배열 (e.g., ["마당"])
+ * @property distanceText - 거리 텍스트 (e.g., "4.9km", 없을 경우 null)
  */
 export interface PlaceItem {
   contentId: number;
@@ -29,6 +32,9 @@ export interface PlaceItem {
   thumbnail: string | null;
   isScrapped: boolean;
   scrapCount: number;
+  metaLine: string;
+  chips?: string[];
+  distanceText: string | null;
 }
 
 /******** 장소 목록 조회 - 리스트 ********/
@@ -114,10 +120,14 @@ export interface GetPlaceMapReq {
 
 /**
  * 장소 목록 조회 - 지도 Response
- * @description GET /places/map 요청의 성공 응답 타입 (PlaceItem 배열을 직접 반환)
+ * @description GET /places/map 요청의 성공 응답 타입
+ * @property total - 전체 장소 개수
  * @property items - 장소 아이템 배열
  */
-export type GetPlaceMapRes = PlaceItem[];
+export interface GetPlaceMapRes {
+  total: number;
+  items: PlaceItem[];
+}
 
 /******** 장소 검색 ********/
 
@@ -210,13 +220,27 @@ export interface GetPlaceFullDetailReq {
   userLng?: number;
 }
 
+export interface ImageItem {
+  origin: string;
+  thumb: string;
+}
+
+export interface PetPolicy {
+  acmpyTypeCd: string;
+  notes: string[];
+}
+
+export interface Chips {
+  conditions: string;
+}
+
 /**
  * 장소 상세 정보 전체 조회 Response
  * @description GET /places/{contentId}/full 요청의 성공 응답 타입
  * @property title - 장소의 제목
  * @property address - 장소의 주소
  * @property tel - 장소의 전화번호
- * @property hours - 장소의 운영 시간
+ * @property openHours - 장소의 운영 시간
  * @property homepage - 장소의 홈페이지 URL
  * @property thumbnail - 썸네일 이미지 URL (없을 경우 null)
  * @property overview - 장소에 대한 개요 설명
@@ -230,13 +254,13 @@ export interface GetPlaceFullDetailRes {
   title: string;
   address: string;
   tel: string;
-  hours: string;
+  openHours: string;
   homepage: string;
   thumbnail: string | null;
   overview: string;
-  conditions: string[];
-  petPolicy: string;
-  notes: string;
+  images: ImageItem[];
+  chips: Chips;
+  petPolicy: PetPolicy;
   isScrapped: boolean;
   scrapCount: number;
 }
