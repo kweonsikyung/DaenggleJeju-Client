@@ -51,12 +51,18 @@ export function usePlaceMap(params: GetPlaceMapReq) {
  * @hook usePlaceSearch
  * @description 장소를 검색하는 SWR 훅
  */
-export function usePlaceSearch(params: GetPlaceSearchReq) {
-  const key = params.q ? ["/places/search", JSON.stringify(params)] : null;
+export function usePlaceSearch(params?: GetPlaceSearchReq | null) {
+  const key = params?.q ? ["/places/search", JSON.stringify(params)] : null;
+
+  const fetcher = params
+    ? () => getPlaceSearch(params as GetPlaceSearchReq)
+    : null;
+
   const { data, error, isLoading, mutate } = useSWR<
     GetPlaceSearchRes,
     ApiError
-  >(key, () => getPlaceSearch(params));
+  >(key, fetcher);
+
   return { data, error, isLoading, mutate };
 }
 
@@ -80,9 +86,8 @@ export function usePlaceDetail(params: GetPlaceDetailReq) {
  * @description 장소 상세 정보 전체를 조회하는 SWR 훅
  */
 export function usePlaceFullDetail(params: GetPlaceFullDetailReq) {
-  const key = params.contentId
-    ? ["/places", params.contentId, "full", JSON.stringify(params)]
-    : null;
+  const key = params.contentId ? `/places/${params.contentId}/full` : null;
+
   const { data, error, isLoading, mutate } = useSWR<
     GetPlaceFullDetailRes,
     ApiError
