@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as s from "./style.css";
 
@@ -30,7 +30,7 @@ import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 /**
  * 검색 페이지
  */
-export default function SearchPage() {
+function SearchPageContent() {
   /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -262,10 +262,12 @@ export default function SearchPage() {
                                 : item.contentType?.name ?? ""
                             }
                             name={item.title}
-                            distance={stripKm((item as any).distanceText)}
+                            distance={item.distanceText}
                             playCount={0}
                             bookmarkCount={item.scrapCount ?? 0}
-                            tags={normalizeChips((item as any).chips)}
+                            tags={normalizeChips(
+                              (item as unknown as { chips: unknown }).chips
+                            )}
                             onClick={() =>
                               router.push(`/detail/${item.contentId}`)
                             }
@@ -282,5 +284,32 @@ export default function SearchPage() {
       </div>
       <NavBar activePage="near" />
     </div>
+  );
+}
+
+/**
+ * 검색 페이지
+ */
+export default function SearchPage() {
+  const FallbackUI = (
+    <div className={s.page}>
+      <SearchHeader
+        backIconHandler={() => {}}
+        searchFieldProps={{
+          placeholder: "제주 지역 또는 장소명 검색",
+          disabled: true,
+        }}
+      />
+      <div className={s.container}>
+        <EmptyState title="불러오는 중" description="잠시만 기다려 주세요." />
+      </div>
+      <NavBar activePage="near" />
+    </div>
+  );
+
+  return (
+    <Suspense fallback={FallbackUI}>
+      <SearchPageContent />
+    </Suspense>
   );
 }

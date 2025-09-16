@@ -95,7 +95,8 @@ export default function ListClientPage() {
               id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
             ]
         );
-        (newApiParams as any)[paramKey] = paramValues;
+        (newApiParams as unknown as Record<string, unknown>)[paramKey] =
+          paramValues;
       }
     }
     setApiParams(newApiParams);

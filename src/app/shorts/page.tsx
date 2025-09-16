@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -35,6 +35,8 @@ declare global {
     YT?: { Player: new (el: string, opts: YT.PlayerOptions) => YT.Player };
   }
 }
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
 namespace YT {
   export interface Player {
     playVideo: () => void;
@@ -63,7 +65,7 @@ namespace YT {
 /**
  * 영상 재생 래퍼 및 재생 페이지
  */
-export default function ShortsPage() {
+function ShortsPageContent() {
   /** router */
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -225,6 +227,7 @@ export default function ShortsPage() {
             description="잠시 후 다시 시도해주세요"
           />
         </div>
+        <NavBar activePage="dangle" />
       </div>
     );
   }
@@ -517,5 +520,23 @@ export default function ShortsPage() {
       {renderContent()}
       <NavBar activePage="dangle" />
     </div>
+  );
+}
+
+/**
+ * 영상 재상
+ */
+export default function ShortsPage() {
+  const FallbackUI = (
+    <div className={s.page}>
+      <EmptyState title="로딩 중" description="잠시만 기다려 주세요." />
+      <NavBar activePage="dangle" />
+    </div>
+  );
+
+  return (
+    <Suspense fallback={FallbackUI}>
+      <ShortsPageContent />
+    </Suspense>
   );
 }

@@ -33,7 +33,7 @@ export const AI: Story = {
 };
 
 export const Search: Story = {
-  args: { activePage: "search" },
+  args: { activePage: "jeju" },
 };
 
 export const My: Story = {

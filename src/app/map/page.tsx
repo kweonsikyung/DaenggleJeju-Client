@@ -146,7 +146,8 @@ export default function MapPage() {
                 id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
               ]
           );
-          (newParams as any)[paramKey] = paramValues;
+          (newParams as unknown as Record<string, unknown>)[paramKey] =
+            paramValues;
         }
       }
       return newParams;

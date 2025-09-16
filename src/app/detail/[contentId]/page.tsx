@@ -24,30 +24,12 @@ import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { REVIEW_DATA } from "@/utils/dummy_data";
 
 /**
- * 장소 상세 페이지
+ * 장소 상세 페이지 (내부 로직)
+ * contentId가 유효할 때만 렌더링
  */
-export default function DetailPage() {
+function PlaceDetailClient({ contentId }: { contentId: number }) {
   /** router */
   const router = useRouter();
-  const params = useParams();
-  const contentId = params.contentId
-    ? parseInt(params.contentId as string)
-    : null;
-
-  if (contentId === null) {
-    return (
-      <div className={s.page}>
-        <TopBar backIconHandler={() => router.back()} />
-        <div className={s.container}>
-          <EmptyState
-            title="페이지 준비 중"
-            description="정보를 불러오고 있습니다"
-          />
-        </div>
-        <NavBar activePage="near" />
-      </div>
-    );
-  }
 
   /** state */
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -316,4 +298,33 @@ export default function DetailPage() {
       <NavBar activePage="near" />
     </div>
   );
+}
+
+/**
+ * 장소 상세 페이지
+ */
+export default function DetailPage() {
+  /** router */
+  const router = useRouter();
+  const params = useParams();
+  const contentId = params.contentId
+    ? parseInt(params.contentId as string)
+    : null;
+
+  if (contentId === null) {
+    return (
+      <div className={s.page}>
+        <TopBar backIconHandler={() => router.back()} />
+        <div className={s.container}>
+          <EmptyState
+            title="페이지 준비 중"
+            description="정보를 불러오고 있습니다"
+          />
+        </div>
+        <NavBar activePage="near" />
+      </div>
+    );
+  }
+
+  return <PlaceDetailClient contentId={contentId} />;
 }

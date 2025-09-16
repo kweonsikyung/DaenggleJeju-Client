@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import TopBar from "@/ui/atoms/TopBar/TopBar";
@@ -15,7 +15,8 @@ import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
  * 제주 이동 방법 메인 & 상세 페이지
  * * style/ page = topbar + container + nav(jeju)
  */
-export default function JejuPage() {
+// 2. 기존 컴포넌트의 이름을 JejuPageContent로 변경합니다.
+function JejuPageContent() {
   /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -137,5 +138,31 @@ export default function JejuPage() {
       {type ? renderDetailPage(type) : renderMainPage()}
       <NavBar activePage="jeju" />
     </div>
+  );
+}
+
+/**
+ * 제주 이동 방법 메인 & 상세 페이지
+ */
+export default function JejuPage() {
+  const FallbackUI = (
+    <div className={s.page}>
+      <TopBar transparent backIconHandler={() => {}} />
+      <div className={s.container}>
+        <Image src={"/assets/jeju.png"} width={274} height={190} alt="제주" />
+        <div className={s.title}>
+          반려견 동반 제주 이동 방법
+          <br />
+          쉽게 안내해 드릴게요
+        </div>
+      </div>
+      <NavBar activePage="jeju" />
+    </div>
+  );
+
+  return (
+    <Suspense fallback={FallbackUI}>
+      <JejuPageContent />
+    </Suspense>
   );
 }

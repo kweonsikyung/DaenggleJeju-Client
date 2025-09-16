@@ -137,10 +137,12 @@ export async function getDaengglePlaceRecommendations(
  * @param params - 객체 형태의 파라미터
  * @returns
  */
-function createBaseSearchParams(params: any) {
+function createBaseSearchParams<T extends object>(params: T): URLSearchParams {
   const searchParams = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
-    searchParams.append(key, String(value));
+    if (value !== null && value !== undefined) {
+      searchParams.append(key, String(value));
+    }
   });
   return searchParams;
 }
