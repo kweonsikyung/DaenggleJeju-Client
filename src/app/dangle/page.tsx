@@ -1,23 +1,31 @@
 "use client";
 
 import React from "react";
+import * as s from "./style.css";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+//components
 import TopBar from "@/ui/atoms/TopBar/TopBar";
 import Header from "@/ui/atoms/Header/Header";
-import * as s from "./style.css";
-import {
-  BANNER_DATA,
-  PLAY_DATA,
-  JEJU_DATA,
-  TOP10_DATA,
-} from "@/utils/dummy_data";
-import Carousel from "@/ui/molecules/Carousel/Carousel";
+import NavBar from "@/ui/atoms/NavBar/NavBar";
 import { DangleItem } from "@/ui/atoms/Dangle/DangleItem/DangleItem";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { DangleCard } from "@/ui/atoms/Dangle/DangleCard/DangleCard";
+import Carousel from "@/ui/molecules/Carousel/Carousel";
 import Grid from "@/ui/molecules/Grid/Grid";
-import Image from "next/image";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import { useRouter } from "next/navigation";
+import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+
+//hooks
+import {
+  useDaenggleAccommodations,
+  useDaenggleTrending,
+} from "@/hooks/api/useDaenggle";
+import { useVisitedRegions } from "@/hooks/useVisitedRegions";
+
+//utils
+import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
+import { JEJU_DATA } from "@/utils/dummy_data";
 
 /**
  * 댕글추천 페이지
@@ -27,11 +35,38 @@ export default function Page() {
   /** router */
   const router = useRouter();
 
+  /** hooks */
+  const { visitedRegions, markAsVisited } = useVisitedRegions();
+
+  /** api handler */
+  const {
+    daenggleAccommodationsData,
+    isLoading: isAccomLoading,
+    error: accomError,
+  } = useDaenggleAccommodations({
+    sort: "rank",
+    limit: 10,
+    offset: 0,
+  });
+
+  const {
+    daenggleTrendingData,
+    isLoading: isTrendingLoading,
+    error: trendingError,
+  } = useDaenggleTrending({
+    sort: "views",
+    days: 90,
+    limit: 10,
+    offset: 0,
+  });
+
   return (
     <div className={s.page}>
       {/* Topbar */}
       <TopBar
-        backIconHandler={() => {}}
+        backIconHandler={() => {
+          router.back();
+        }}
         isShowLogo
         rightIcons={[
           {
@@ -53,15 +88,24 @@ export default function Page() {
         {/* 최근 많이 찾는 인기 지역 */}
         <Header title="최근 많이 찾는 인기 지역" />
         <Carousel gap={16} itemWidth={84} paddingHoriz={16}>
-          {JEJU_DATA.map((item, index) => (
-            <DangleItem
-              key={index}
-              state={"before"}
-              imageUrl={item.img}
-              text={item.title}
-              onClick={() => {}}
-            />
-          ))}
+          {JEJU_DATA.map((item, index) => {
+            const contextId = regionContextMap[item.title];
+            const isVisited = contextId ? visitedRegions.has(contextId) : false;
+            return (
+              <DangleItem
+                key={index}
+                state={isVisited ? "after" : "before"}
+                imageUrl={item.img}
+                text={item.title}
+                onClick={() => {
+                  if (contextId) {
+                    markAsVisited(contextId);
+                    router.push(`/shorts?contextId=${contextId}`);
+                  }
+                }}
+              />
+            );
+          })}
         </Carousel>
 
         {/* 진짜 견주가 다녀온 제주 여행! */}
@@ -71,13 +115,18 @@ export default function Page() {
           marginTop={40}
         />
         <Carousel gap={16} itemWidth={280} paddingHoriz={16}>
-          {BANNER_DATA.map((item, index) => (
+          {conceptBanners.map((banner, index) => (
             <DangleCard
-              key={index}
-              imageUrl={item.img}
-              views={item.view}
-              title={item.title}
-              hashtag={item.tag}
+              key={banner.conceptKey}
+              imageUrl={banner.dummy.img}
+              views={banner.dummy.view}
+              title={banner.dummy.title}
+              hashtag={banner.dummy.tag}
+              onClick={() => {
+                router.push(
+                  `/shorts?conceptKey=${banner.conceptKey}&startIndex=0`
+                );
+              }}
             />
           ))}
         </Carousel>
@@ -86,38 +135,80 @@ export default function Page() {
         <Header
           title="짖어도 OK! 소음 안심 독채 숙소"
           marginTop={40}
-          onArrowClick={() => {}}
+          onArrowClick={() => {
+            router.push("/shorts?listType=accommodations&startIndex=0");
+          }}
         />
-        <Carousel gap={16} itemWidth={150} paddingHoriz={16}>
-          {PLAY_DATA.map((item, index) => (
-            <DanglePlay
-              key={index}
-              type="small"
-              imageUrl={item.img}
-              profileImageUrl={item.img}
-              name={item.author}
+
+        {isAccomLoading && (
+          <div style={{ padding: "0 16px" }}>
+            <EmptyState
+              title="숙소 로딩 실패"
+              description="다시 시도해주세요."
             />
-          ))}
-        </Carousel>
+          </div>
+        )}
+        {accomError && (
+          <div style={{ padding: "0 16px" }}>
+            <EmptyState title="숙소 에러" description="다시 시도해주세요." />
+          </div>
+        )}
+        {daenggleAccommodationsData && (
+          <Carousel gap={16} itemWidth={150} paddingHoriz={16}>
+            {daenggleAccommodationsData.items.map((item, index) => (
+              <DanglePlay
+                key={item.video_id}
+                type="small"
+                imageUrl={getThumbnailUrl(item.video_id)}
+                profileImageUrl="/assets/dangle/dog.png"
+                name={item.authorName}
+                onClick={() => {
+                  router.push(
+                    `/shorts?listType=accommodations&startIndex=${index}`
+                  );
+                }}
+              />
+            ))}
+          </Carousel>
+        )}
 
         {/* 조회수 높은 댕글 TOP 10 */}
         <Header title="조회수 높은 댕글 TOP 10" marginTop={40} />
-        <Grid className={s.pd}>
-          {TOP10_DATA.map((item, index) => (
-            <DanglePlay
-              key={index}
-              type="medium"
-              imageUrl={item.imageUrl}
-              profileImageUrl={item.profileImageUrl}
-              name={item.name}
-              location={item.location}
-              title={item.title}
-              views={item.views}
-              comments={item.comments}
-              timeAgo={item.timeAgo}
+        {isTrendingLoading && (
+          <div style={{ padding: "0 16px" }}>
+            <EmptyState
+              title="트랜딩 로딩 실패"
+              description="다시 시도해주세요."
             />
-          ))}
-        </Grid>
+          </div>
+        )}
+        {trendingError && (
+          <div style={{ padding: "0 16px" }}>
+            <EmptyState title="트랜딩 에러" description="다시 시도해주세요." />
+          </div>
+        )}
+        {daenggleTrendingData && (
+          <Grid className={s.pd}>
+            {daenggleTrendingData.items.map((item, index) => (
+              <DanglePlay
+                key={item.video_id}
+                type="medium"
+                imageUrl={getThumbnailUrl(item.video_id)}
+                profileImageUrl={"/assets/dangle/dog.png"}
+                name={item.authorName}
+                location={item.placePill || "제주 어딘가"}
+                title={item.title}
+                views={item.loveCount || 0}
+                comments={item.scrapCount || 0}
+                timeAgo={item.published_at}
+                tags={item.tags}
+                onClick={() => {
+                  router.push(`/shorts?listType=trending&startIndex=${index}`);
+                }}
+              />
+            ))}
+          </Grid>
+        )}
       </div>
 
       {/* Nav */}
