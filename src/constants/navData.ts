@@ -11,7 +11,7 @@ export const NAV_ITEMS = [
     text: "댕글영상",
     iconFill: "/assets/nav/video_active.svg",
     iconLine: "/assets/nav/video.svg",
-    path: "/shorts",
+    path: "/shorts?contextId=PLACE_jeju_si",
   },
   {
     id: "ai",
