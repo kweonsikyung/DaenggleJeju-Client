@@ -15,6 +15,13 @@ const meta: Meta<typeof RadioGroup> = {
     selectedValue: { control: "text" },
     onSelect: { action: "selected" },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "375px" }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
