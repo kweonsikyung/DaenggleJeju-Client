@@ -8,7 +8,7 @@ export interface DangleCardProps {
   /** 배경 이미지 URL */
   imageUrl: string;
   /** 좋아요(조회수) 수 */
-  views: number;
+  views?: number;
   /** 카드 제목 */
   title: string;
   /** 해시태그 텍스트 */
@@ -19,7 +19,7 @@ export interface DangleCardProps {
 
 export function DangleCard({
   imageUrl,
-  views,
+  views = 0,
   title,
   hashtag,
   onClick,
@@ -35,15 +35,17 @@ export function DangleCard({
           className={s.image}
         />
         <div className={s.overlay}>
-          <div className={s.views}>
-            <Image
-              src="/assets/icon24/eye-outlined-white.svg"
-              alt="조회수"
-              width={24}
-              height={24}
-            />
-            <span>{views.toLocaleString()}</span>
-          </div>
+          {views > 0 && (
+            <div className={s.views}>
+              <Image
+                src="/assets/icon24/eye-outlined-white.svg"
+                alt="조회수"
+                width={24}
+                height={24}
+              />
+              <span>{views.toLocaleString()}</span>
+            </div>
+          )}
           <div className={s.bottom}>
             <h3 className={s.title}>{title}</h3>
             <span className={s.hashtag}>{hashtag}</span>

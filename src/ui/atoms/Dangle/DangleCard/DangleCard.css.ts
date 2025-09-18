@@ -29,7 +29,7 @@ export const overlay = style({
   left: 0,
   width: "100%",
   height: "100%",
-  display: "flex",
+  display: "flex-end",
   flexDirection: "column",
   justifyContent: "space-between",
   padding: "27px 24px",

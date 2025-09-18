@@ -68,37 +68,37 @@ export const JEJU_DATA = [
 
 export const BANNER_DATA = [
   {
-    view: 2549,
+    view: 0,
     img: "/assets/dangle/banner/banner1.jpg",
     title: "강아지가 좋아하는\n제주 서쪽 여행 코스",
     tag: "#동반입수바다",
   },
   {
-    view: 1229,
+    view: 0,
     img: "/assets/dangle/banner/banner2.jpg",
     title: "강아지와 함께 떠나는\n키워드 위주 액티비티",
     tag: "#댕댕이와여행",
   },
   {
-    view: 456,
+    view: 0,
     img: "/assets/dangle/banner/banner3.jpg",
     title: "맘껏 뛰어놀자! 대형견,\n소형견 전용 놀이터",
     tag: "#강아지전용놀이터",
   },
   {
-    view: 124,
+    view: 0,
     img: "/assets/dangle/banner/banner4.jpg",
     title: "창밖으로 스치는 해변,\n애월 해안 도로 드라이브",
     tag: "#댕댕이랑해안도로",
   },
   {
-    view: 2129,
+    view: 0,
     img: "/assets/dangle/banner/banner5.jpg",
     title: "제주 오름 산책,\n너와 함께라서 더 특별해",
     tag: "#강아지제주오름",
   },
   {
-    view: 219,
+    view: 0,
     img: "/assets/dangle/banner/banner6.jpg",
     title: "협재의 노을 아래,\n강아지와 함께 걷는 바다",
     tag: "#댕댕이와산책",
