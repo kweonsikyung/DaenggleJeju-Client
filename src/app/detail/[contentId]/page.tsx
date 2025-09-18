@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import * as s from "./style.css";
@@ -60,6 +60,25 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };
+
+  const processedNotes = useMemo(() => {
+    const defaultNotes = [
+      "외출 시 목줄 2m 이내, 공용 공간은 안거나 짧게",
+      "동반 조건은 달라질 수 있어, 방문 전 장소에 문의",
+    ];
+
+    if (!data?.petPolicy?.notes || data.petPolicy.notes.length === 0) {
+      return defaultNotes;
+    }
+
+    const additionalNotes = data.petPolicy.notes
+      .flatMap((note) => note.split(/↵|\n/))
+      .flatMap((line) => (line.includes("-") ? line.split("-") : [line]))
+      .map((item) => item.trim())
+      .filter((item) => item);
+
+    return [...defaultNotes, ...additionalNotes];
+  }, [data?.petPolicy?.notes]);
 
   /** lifecycle */
   useEffect(() => {
@@ -224,7 +243,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   {data.petPolicy?.acmpyTypeCd || "반려동물 동반 정책"}
                 </h4>
                 <ul className={s.attentionList}>
-                  {data.petPolicy?.notes?.map((note, index) => (
+                  {processedNotes.map((note, index) => (
                     <li key={index}>{note}</li>
                   ))}
                 </ul>
