@@ -173,8 +173,12 @@ export default function Page() {
           </Carousel>
         )}
 
-        {/* 조회수 높은 댕글 TOP 10 */}
-        <Header title="조회수 높은 댕글 TOP 10" marginTop={40} />
+        {/* 요즘 뜨는 댕글 TOP 10 */}
+        <Header
+          title="요즘 뜨는 댕글 TOP 10"
+          onReClick={() => {}}
+          marginTop={40}
+        />
         {isTrendingLoading && (
           <div style={{ padding: "0 16px" }}>
             <EmptyState
