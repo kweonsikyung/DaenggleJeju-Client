@@ -5,7 +5,7 @@ import { COLORS } from "@/styles/colors.css";
 /* --- Layout --- */
 export const page = style({
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   overflow: "hidden",
   display: "flex",
   flexDirection: "column",

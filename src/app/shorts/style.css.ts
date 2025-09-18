@@ -3,14 +3,14 @@ import { style, globalStyle } from "@vanilla-extract/css";
 
 export const page = style({
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   display: "flex",
   flexDirection: "column",
 });
 
 export const container = style({
   width: "100%",
-  height: "calc(100vh - 56px)",
+  height: "calc(100dvh - 56px)",
   backgroundColor: "#000",
   position: "relative",
   overflow: "hidden",

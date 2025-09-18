@@ -4,7 +4,7 @@ import { COLORS } from "@/styles/colors.css";
 
 export const page = style({
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   display: "flex",
   flexDirection: "column",
 });

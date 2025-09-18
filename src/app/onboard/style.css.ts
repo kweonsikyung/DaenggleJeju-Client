@@ -4,8 +4,8 @@ import { TYPO } from "@/styles/typography.css";
 
 /* 화면 */
 export const page = style({
-  minHeight: "100vh",
-  maxHeight: "100vh",
+  minHeight: "100dvh",
+  maxHeight: "100dvh",
   background: COLORS.LIME50,
   overflow: "hidden",
 });
@@ -31,7 +31,7 @@ export const skip = style({
 export const viewport = style({
   overflow: "hidden",
   width: "100%",
-  height: "calc(100vh - 66px)",
+  height: "calc(100dvh - 66px)",
 });
 
 export const container = style({

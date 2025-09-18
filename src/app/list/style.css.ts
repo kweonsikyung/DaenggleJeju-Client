@@ -4,7 +4,7 @@ import { TYPO } from "@/styles/typography.css";
 /** layout */
 export const page = style({
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   display: "flex",
   flexDirection: "column",
 });
@@ -65,7 +65,7 @@ export const bottomSheetFooter = style({
 /** loading */
 export const loadingContainer = style({
   width: "100%",
-  height: "100vh",
+  height: "100dvh",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",

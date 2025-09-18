@@ -1,8 +1,8 @@
 import { style } from "@vanilla-extract/css";
 
 export const page = style({
-  minHeight: "100vh",
-  maxHeight: "100vh",
+  minHeight: "100dvh",
+  maxHeight: "100dvh",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

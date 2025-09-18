@@ -4,8 +4,8 @@ import { TYPO } from "@/styles/typography.css";
 
 /* --- page = topbar + container(title+content) + footer --- */
 export const page = style({
-  minHeight: "100vh",
-  maxHeight: "100vh",
+  minHeight: "100dvh",
+  maxHeight: "100dvh",
   overflow: "hidden",
   display: "flex",
   flexDirection: "column",
