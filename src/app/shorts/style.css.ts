@@ -133,11 +133,11 @@ export const bottom = style({
   position: "absolute",
   left: "16px",
   right: "16px",
-  bottom: "80px",
+  bottom: "0px",
   zIndex: 3,
   "@media": {
     "(min-height: 670px)": {
-      bottom: "50px",
+      bottom: "20px",
     },
   },
 });

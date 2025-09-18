@@ -6,8 +6,6 @@ export const bottomInfo = style({
   display: "flex",
   gap: "8px",
   padding: "24px 18px",
-  height: "200px",
-  overflow: "hidden",
 });
 
 export const userInfo = style({
@@ -47,12 +45,18 @@ export const location = style({
 
 export const description = style({
   ...TYPO.BODY2M,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  display: "-webkit-box",
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: "vertical",
 });
 
 export const tags = style({
   display: "flex",
   flexWrap: "wrap",
   gap: "4px",
+  maxHeight: "70px",
 });
 
 export const tag = style({
