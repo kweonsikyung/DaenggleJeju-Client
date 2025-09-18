@@ -1,21 +1,19 @@
 import { style } from "@vanilla-extract/css";
 import { TYPO } from "@/styles/typography.css";
+import { COLORS } from "@/styles/colors.css";
 
 export const root = style({
+  display: "flex",
+  flexDirection: "column",
   width: "100%",
   padding: "16px 18px",
 });
 
-export const titleButton = style({
+export const titleWrapper = style({
   display: "flex",
-  alignItems: "center",
   justifyContent: "space-between",
+  alignItems: "center",
   width: "100%",
-  background: "none",
-  border: "none",
-  padding: 0,
-  cursor: "pointer",
-  textAlign: "left",
 });
 
 export const title = style({
@@ -30,4 +28,12 @@ export const desc = style({
   color: "#1F2329",
   margin: 0,
   paddingTop: "8px",
+});
+
+export const iconButton = style({
+  background: "none",
+  border: "none",
+  padding: 0,
+  cursor: "pointer",
+  flexShrink: 0,
 });
