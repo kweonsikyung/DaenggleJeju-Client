@@ -105,7 +105,7 @@ export async function getRequest<T>(
     );
     const data = response.data;
 
-    if (data.code === "200") {
+    if (String(data.code).startsWith("2")) {
       return data.result;
     } else {
       throw new ApiError(data.message, response.status, data.code);
@@ -149,7 +149,7 @@ export async function postRequest<T, B = unknown>(
     );
     const data = response.data;
 
-    if (data.code === "200") {
+    if (String(data.code).startsWith("2")) {
       return data.result;
     } else {
       throw new ApiError(data.message, response.status, data.code);

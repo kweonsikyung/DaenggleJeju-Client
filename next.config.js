@@ -3,6 +3,14 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://daengglejeju.site/api/v1/:path*",
+      },
+    ];
+  },
   images: {
     domains: [
       "tong.visitkorea.or.kr",
