@@ -11,6 +11,7 @@ export const container = style({
   flex: 1,
   width: "100%",
   overflowY: "auto",
+  marginBottom: "20px",
 });
 
 export const topBarWithBorder = style({
