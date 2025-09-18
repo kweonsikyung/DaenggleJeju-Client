@@ -10,5 +10,7 @@ import { PostCareReq, PostCareRes } from "@/types/care";
 export async function postCareQuestion(
   payload: PostCareReq
 ): Promise<PostCareRes> {
-  return await postRequest<PostCareRes, PostCareReq>("/care/ask", payload);
+  return await postRequest<PostCareRes, PostCareReq>("/care/ask", payload, {
+    timeout: 30000,
+  });
 }

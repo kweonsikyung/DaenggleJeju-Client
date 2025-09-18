@@ -22,3 +22,9 @@ export const topBarWithBorder = style({
 export const notice_container = style({
   padding: "8px 18px",
 });
+
+export const inputWrapper = style({
+  width: "100%",
+  position: "sticky",
+  bottom: 0,
+});
