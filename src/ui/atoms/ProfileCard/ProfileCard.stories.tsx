@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { ProfileCard } from "./ProfileCard";
 
 const meta: Meta<typeof ProfileCard> = {
-  title: "Components/ProfileCard",
+  title: "Common/ProfileCard",
   component: ProfileCard,
   tags: ["autodocs"],
   parameters: {

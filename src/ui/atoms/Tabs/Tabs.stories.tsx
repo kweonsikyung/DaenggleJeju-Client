@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { Tabs, Tab } from "./Tabs";
 
 const meta: Meta<typeof Tabs> = {
-  title: "Components/Tabs",
+  title: "Common/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   argTypes: {

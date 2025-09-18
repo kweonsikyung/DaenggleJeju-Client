@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { SegmentedControl, SegmentedControlOption } from "./SegmentedControl";
 
 const meta: Meta<typeof SegmentedControl> = {
-  title: "Components/SegmentedControl",
+  title: "Common/SegmentedControl",
   component: SegmentedControl,
   tags: ["autodocs"],
   argTypes: {
