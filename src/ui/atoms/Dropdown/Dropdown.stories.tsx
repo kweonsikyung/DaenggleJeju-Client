@@ -18,7 +18,7 @@ const meta: Meta<typeof Dropdown> = {
           backgroundColor: "#1E1E1E",
         }}
       >
-        <Story />ㄲ
+        <Story />
       </div>
     ),
   ],
