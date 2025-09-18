@@ -22,6 +22,7 @@ import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
 import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
 import { GetPlaceMapReq, PlaceItem } from "@/types/place";
+import { normalizeChips } from "@/utils/normalizeChips";
 
 /** type (related KAKAO) */
 declare global {
@@ -260,13 +261,23 @@ export default function MapPage() {
         <div className={s.placeCardContainer}>
           <DanglePlace
             thumbnailUrl={selectedPlace.thumbnail}
-            locationCategory={selectedPlace.metaLine}
+            locationCategory={
+              selectedPlace.metaLine
+                ? `${selectedPlace.metaLine} · ${
+                    selectedPlace.contentType?.name ?? ""
+                  }`
+                : selectedPlace.contentType?.name ?? ""
+            }
             name={selectedPlace.title}
             distance={selectedPlace.distanceText}
             playCount={0}
             bookmarkCount={selectedPlace.scrapCount}
-            tags={selectedPlace.chips}
+            tags={normalizeChips(
+              (selectedPlace as unknown as { chips: unknown }).chips
+            )}
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
+            onBookmarkClick={() => {}}
+            isBookmarked={selectedPlace.isScrapped}
           />
         </div>
       )}
