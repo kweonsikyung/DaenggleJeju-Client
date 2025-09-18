@@ -76,7 +76,9 @@ export default function Page() {
               status={ButtonStatus.ACTIVE}
               size={ButtonSize.MEDIUM}
               text="발자국 남기기"
-              onClick={() => {}}
+              onClick={() => {
+                router.push("/review");
+              }}
             />
           )}
         </div>
