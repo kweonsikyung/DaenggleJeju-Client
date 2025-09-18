@@ -23,6 +23,9 @@ import { normalizeChipsArray } from "@/utils/normalizeChipsArray";
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { REVIEW_DATA } from "@/utils/dummy_data";
 
+const averageRating = 4.3;
+const roundedRating = Math.round(averageRating);
+
 /**
  * 장소 상세 페이지 (내부 로직)
  * contentId가 유효할 때만 렌더링
@@ -289,20 +292,34 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
         <section className={s.section}>
           <div className={s.sectionHeader}>
-            <h2 className={s.sectionTitle}>방문 인증 후기(3)</h2>
-            <span className={s.sectionActionText} onClick={() => {}}>
-              방문했어요
+            <h2 className={s.sectionTitle}>발자국 인증(3)</h2>
+            <span
+              className={s.sectionActionText}
+              onClick={() => {
+                router.push("/review");
+              }}
+            >
+              발자국 남기기
             </span>
           </div>
           <div className={s.reviewSummary}>
             <div className={s.reviewRating}>
-              <Image
-                alt="star-fill"
-                width={24}
-                height={24}
-                src="/assets/icon24/star-filled-colored.svg"
-              />
-              <span>4.3</span>
+              <div className={s.pawRatingContainer}>
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Image
+                    key={index}
+                    alt={`paw ${index + 1}`}
+                    width={24}
+                    height={24}
+                    src={
+                      index < roundedRating
+                        ? "/assets/icon24/dogfootprint-blue.svg"
+                        : "/assets/icon24/dogfootprint-white.svg"
+                    }
+                  />
+                ))}
+              </div>
+              <span>{averageRating}</span>
             </div>
             <p className={s.reviewCount}>8203개의 평가</p>
           </div>

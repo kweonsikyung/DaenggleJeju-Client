@@ -180,12 +180,20 @@ export const reviewSummary = style({
 });
 
 export const reviewRating = style([
-  TYPO.DISPLAY,
+  TYPO.HEADING1,
   {
     display: "flex",
     alignItems: "center",
     gap: "8px",
+    color: "#4897F3",
   },
 ]);
+
+export const pawRatingContainer = style({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "2px",
+});
 
 export const reviewCount = style([TYPO.BODY3, { color: COLORS.NEUTRAL600 }]);
