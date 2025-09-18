@@ -129,7 +129,7 @@ export default function Page() {
   }, [currentSubTopic]);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    chatEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [isAiThinking, typedResponse, typedFinalAnswer]);
 
   return (
