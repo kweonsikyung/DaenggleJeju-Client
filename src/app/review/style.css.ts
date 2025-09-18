@@ -22,7 +22,7 @@ export const container = style({
 
 export const footer = style({
   width: "100%",
-  height: 100,
+  minHeight: 60,
   padding: "0 20px",
 });
 
@@ -89,4 +89,33 @@ export const formSection = style({
 
 export const textFieldWrapper = style({
   marginTop: "4px",
+});
+
+// Styles for the success screen
+export const successContainer = style({
+  width: "100%",
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+  gap: 4,
+});
+
+export const successTitle = style({
+  ...TYPO.HEADING2,
+});
+
+export const successDescription = style({
+  ...TYPO.LABEL2M,
+  color: COLORS.NEUTRAL600,
+});
+
+export const successFooter = style({
+  display: "flex",
+  gap: "8px",
+  width: "100%",
+  padding: "0 20px",
+  minHeight: 60,
 });

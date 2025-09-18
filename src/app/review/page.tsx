@@ -23,11 +23,6 @@ interface PawRatingProps {
 
 const PawRating = ({ rating, setRating }: PawRatingProps) => {
   const [hoverRating, setHoverRating] = useState(0);
-  const [selectedFilters, setSelectedFilters] = useState<
-    Record<string, string[]>
-  >({});
-
-  const handleFilterSelect = (group: string, id: string) => {};
 
   return (
     <div className={s.pawRatingContainer}>
@@ -38,6 +33,7 @@ const PawRating = ({ rating, setRating }: PawRatingProps) => {
           onClick={() => setRating(index)}
           onMouseEnter={() => setHoverRating(index)}
           onMouseLeave={() => setHoverRating(0)}
+          type="button"
         >
           <Image
             src={
@@ -57,6 +53,7 @@ const PawRating = ({ rating, setRating }: PawRatingProps) => {
 
 export default function LeaveFootprintPage() {
   const router = useRouter();
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [rating, setRating] = useState(0);
   const [entryStatus, setEntryStatus] = useState<string | null>("yes");
   const [welcomeStatus, setWelcomeStatus] = useState<string | null>(null);
@@ -72,79 +69,113 @@ export default function LeaveFootprintPage() {
 
   return (
     <div className={s.page}>
-      <TopBar title="발자국 남기기" backIconHandler={() => router.back()} />
-      <div className={s.container}>
-        {/* Header Section */}
-        <div className={s.headerContainer}>
-          <div>
-            <h2 className={s.headerTitle}>강아지랑 함께하기 어땠나요?</h2>
-            <p className={s.headerDescription}>
-              남겨주신 경험은 다른 견주들에게 큰 도움이 돼요!
+      <TopBar
+        title={isSubmitted ? "" : "발자국 남기기"}
+        backIconHandler={() => (isSubmitted ? router.push("/") : router.back())}
+      />
+      {isSubmitted ? (
+        <>
+          <div className={s.successContainer}>
+            <Image
+              src="/assets/footprint.png"
+              alt="발자국 인증 완료"
+              width={160}
+              height={160}
+            />
+            <h2 className={s.successTitle}>발자국 인증 완료</h2>
+            <p className={s.successDescription}>
+              소중한 기록을 함께 나눠주셔서 고마워요!
             </p>
           </div>
-          <div>
-            <span className={s.placeLocation}>제주시 애월읍 ・ 루트문</span>
-            <h3 className={s.placeName}>한화리조트 제주</h3>
-          </div>
-          <PawRating rating={rating} setRating={setRating} />
-        </div>
-
-        <form className={s.form}>
-          <div className={s.formSection}>
-            <RadioGroup
-              label="출입 가능 여부"
-              options={entryOptions}
-              selectedValue={entryStatus}
-              onSelect={setEntryStatus}
+          <div className={s.successFooter}>
+            <Button
+              text="홈으로 가기"
+              status={ButtonStatus.DEFAULT}
+              size={ButtonSize.LARGE}
+              onClick={() => router.push("/dangle")}
             />
-            {entryStatus === "conditional" && (
-              <div className={s.textFieldWrapper}>
-                <TextField
-                  placeholder="어디까지 함께 들어갈 수 있었나요?"
-                  helperText="최소 5자, 최대 20자"
+            <Button
+              text="작성한 후기 보기"
+              status={ButtonStatus.ACTIVE}
+              size={ButtonSize.LARGE}
+              onClick={() => router.push("/my")}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className={s.container}>
+            {/* Header Section */}
+            <div className={s.headerContainer}>
+              <div>
+                <h2 className={s.headerTitle}>강아지랑 함께하기 어땠나요?</h2>
+                <p className={s.headerDescription}>
+                  남겨주신 경험은 다른 견주들에게 큰 도움이 돼요!
+                </p>
+              </div>
+              <div>
+                <span className={s.placeLocation}>제주시 애월읍 ・ 루트문</span>
+                <h3 className={s.placeName}>한화리조트 제주</h3>
+              </div>
+              <PawRating rating={rating} setRating={setRating} />
+            </div>
+
+            <div className={s.form}>
+              <div className={s.formSection}>
+                <RadioGroup
+                  label="출입 가능 여부"
+                  options={entryOptions}
+                  selectedValue={entryStatus}
+                  onSelect={setEntryStatus}
+                />
+                {entryStatus === "conditional" && (
+                  <div className={s.textFieldWrapper}>
+                    <TextField
+                      placeholder="어디까지 함께 들어갈 수 있었나요?"
+                      helperText="최소 5자, 최대 20자"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className={s.formSection}>
+                <FilterSection
+                  title="출입 조건"
+                  chips={conditionChips}
+                  selectedChips={selectedConditions}
+                  onChipClick={handleChipClick}
+                  multiSelect
                 />
               </div>
-            )}
-          </div>
 
-          <div className={s.formSection}>
-            <FilterSection
-              title="출입 조건"
-              chips={conditionChips}
-              selectedChips={}
-              onChipClick={}
-              multiSelect
+              <div className={s.formSection}>
+                <RadioGroup
+                  label="환영 지수"
+                  options={welcomeOptions}
+                  selectedValue={welcomeStatus}
+                  onSelect={setWelcomeStatus}
+                />
+              </div>
+
+              <div className={s.formSection}>
+                <TextField
+                  placeholder="강아지와 함께한 순간이 궁금해요!"
+                  helperText="최소 5자, 최대 500자"
+                />
+              </div>
+            </div>
+          </div>
+          <div className={s.footer}>
+            <Button
+              text="작성 완료"
+              status={isFormValid ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED}
+              size={ButtonSize.LARGE}
+              onClick={() => setIsSubmitted(true)}
+              disabled={!isFormValid}
             />
           </div>
-
-          <div className={s.formSection}>
-            <RadioGroup
-              label="환영 지수"
-              options={welcomeOptions}
-              selectedValue={welcomeStatus}
-              onSelect={setWelcomeStatus}
-            />
-          </div>
-
-          <div className={s.formSection}>
-            <TextField
-              placeholder="강아지와 함께한 순간이 궁금해요!"
-              helperText="최소 5자, 최대 500자"
-            />
-          </div>
-        </form>
-      </div>
-      <div className={s.footer}>
-        <Button
-          text="작성 완료"
-          status={isFormValid ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED}
-          size={ButtonSize.LARGE}
-          onClick={() => {
-            /* 제출 로직 */
-          }}
-          disabled={!isFormValid}
-        />
-      </div>
+        </>
+      )}
     </div>
   );
 }
