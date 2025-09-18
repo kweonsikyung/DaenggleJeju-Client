@@ -45,6 +45,7 @@ function SearchPageContent() {
   /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const query = searchParams.get("q") || "";
   const filterFromUrl = searchParams.get("filter");
 
@@ -260,14 +261,14 @@ function SearchPageContent() {
                 <div className={s.noHistory}>아직 검색 기록이 없어요.</div>
               )}
             </div>
-            <div className={s.section}>
+            {/* <div className={s.section}>
               <h2 className={s.sectionTitle}>바로 찾는 키워드</h2>
               <div className={s.keywordsWrapper}>
                 {KEYWORDS.map((k) => (
                   <ChipKeyword key={k} text={k} onClick={() => runSearch(k)} />
                 ))}
               </div>
-            </div>
+            </div> */}
             <div className={s.section}>
               <h2 className={s.sectionTitle}>이번 주 제주 여기가 뜨겁댕!</h2>
               <div className={s.videoList}>
