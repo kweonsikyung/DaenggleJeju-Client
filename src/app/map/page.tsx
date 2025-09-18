@@ -65,11 +65,11 @@ export default function MapPage() {
 
   const { postScrap, isPosting } = usePostScrap();
 
-  const handleScrapToggle = async (contentId: string) => {
+  const handleScrapToggle = async (_contentId: number) => {
     if (isPosting || !selectedPlace) return;
 
     try {
-      await postScrap({ id: parseInt(contentId, 10), type: "place" });
+      await postScrap({ id: _contentId, type: "place" });
 
       setSelectedPlace((prevPlace) => {
         if (!prevPlace) return null;
