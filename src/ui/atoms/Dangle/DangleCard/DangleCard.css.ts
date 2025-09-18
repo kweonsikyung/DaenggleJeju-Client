@@ -29,9 +29,9 @@ export const overlay = style({
   left: 0,
   width: "100%",
   height: "100%",
-  display: "flex-end",
+  display: "flex",
   flexDirection: "column",
-  justifyContent: "space-between",
+  justifyContent: "flex-end",
   padding: "27px 24px",
   boxSizing: "border-box",
   background:
