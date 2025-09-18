@@ -11,7 +11,7 @@ export const page = style({
 
 export const container = style({
   flex: 1,
-  padding: "16px",
+  padding: "8px 16px",
   overflowY: "auto",
   display: "flex",
   flexDirection: "column",
@@ -151,4 +151,35 @@ export const errorBox = style({
   background: "#FEF2F2",
   color: "#991B1B",
   fontSize: "13px",
+});
+
+export const bottomSheetContent = style({
+  padding: "0px 16px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "32px",
+});
+
+export const bottomSheetFooter = style({
+  width: "100%",
+  display: "flex",
+  justifyContent: "space-between",
+  padding: "40px 18px 16px 18px",
+  gap: "16px",
+});
+
+export const placeCardContainer = style({
+  position: "absolute",
+  bottom: "80px",
+  left: "50%",
+  transform: "translateX(-50%)",
+  width: "93%",
+  zIndex: 11,
+  padding: "12px",
+  boxSizing: "border-box",
+  transition: "transform 0.3s ease-in-out",
+  boxShadow: "1.8px 3.6px 9px rgba(0, 0, 0, 0.1)",
+  backgroundColor: "#fff",
+  overflow: "hidden",
+  borderRadius: "12px",
 });
