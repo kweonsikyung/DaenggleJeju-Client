@@ -3,17 +3,24 @@ import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
 import { postDevLogin, postDevLogout } from "@/api/auth";
 import { GetMeRes, PostDevLoginRes } from "@/types/auth";
+import { usePathname } from "next/navigation";
 
 /**
  * @hook useUser
  * @description 현재 로그인된 사용자 정보를 관리하는 SWR 훅.
  * GET /auth/me API를 호출하여 사용자 정보를 가져옴
+ * /login에서는 호출 안함
  * 이 훅의 데이터는 앱의 전역 로그인 상태로 사용됨
  */
 export function useUser() {
-  // 전역 fetcher가 자동으로 getRequest('/auth/me')를 호출함
+  const pathname = usePathname();
+
+  // API를 호출하지 않을 페이지 경로 목록
+  const publicRoutes = ["/login"];
+  const shouldFetch = !publicRoutes.includes(pathname);
+
   const { data, error, isLoading, mutate } = useSWR<GetMeRes, ApiError>(
-    "/auth/me"
+    shouldFetch ? "/auth/me" : null
   );
 
   return {
@@ -21,7 +28,7 @@ export function useUser() {
     isLoggedIn: !!data,
     isLoading,
     error,
-    mutateUser: mutate, // 외부에서 사용자 캐시를 갱신할 때 사용
+    mutateUser: mutate,
   };
 }
 

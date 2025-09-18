@@ -6,6 +6,8 @@ import { LoginButton } from "@/ui/atoms/Buttons/LoginButton/LoginButton";
 import { LOGIN_TYPE } from "@/types/LoginType";
 import { useRouter } from "next/navigation";
 import { useDevLogin, useKakaoLogin } from "@/hooks/api/useAuth";
+import React from "react";
+import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
 
 const LOGIN_CONFIG = [
   { type: LOGIN_TYPE.KAKAO, title: "Kakao로 시작하기" },
@@ -24,38 +26,41 @@ export default function Login() {
     if (isLoggingIn) return;
     try {
       await devLogin();
-      router.push("/map");
+      router.push("/curation");
     } catch (error) {
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
   return (
-    <div className={s.page}>
-      <Image
-        src="/assets/logo/logo-colored.png"
-        alt="댕글제주"
-        width={270}
-        height={94}
-        priority
-      />
+    <React.Fragment>
+      {isLoggingIn && <LoadingSpinner />}
+      <div className={s.page}>
+        <Image
+          src="/assets/logo/logo-colored.png"
+          alt="댕글제주"
+          width={270}
+          height={94}
+          priority
+        />
 
-      <div className={s.btns}>
-        {LOGIN_CONFIG.map(({ type, title }) => (
-          <LoginButton
-            key={type}
-            provider={type}
-            title={title}
-            onClick={() => {
-              if (type === LOGIN_TYPE.KAKAO) kakaoLogin();
-            }}
-          />
-        ))}
+        <div className={s.btns}>
+          {LOGIN_CONFIG.map(({ type, title }) => (
+            <LoginButton
+              key={type}
+              provider={type}
+              title={title}
+              onClick={() => {
+                if (type === LOGIN_TYPE.KAKAO) kakaoLogin();
+              }}
+            />
+          ))}
 
-        <div className={s.span} onClick={handleGuestLogin}>
-          {isLoggingIn ? "로그인 중" : "로그인 없이 둘러보기"}
+          <div className={s.span} onClick={handleGuestLogin}>
+            로그인 없이 둘러보기
+          </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
