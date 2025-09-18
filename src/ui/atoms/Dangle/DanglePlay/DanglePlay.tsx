@@ -63,7 +63,7 @@ export function DanglePlay({
       <div className={s.imageWrapper[type]}>
         <Image
           src={imageSrc}
-          alt={name}
+          alt={"이미지"}
           width={imageWidth}
           height={imageHeight}
           className={s.image}

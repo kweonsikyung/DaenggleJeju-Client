@@ -25,8 +25,10 @@ export interface DanglePlaceProps {
   details?: { time: string; price: string };
   /** 클릭 이벤트 핸들러 */
   onClick?: () => void;
+  /** 북마크 상태 */
+  isBookmarked?: boolean;
   /** 북마크 클릭 이벤트 핸들러 */
-  onBookmarkClick?: () => void;
+  onBookmarkClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export function DanglePlace({
@@ -40,12 +42,21 @@ export function DanglePlace({
   tags = [],
   details,
   onClick,
+  isBookmarked = false,
+  onBookmarkClick,
 }: DanglePlaceProps) {
   const isValidUrl =
     typeof thumbnailUrl === "string" &&
     thumbnailUrl !== "사진 없음" &&
     /^https?:\/\//i.test(thumbnailUrl);
   const imageSrc = isValidUrl ? thumbnailUrl : "/assets/jeju.png";
+
+  const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (onBookmarkClick) {
+      onBookmarkClick(e);
+    }
+  };
 
   return (
     <div
@@ -56,7 +67,7 @@ export function DanglePlace({
         <div className={s.thumbnailWrapper}>
           <Image
             src={imageSrc}
-            alt={name}
+            alt={"이미지"}
             width={80}
             height={80}
             className={s.thumbnail}
@@ -100,6 +111,18 @@ export function DanglePlace({
             ))}
           </div>
         </div>
+        <button className={s.bookmarkButton} onClick={handleBookmarkClick}>
+          <Image
+            alt="북마크"
+            width={24}
+            height={24}
+            src={
+              isBookmarked
+                ? "/assets/icon24/bookmark_filled.svg"
+                : "/assets/icon24/bookmark_line.svg"
+            }
+          />
+        </button>
       </div>
       {isExpanded && (
         <div className={s.expandedContent}>

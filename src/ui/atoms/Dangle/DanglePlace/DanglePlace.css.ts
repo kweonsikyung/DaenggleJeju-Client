@@ -22,6 +22,7 @@ export const headerContainer = style({
   display: "flex",
   alignItems: "center",
   gap: "12px",
+  position: "relative",
 });
 
 export const thumbnailWrapper = style({
@@ -46,6 +47,9 @@ export const contentWrapper = style({
 });
 
 export const bookmarkButton = style({
+  position: "absolute",
+  top: 0,
+  right: 0,
   background: "none",
   border: "none",
   padding: 0,
@@ -73,6 +77,7 @@ export const statItem = style({
   gap: "4px",
   ...TYPO.CAPTION1B,
   color: "#888",
+  alignItems: "center",
 });
 
 export const statValue = style({
