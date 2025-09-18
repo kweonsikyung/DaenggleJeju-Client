@@ -21,8 +21,10 @@ import {
 import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
 import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
+import { usePostScrap } from "@/hooks/api/useScraps";
 import { GetPlaceMapReq, PlaceItem } from "@/types/place";
 import { normalizeChips } from "@/utils/normalizeChips";
+import { mutate } from "swr";
 
 /** type (related KAKAO) */
 declare global {
@@ -60,6 +62,36 @@ export default function MapPage() {
   /** variables */
   const { data: placeData, isLoading } = usePlaceMap(apiParams);
   const places = placeData?.items || [];
+
+  const { postScrap, isPosting } = usePostScrap();
+
+  const handleScrapToggle = async (contentId: string) => {
+    if (isPosting || !selectedPlace) return;
+
+    try {
+      await postScrap({ id: parseInt(contentId, 10), type: "place" });
+
+      setSelectedPlace((prevPlace) => {
+        if (!prevPlace) return null;
+
+        const newIsScrapped = !prevPlace.isScrapped;
+        const newScrapCount = newIsScrapped
+          ? prevPlace.scrapCount + 1
+          : prevPlace.scrapCount - 1;
+
+        return {
+          ...prevPlace,
+          isScrapped: newIsScrapped,
+          scrapCount: newScrapCount,
+        };
+      });
+
+      mutate(["/places/map", apiParams]);
+    } catch (e) {
+      console.error("Scrap action failed:", e);
+      alert("스크랩 작업에 실패했습니다.");
+    }
+  };
 
   const isAnyFilterSelected = Object.values(selectedFilters).some(
     (arr) => arr.length > 0
@@ -276,7 +308,7 @@ export default function MapPage() {
               (selectedPlace as unknown as { chips: unknown }).chips
             )}
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
-            onBookmarkClick={() => {}}
+            onBookmarkClick={() => handleScrapToggle(selectedPlace.contentId)}
             isBookmarked={selectedPlace.isScrapped}
           />
         </div>
