@@ -165,7 +165,7 @@ export default function MapPage() {
   };
 
   const handleLocationListClick = () => {
-    router.push(`/list?filter=${activeFilter}`);
+    router.push(`/search?filter=${activeFilter}`);
   };
 
   const handleDangleRecommendClick = () => {

@@ -14,71 +14,166 @@ import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
 import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
 import Grid from "@/ui/molecules/Grid/Grid";
+import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
+import FilterSection from "@/ui/molecules/FilterSection/FilterSection";
+import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
 // hooks
-import { usePlaceSearch } from "@/hooks/api/usePlaces";
+import { usePlaceSearch, usePlaceList } from "@/hooks/api/usePlaces";
 import { useDaenggleSearch } from "@/hooks/api/useDaenggle";
 
 // utils and types
-import { DANGLE_VIDEOS_DATA, KEYWORDS, FILTER_CHIPS } from "@/utils/dummy_data";
-import type { GetPlaceSearchReq } from "@/types/place";
+import { DANGLE_VIDEOS_DATA, KEYWORDS } from "@/utils/dummy_data";
+import {
+  FILTER_CHIPS,
+  OPTION_DATA,
+  FILTER_OPTION_ID_TO_API_PARAM,
+  getContentTypeIdByChipId,
+} from "../map/_util";
+import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
 import type { GetDaenggleSearchReq } from "@/types/daenggle";
 import { normalizeChips } from "@/utils/normalizeChips";
-import { getContentTypeIdByChipId } from "../map/_util";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 
 /**
  * 검색 페이지
+ * - 검색 전 UI
+ * - 검색 후 UI: isSearchMode가 true일 때, 조건- q(검색어), filter(액티브 칩)
  */
 function SearchPageContent() {
   /** router */
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
-  const hasQuery = !!query;
+  const filterFromUrl = searchParams.get("filter");
 
   /** state */
-  const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [activeFilter, setActiveFilter] = useState("dangle");
+  const [recentKeywords, setRecentKeywords] = useState<string[]>([]); //최근검색키워드
+  const [searchValue, setSearchValue] = useState(""); //검색어
+  const [activeFilter, setActiveFilter] = useState(filterFromUrl || "dangle"); //액티브 필터 칩
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false); //바텀시트
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<string, string[]>
+  >({}); //바텀시트 필터
 
-  const placeSearchParams: GetPlaceSearchReq | undefined = useMemo(() => {
-    if (!query || activeFilter === "dangle") return undefined;
+  // 모드 결정- q 또는 filter가 있으면 isSearchMode로 검색된 결과 노출 ( 검색 후 UI )
+  const isSearchMode = !!query || !!filterFromUrl;
+  const isFilteredListMode = useMemo(
+    () => !!filterFromUrl && !query,
+    [filterFromUrl, query]
+  );
+  const isAnyFilterSelected = Object.values(selectedFilters).some(
+    (arr) => arr.length > 0
+  );
+
+  /** API Parameter 생성 로직 */
+  const placeSearchReq: GetPlaceSearchReq | undefined = useMemo(() => {
+    if (isFilteredListMode || !query || activeFilter === "dangle") {
+      return undefined;
+    }
     const contentTypeId = getContentTypeIdByChipId(activeFilter);
-    return { q: query, limit: 30, all: false, contentTypeId };
-  }, [query, activeFilter]);
+    return {
+      q: query,
+      limit: 30,
+      all: !contentTypeId,
+      contentTypeId,
+    };
+  }, [query, activeFilter, isFilteredListMode]);
 
-  const dangleSearchParams: GetDaenggleSearchReq | undefined = useMemo(() => {
-    if (!query || activeFilter !== "dangle") return undefined;
-    return { q: query, sort: "rank", limit: 20, offset: 0 };
-  }, [query, activeFilter]);
+  const placeListReq: GetPlaceListReq | undefined = useMemo(() => {
+    if (!isFilteredListMode || activeFilter === "dangle") {
+      return undefined;
+    }
+    const contentTypeId = getContentTypeIdByChipId(activeFilter);
+    const newParams: GetPlaceListReq = {
+      limit: 30,
+      all: !contentTypeId,
+      contentTypeId,
+    };
+    // 바텀시트 필터
+    for (const group in selectedFilters) {
+      if (selectedFilters[group].length > 0) {
+        const paramKey = group as keyof typeof FILTER_OPTION_ID_TO_API_PARAM;
+        const paramValues = selectedFilters[group].map(
+          (id) =>
+            FILTER_OPTION_ID_TO_API_PARAM[paramKey][
+              id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
+            ]
+        );
+        (newParams as unknown as Record<string, unknown>)[paramKey as string] =
+          paramValues;
+      }
+    }
+    return newParams;
+  }, [activeFilter, isFilteredListMode, selectedFilters]);
 
   /** api handler */
   const {
-    data: placeData,
-    error: placeError,
-    isLoading: placeIsLoading,
-  } = usePlaceSearch(placeSearchParams);
+    data: placeSearchData,
+    error: placeSearchError,
+    isLoading: placeSearchIsLoading,
+  } = usePlaceSearch(placeSearchReq);
+
+  const {
+    data: placeListData,
+    error: placeListError,
+    isLoading: placeListIsLoading,
+  } = usePlaceList(placeListReq);
 
   const {
     daenggleSearchData,
     error: dangleError,
     isLoading: dangleIsLoading,
-  } = useDaenggleSearch(dangleSearchParams);
+  } = useDaenggleSearch(
+    isFilteredListMode
+      ? undefined
+      : { q: query, sort: "rank", limit: 20, offset: 0 }
+  );
 
-  const isLoading = placeIsLoading || dangleIsLoading;
-  const isError = placeError || dangleError;
-
-  const placeResults = placeData?.items ?? [];
+  // 최종 노출 아이템 결정
+  const isLoading =
+    placeSearchIsLoading || placeListIsLoading || dangleIsLoading;
+  const isError = placeSearchError || placeListError || dangleError;
+  const placeResults = isFilteredListMode
+    ? placeListData?.items ?? []
+    : placeSearchData?.items ?? [];
   const dangleResults = daenggleSearchData?.items ?? [];
 
-  /** etc handlers */
-  const stripKm = (text: string) => text.replace("km", "").trim();
+  /** 필터 핸들러 */
+  const handleFilterSelect = (group: string, id: string) => {
+    setSelectedFilters((prev) => {
+      const existing = prev[group] || [];
+      const multiSelect = OPTION_DATA.find(
+        (d) => d.group === group
+      )?.multiSelect;
 
+      if (multiSelect) {
+        return {
+          ...prev,
+          [group]: existing.includes(id)
+            ? existing.filter((item) => item !== id)
+            : [...existing, id],
+        };
+      } else {
+        return { ...prev, [group]: existing.includes(id) ? [] : [id] };
+      }
+    });
+  };
+
+  const handleResetFilters = () => {
+    setSelectedFilters({});
+  };
+
+  const handleApplyFilters = () => {
+    setIsBottomSheetOpen(false);
+  };
+
+  /** etc handlers */
   const runSearch = (keyword: string) => {
     const k = keyword.trim();
     if (!k) return;
-    router.push(`/search?q=${encodeURIComponent(k)}`);
+    router.push(`/search?q=${encodeURIComponent(k)}&filter=dangle`);
     setRecentKeywords((prev) =>
       [k, ...prev.filter((x) => x !== k)].slice(0, 5)
     );
@@ -95,6 +190,7 @@ function SearchPageContent() {
     const stored = localStorage.getItem("recentKeywords");
     if (stored) setRecentKeywords(JSON.parse(stored));
   }, []);
+
   useEffect(() => {
     localStorage.setItem("recentKeywords", JSON.stringify(recentKeywords));
   }, [recentKeywords]);
@@ -102,6 +198,13 @@ function SearchPageContent() {
   useEffect(() => {
     setSearchValue(query);
   }, [query]);
+
+  useEffect(() => {
+    const urlFilter = searchParams.get("filter");
+    if (urlFilter) {
+      setActiveFilter(urlFilter);
+    }
+  }, [searchParams]);
 
   return (
     <div className={s.page}>
@@ -117,20 +220,26 @@ function SearchPageContent() {
       />
 
       <div className={s.container}>
-        {hasQuery && (
+        {isSearchMode && (
           <div className={s.filterChipsContainer}>
             {FILTER_CHIPS.map((chip) => (
               <FilterChip
                 key={chip.id}
                 {...chip}
                 selected={activeFilter === chip.id}
-                onClick={() => setActiveFilter(chip.id)}
+                onClick={() => {
+                  if (chip.id === "filter") {
+                    setIsBottomSheetOpen(true);
+                  } else {
+                    setActiveFilter(chip.id);
+                  }
+                }}
               />
             ))}
           </div>
         )}
 
-        {!hasQuery ? (
+        {!isSearchMode ? (
           <>
             {/* 검색 전 UI */}
             <div className={s.section}>
@@ -241,7 +350,7 @@ function SearchPageContent() {
                     )}
                   </>
                 ) : (
-                  // 댕글 칩
+                  // 댕글 외 칩
                   <>
                     {!placeResults.length ? (
                       <EmptyState
@@ -283,6 +392,54 @@ function SearchPageContent() {
         )}
       </div>
       <NavBar activePage="near" />
+      {/* 바텀시트 */}
+      <BottomSheet
+        open={isBottomSheetOpen}
+        onOpenChange={setIsBottomSheetOpen}
+        title="필터"
+      >
+        <div className={s.bottomSheetContent}>
+          {OPTION_DATA.map(
+            (data: {
+              group: string;
+              title: string;
+              chips: {
+                id: string;
+                title: string;
+              }[];
+              multiSelect: boolean;
+            }) => (
+              <FilterSection
+                key={data.group}
+                title={data.title}
+                chips={data.chips}
+                multiSelect={data.multiSelect}
+                selectedChips={selectedFilters[data.group] || []}
+                onChipClick={(chipId: string) =>
+                  handleFilterSelect(data.group, chipId)
+                }
+              />
+            )
+          )}
+        </div>
+        <div className={s.bottomSheetFooter}>
+          <Button
+            size={ButtonSize.MEDIUM}
+            status={ButtonStatus.DEFAULT}
+            text="초기화"
+            onClick={handleResetFilters}
+          />
+          <Button
+            size={ButtonSize.MEDIUM}
+            status={
+              isAnyFilterSelected ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED
+            }
+            text="적용"
+            onClick={handleApplyFilters}
+            disabled={!isAnyFilterSelected}
+          />
+        </div>
+      </BottomSheet>
     </div>
   );
 }

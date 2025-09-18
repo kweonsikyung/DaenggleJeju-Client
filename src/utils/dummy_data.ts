@@ -535,6 +535,11 @@ export const SEARCH_RESULTS = {
 };
 
 export const FILTER_CHIPS = [
+  {
+    id: "filter",
+    iconUrl: "/assets/icon16/settings-sliders_line.svg",
+    text: "",
+  },
   { id: "dangle", text: "댕글", iconUrl: "/assets/icon12/play_filled.svg" },
   { id: "stay", text: "숙소", iconUrl: "/assets/icon12/building.svg" },
   {
@@ -542,8 +547,8 @@ export const FILTER_CHIPS = [
     text: "음식점",
     iconUrl: "/assets/icon12/restaurant_filled.svg",
   },
-  { id: "beach", text: "해변", iconUrl: "/assets/icon12/snorkle.svg" },
-  { id: "cafe", text: "카페", iconUrl: "/assets/icon12/cafe_filled.svg" },
+  { id: "travel", text: "여행지", iconUrl: "/assets/icon12/travel_filled.svg" },
+  { id: "report", text: "레포츠", iconUrl: "/assets/icon12/care-filled.svg" },
 ];
 
 export interface VideoData {

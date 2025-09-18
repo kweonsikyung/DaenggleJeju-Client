@@ -25,12 +25,19 @@ import {
  * @hook usePlaceList
  * @description 장소 목록을 조회하는 SWR 훅
  */
-export function usePlaceList(params: GetPlaceListReq) {
-  const key = params ? ["/places/list", JSON.stringify(params)] : null;
+export function usePlaceList(params?: GetPlaceListReq) {
+  const key = params ? (["/places/list", params] as const) : null;
+
+  const fetcher = (_key: readonly [string, GetPlaceListReq]) => {
+    const [, p] = _key;
+    return getPlaceList(p);
+  };
+
   const { data, error, isLoading, mutate } = useSWR<GetPlaceListRes, ApiError>(
     key,
-    () => getPlaceList(params)
+    fetcher
   );
+
   return { data, error, isLoading, mutate };
 }
 
