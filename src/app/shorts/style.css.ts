@@ -16,10 +16,6 @@ export const container = style({
   overflow: "hidden",
 });
 
-export const top_bg = style({
-  background: "transparent",
-});
-
 export const swiperContainer = style({
   width: "100%",
   height: "100%",
@@ -55,6 +51,41 @@ export const staticThumbnail = style({
   zIndex: 1,
 });
 
+export const topGradient = style({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  height: "200px",
+  background:
+    "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)",
+  zIndex: 2,
+  pointerEvents: "none",
+});
+
+export const bottomGradient = style({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: "250px",
+  background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)",
+  zIndex: 2,
+  pointerEvents: "none",
+});
+
+export const topSection = style({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  zIndex: 3,
+});
+
+export const dropdownWrapper = style({
+  padding: "8px 20px",
+});
+
 export const playButtonContainer = style({
   position: "absolute",
   inset: 0,
@@ -75,33 +106,6 @@ export const playIcon = style({
   },
 });
 
-export const header = style({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "8px 20px",
-  width: "100%",
-  boxSizing: "border-box",
-});
-
-export const paginationContainer = style({
-  display: "flex",
-  gap: "4px",
-  width: "100%",
-  padding: "0 16px",
-});
-
-export const paginationBar = style({
-  flex: 1,
-  height: "4px",
-  backgroundColor: "rgba(255, 255, 255, 0.3)",
-  borderRadius: "4px",
-});
-
-export const paginationBarActive = style({
-  backgroundColor: "rgba(255, 255, 255, 1)",
-});
-
 export const sideActions = style({
   position: "absolute",
   right: "18px",
@@ -109,6 +113,7 @@ export const sideActions = style({
   display: "flex",
   flexDirection: "column",
   gap: "15px",
+  zIndex: 3,
 });
 
 export const actionButton = style({
@@ -125,10 +130,14 @@ export const actionButton = style({
 });
 
 export const bottom = style({
-  paddingBottom: "20px",
+  position: "absolute",
+  left: "16px",
+  right: "16px",
+  bottom: "80px",
+  zIndex: 3,
   "@media": {
     "(min-height: 670px)": {
-      paddingBottom: "50px",
+      bottom: "50px",
     },
   },
 });

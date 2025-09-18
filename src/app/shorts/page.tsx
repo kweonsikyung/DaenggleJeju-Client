@@ -13,6 +13,7 @@ import TopBar from "@/ui/atoms/TopBar/TopBar";
 import ShortsOverlay from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
 import ShortsBottomInfo from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
 import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+import { Dropdown } from "@/ui/atoms/Dropdown/Dropdown";
 
 //hooks
 import {
@@ -25,7 +26,7 @@ import {
 //utils
 import { DaenggleContextId, DaenggleConceptKey } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
-import { formatApiVideoToLocal } from "./_util";
+import { formatApiVideoToLocal, JEJU_REGIONS } from "./_util";
 
 import * as s from "./style.css";
 
@@ -221,22 +222,13 @@ function ShortsPageContent() {
   if (anyError || formattedVideos.length === 0 || !currentVideo) {
     return (
       <div className={s.page}>
-        <div className={s.page}>
-          <EmptyState
-            title="에러 발생"
-            description="잠시 후 다시 시도해주세요"
-          />
-        </div>
+        <EmptyState title="에러 발생" description="잠시 후 다시 시도해주세요" />
         <NavBar activePage="dangle" />
       </div>
     );
   }
 
   /** event handler */
-  const isCurrentVideoLiked = videoStates[currentVideo.videoId]?.liked ?? false;
-  const isCurrentVideoSaved = videoStates[currentVideo.videoId]?.saved ?? false;
-  const formatNumber = (num: number) => num.toLocaleString();
-
   const handleStartPlaying = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsStarted(true);
@@ -247,6 +239,11 @@ function ShortsPageContent() {
       setIsPlaying((prev) => !prev);
     }
   };
+
+  const handleRegionChange = (newContextId: string) => {
+    router.push(`/shorts?contextId=${newContextId}`);
+  };
+  const formatNumber = (num: number) => num.toLocaleString();
 
   const handleToggleLike = (e: React.MouseEvent, videoId: string) => {
     e.stopPropagation();
@@ -265,14 +262,46 @@ function ShortsPageContent() {
   };
 
   /** render */
+  const TopBarSection = () => (
+    <div className={s.topSection} onClick={(e) => e.stopPropagation()}>
+      <TopBar
+        transparent
+        whiteIcon
+        backIconHandler={() => router.back()}
+        rightIcons={[
+          {
+            icon: (
+              <Image
+                alt="검색"
+                height={24}
+                src="/assets/icon16/search_line.svg"
+                width={24}
+              />
+            ),
+            onClick: () => router.push("/search"),
+          },
+        ]}
+      />
+      {contextId && (
+        <div className={s.dropdownWrapper}>
+          <Dropdown
+            options={JEJU_REGIONS}
+            selectedValue={contextId}
+            onSelect={handleRegionChange}
+          />
+        </div>
+      )}
+    </div>
+  );
+
   const renderContent = () => {
     // 시작 전 UI
     if (!isStarted) {
       const firstVideo = formattedVideos[startIndex];
-      if (!firstVideo) return <div>영상을 불러올 수 없습니다.</div>;
+      if (!firstVideo) return null;
 
-      const isFirstVideoLiked = videoStates[firstVideo.videoId]?.liked ?? false;
       const isFirstVideoSaved = videoStates[firstVideo.videoId]?.saved ?? false;
+      const isFirstVideoLiked = videoStates[firstVideo.videoId]?.liked ?? false;
 
       return (
         <div className={s.container}>
@@ -281,41 +310,9 @@ function ShortsPageContent() {
             style={{ backgroundImage: `url(${firstVideo.thumbnailUrl})` }}
           />
           <ShortsOverlay>
-            <div>
-              <div className={s.header}>
-                <div className={s.paginationContainer}>
-                  {Array.from({ length: formattedVideos.length }).map(
-                    (_, idx) => (
-                      <div
-                        key={idx}
-                        className={`${s.paginationBar} ${
-                          idx === startIndex ? s.paginationBarActive : ""
-                        }`}
-                      />
-                    )
-                  )}
-                </div>
-              </div>
-              <TopBar
-                transparent
-                whiteIcon
-                backIconHandler={() => router.back()}
-                rightIcons={[
-                  {
-                    icon: (
-                      <Image
-                        alt="검색"
-                        height={24}
-                        src="/assets/icon24/search.svg"
-                        width={24}
-                      />
-                    ),
-                    onClick: () => router.push("/map"),
-                  },
-                ]}
-                className={s.top_bg}
-              />
-            </div>
+            <div className={s.topGradient} />
+            <div className={s.bottomGradient} />
+            <TopBarSection />
 
             <div className={s.sideActions}>
               <button
@@ -387,129 +384,99 @@ function ShortsPageContent() {
             setActiveSlideIndex(swiper.activeIndex);
             setIsPlaying(true);
           }}
-          allowTouchMove={true}
           initialSlide={startIndex}
         >
-          {formattedVideos.map((video, index) => (
-            <SwiperSlide
-              key={video.videoId}
-              className={s.swiperSlide}
-              onClick={handleTogglePlay}
-            >
-              <div
-                id={`player-${video.videoId}`}
-                className={s.playerBackground}
-              />
+          {formattedVideos.map((video, index) => {
+            const isCurrentVideoSaved =
+              videoStates[video.videoId]?.saved ?? false;
+            const isCurrentVideoLiked =
+              videoStates[video.videoId]?.liked ?? false;
+            return (
+              <SwiperSlide
+                key={video.videoId}
+                className={s.swiperSlide}
+                onClick={handleTogglePlay}
+              >
+                <div
+                  id={`player-${video.videoId}`}
+                  className={s.playerBackground}
+                />
 
-              {index === activeSlideIndex && (
-                <>
-                  <ShortsOverlay>
-                    <div>
-                      <div className={s.header}>
-                        <div className={s.paginationContainer}>
-                          {Array.from({ length: formattedVideos.length }).map(
-                            (_, idx) => (
-                              <div
-                                key={idx}
-                                className={`${s.paginationBar} ${
-                                  idx === activeSlideIndex
-                                    ? s.paginationBarActive
-                                    : ""
-                                }`}
-                              />
-                            )
-                          )}
-                        </div>
+                {index === activeSlideIndex && (
+                  <>
+                    <ShortsOverlay>
+                      <div className={s.topGradient} />
+                      <div className={s.bottomGradient} />
+                      <TopBarSection />
+                      <div className={s.sideActions}>
+                        <button
+                          className={s.actionButton}
+                          onClick={(e) => handleToggleSave(e, video.videoId)}
+                        >
+                          <Image
+                            src={
+                              isCurrentVideoSaved
+                                ? "/assets/video/save-active.svg"
+                                : "/assets/video/save.svg"
+                            }
+                            alt="Save"
+                            width={28}
+                            height={28}
+                          />
+                          <span>
+                            {formatNumber(
+                              video.bookmarks + (isCurrentVideoSaved ? 1 : 0)
+                            )}
+                          </span>
+                        </button>
+                        <button
+                          className={s.actionButton}
+                          onClick={(e) => handleToggleLike(e, video.videoId)}
+                        >
+                          <Image
+                            src={
+                              isCurrentVideoLiked
+                                ? "/assets/video/heart-active.svg"
+                                : "/assets/video/heart.svg"
+                            }
+                            alt="Like"
+                            width={28}
+                            height={28}
+                          />
+                          <span>
+                            {formatNumber(
+                              (video.likes ?? 0) + (isCurrentVideoLiked ? 1 : 0)
+                            )}
+                          </span>
+                        </button>
                       </div>
-                      <TopBar
-                        transparent
-                        whiteIcon
-                        backIconHandler={() => router.back()}
-                        rightIcons={[
-                          {
-                            icon: (
-                              <Image
-                                alt="검색"
-                                height={24}
-                                src="/assets/icon24/search.svg"
-                                width={24}
-                              />
-                            ),
-                            onClick: () => router.push("/map"),
-                          },
-                        ]}
-                        className={s.top_bg}
-                      />
-                    </div>
+                      <div className={s.bottom}>
+                        <ShortsBottomInfo video={video} />
+                      </div>
+                    </ShortsOverlay>
 
-                    <div className={s.sideActions}>
-                      <button
-                        className={s.actionButton}
-                        onClick={(e) => handleToggleSave(e, video.videoId)}
+                    {!isPlaying && (
+                      <div
+                        className={s.playButtonContainer}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTogglePlay();
+                        }}
                       >
                         <Image
-                          src={
-                            isCurrentVideoSaved
-                              ? "/assets/video/save-active.svg"
-                              : "/assets/video/save.svg"
-                          }
-                          alt="Save"
-                          width={28}
-                          height={28}
+                          src={"/assets/icon56/play-btn.svg"}
+                          alt="Play Video"
+                          width={80}
+                          height={80}
+                          className={s.playIcon}
                         />
-                        <span>
-                          {formatNumber(
-                            video.bookmarks + (isCurrentVideoSaved ? 1 : 0)
-                          )}
-                        </span>
-                      </button>
-                      <button
-                        className={s.actionButton}
-                        onClick={(e) => handleToggleLike(e, video.videoId)}
-                      >
-                        <Image
-                          src={
-                            isCurrentVideoLiked
-                              ? "/assets/video/heart-active.svg"
-                              : "/assets/video/heart.svg"
-                          }
-                          alt="Like"
-                          width={28}
-                          height={28}
-                        />
-                        <span>
-                          {formatNumber(
-                            (video.likes ?? 0) + (isCurrentVideoLiked ? 1 : 0)
-                          )}
-                        </span>
-                      </button>
-                    </div>
-                    <div className={s.bottom}>
-                      <ShortsBottomInfo video={video} />
-                    </div>
-                  </ShortsOverlay>
-
-                  {!isPlaying && (
-                    <div
-                      className={s.playButtonContainer}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleTogglePlay();
-                      }}
-                    >
-                      <Image
-                        src={"/assets/icon56/play-btn.svg"}
-                        alt="Play Video"
-                        width={80}
-                        height={80}
-                        className={s.playIcon}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </SwiperSlide>
-          ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     );
@@ -524,7 +491,7 @@ function ShortsPageContent() {
 }
 
 /**
- * 영상 재상
+ * 영상 재생
  */
 export default function ShortsPage() {
   const FallbackUI = (
@@ -533,7 +500,6 @@ export default function ShortsPage() {
       <NavBar activePage="dangle" />
     </div>
   );
-
   return (
     <Suspense fallback={FallbackUI}>
       <ShortsPageContent />

@@ -6,6 +6,8 @@ export const bottomInfo = style({
   display: "flex",
   gap: "8px",
   padding: "24px 18px",
+  height: "200px",
+  overflow: "hidden",
 });
 
 export const userInfo = style({

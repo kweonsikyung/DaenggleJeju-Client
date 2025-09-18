@@ -1,5 +1,15 @@
 import { DaenggleVideoItem } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
+import { DropdownOption } from "@/ui/atoms/Dropdown/Dropdown";
+
+export const JEJU_REGIONS: DropdownOption[] = [
+  { value: "PLACE_jeju_si", label: "제주시(도심)" },
+  { value: "PLACE_aeweol", label: "애월/한림/한경" },
+  { value: "PLACE_jocheon", label: "조천/구좌/우도" },
+  { value: "PLACE_seogwipo_si", label: "서귀포시(도심)" },
+  { value: "PLACE_andeok", label: "안덕/대정" },
+  { value: "PLACE_seongsan", label: "성산/표선/남원" },
+];
 
 type ApiVideoFormat = {
   video_id?: string;
