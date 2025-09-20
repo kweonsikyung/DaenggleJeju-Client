@@ -8,10 +8,14 @@ import {
   GetDaenggleSearchReq,
   GetDaenggleConceptsReq,
   GetDaengglePlaceRecommendationsReq,
+  GetDaengglePlacesAllReq,
+  GetDaengglePlacesMapReq,
   // Result
   DaenggleVideoListResult,
   DaenggleConceptShelf,
   DaengglePlaceRecommendationsResult,
+  DaengglePlacesAllResult,
+  DaengglePlacesMapResult,
 } from "@/types/daenggle";
 
 /**
@@ -39,9 +43,7 @@ export async function getDaenggleTrending(
   params: GetDaenggleTrendingReq
 ): Promise<DaenggleVideoListResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaenggleVideoListResult>(
-    `/daenggle/trending?${queryParams}`
-  );
+  return await getRequest<DaenggleVideoListResult>(`/daenggle/trending`);
 }
 
 /**
@@ -145,4 +147,34 @@ function createBaseSearchParams<T extends object>(params: T): URLSearchParams {
     }
   });
   return searchParams;
+}
+
+/**
+ * @function getDaengglePlacesAll
+ * @description 장소 연관 댕글 영상 리스트 조회 (GET /daenggle/places/all)
+ * @param {GetDaengglePlacesAllReq} params - Query Parameter 객체 (현재 없음)
+ * @returns {Promise<DaengglePlacesAllResult>} 장소 연관 댕글 영상 리스트 결과
+ */
+export async function getDaengglePlacesAll(
+  params: GetDaengglePlacesAllReq
+): Promise<DaengglePlacesAllResult> {
+  const queryParams = createBaseSearchParams(params).toString();
+  return await getRequest<DaengglePlacesAllResult>(
+    `/daenggle/places/all?${queryParams}`
+  );
+}
+
+/**
+ * @function getDaengglePlacesMap
+ * @description 지도용 장소 연관 댕글 영상 조회 (GET /daenggle/places/map)
+ * @param {GetDaengglePlacesMapReq} params - Query Parameter 객체 (현재 없음)
+ * @returns {Promise<DaengglePlacesMapResult>} 지도용 장소 연관 댕글 영상 결과
+ */
+export async function getDaengglePlacesMap(
+  params: GetDaengglePlacesMapReq
+): Promise<DaengglePlacesMapResult> {
+  const queryParams = createBaseSearchParams(params).toString();
+  return await getRequest<DaengglePlacesMapResult>(
+    `/daenggle/places/map?${queryParams}`
+  );
 }

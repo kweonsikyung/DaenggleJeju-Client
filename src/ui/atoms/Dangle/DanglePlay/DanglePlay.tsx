@@ -14,7 +14,7 @@ export interface DanglePlayProps {
   /** 프로필 이미지 URL */
   profileImageUrl: string;
   /** 사용자 이름 */
-  name: string;
+  name?: string;
   /** 위치 정보 (medium 타입 전용) */
   location?: string;
   /** 위치 정보 (medium 타입 전용) */

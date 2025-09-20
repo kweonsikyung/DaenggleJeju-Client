@@ -8,9 +8,10 @@ import {
   getDaenggleSearch,
   getDaenggleConcepts,
   getDaengglePlaceRecommendations,
+  getDaengglePlacesAll,
+  getDaengglePlacesMap,
 } from "@/api/daenggle";
 import {
-  // Request
   GetDaenggleAccommodationsReq,
   GetDaenggleTrendingReq,
   GetDaenggleRegionsReq,
@@ -18,10 +19,14 @@ import {
   GetDaenggleSearchReq,
   GetDaenggleConceptsReq,
   GetDaengglePlaceRecommendationsReq,
+  GetDaengglePlacesAllReq,
+  GetDaengglePlacesMapReq,
   // Result Types
   DaenggleVideoListResult,
   DaenggleConceptShelf,
   DaengglePlaceRecommendationsResult,
+  DaengglePlacesAllResult,
+  DaengglePlacesMapResult,
 } from "@/types/daenggle";
 
 /**
@@ -184,5 +189,49 @@ export function useDaengglePlaceRecommendations(
     error,
     isLoading,
     mutateDaengglePlaceRecommendations: mutate,
+  };
+}
+
+/**
+ * @hook useDaengglePlacesAll
+ * @description SWR 훅: 장소 연관 댕글 영상 리스트 전체 조회
+ */
+export function useDaengglePlacesAll(params?: GetDaengglePlacesAllReq) {
+  const key = params ? ["/daenggle/places/all", params] : null;
+
+  const { data, error, isLoading, mutate } = useSWR<
+    DaengglePlacesAllResult,
+    ApiError
+  >(key, ([, queryParams]: [string, GetDaengglePlacesAllReq]) =>
+    getDaengglePlacesAll(queryParams)
+  );
+
+  return {
+    daengglePlacesAllData: data,
+    error,
+    isLoading,
+    mutateDaengglePlacesAll: mutate,
+  };
+}
+
+/**
+ * @hook useDaengglePlacesMap
+ * @description SWR 훅: 지도용 장소 연관 댕글 영상 조회
+ */
+export function useDaengglePlacesMap(params?: GetDaengglePlacesMapReq) {
+  const key = params ? ["/daenggle/places/map", params] : null;
+
+  const { data, error, isLoading, mutate } = useSWR<
+    DaengglePlacesMapResult,
+    ApiError
+  >(key, ([, queryParams]: [string, GetDaengglePlacesMapReq]) =>
+    getDaengglePlacesMap(queryParams)
+  );
+
+  return {
+    daengglePlacesMapData: data,
+    error,
+    isLoading,
+    mutateDaengglePlacesMap: mutate,
   };
 }

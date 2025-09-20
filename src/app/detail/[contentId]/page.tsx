@@ -275,14 +275,8 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                 <DanglePlay
                   key={item.video_id}
                   type="small"
-                  imageUrl={
-                    item.thumbUrl ||
-                    `https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`
-                  }
-                  profileImageUrl={
-                    item.authorAvatarUrl || "/assets/dangle/dog.png"
-                  }
-                  name={item.authorName}
+                  imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
+                  profileImageUrl={"/assets/dangle/dog.png"}
                   onClick={() => window.open(item.playbackUrl, "_blank")}
                 />
               ))}

@@ -34,6 +34,7 @@ export interface DaenggleVideoItem {
   placePill?: string;
   styles?: string[];
   duration_seconds?: number;
+  placeTitle?: string;
 }
 
 /**
@@ -207,10 +208,61 @@ export type DaengglePlaceRecommendationItem = DaenggleVideoItem & {
  */
 export interface DaengglePlaceRecommendationsResult {
   total: number;
-  items: DaengglePlaceRecommendationItem[];
+  placeTitle: string;
+  items: { video_id: string; playbackUrl: string }[];
   nextCursor: string;
   hasMore: boolean;
 }
 /** 장소별 댕글 영상 추천 Response */
 export type GetDaengglePlaceRecommendationsRes =
   DaenggleApiRes<DaengglePlaceRecommendationsResult>;
+
+/**
+ * 장소 연관 댕글 영상 리스트 조회 Request
+ * @description GET /daenggle/places/all 요청의 Query Parameter 타입 (현재 없음)
+ */
+export interface GetDaengglePlacesAllReq {}
+
+/**
+ * 장소 연관 댕글 영상 리스트 아이템
+ */
+export interface DaengglePlacesAllItem {
+  video_id: string;
+  placeTitle: string;
+}
+
+/**
+ * 장소 연관 댕글 영상 리스트 Response 'result' 타입
+ */
+export interface DaengglePlacesAllResult {
+  total: number;
+  items: DaengglePlacesAllItem[];
+}
+
+/** 장소 연관 댕글 영상 리스트 Response */
+export type GetDaengglePlacesAllRes = DaenggleApiRes<DaengglePlacesAllResult>;
+
+/**
+ * 지도용 장소 연관 댕글 조회 Request
+ * @description GET /daenggle/places/map 요청의 Query Parameter 타입
+ */
+export interface GetDaengglePlacesMapReq {}
+
+/**
+ * 지도용 장소 연관 댕글 영상 아이템
+ */
+export interface DaengglePlacesMapItem {
+  video_id: string;
+  playbackUrl: string;
+  placeTitle: string;
+  mapx: number;
+  mapy: number;
+}
+
+/**
+ * 지도용 장소 연관 댕글 조회 Response 'result' 타입
+ */
+export type DaengglePlacesMapResult = DaengglePlacesMapItem[];
+
+/** 지도용 장소 연관 댕글 조회 Response */
+export type GetDaengglePlacesMapRes = DaenggleApiRes<DaengglePlacesMapResult>;
