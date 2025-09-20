@@ -40,12 +40,12 @@ export function formatApiVideoToLocal(video: ApiVideoFormat): VideoData {
     videoId: videoId as string,
     thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
     profileImageUrl: "/assets/dangle/dog.png",
-    userName: author || "알 수 없음",
+    userName: author || "댕글 추천",
     description: caption as string,
     tags: video.tags || [],
     bookmarks: video.scrapCount || 0,
     comments: 0,
     likes: video.loveCount || 0,
-    loc: video.placePill || "제주",
+    loc: video.placePill || "제주 전체",
   };
 }
