@@ -54,6 +54,7 @@ export default function Page() {
     daenggleTrendingData,
     isLoading: isTrendingLoading,
     error: trendingError,
+    mutateDaenggleTrending,
   } = useDaenggleTrending({
     sort: "views",
     days: 90,
@@ -176,7 +177,7 @@ export default function Page() {
         {/* 요즘 뜨는 댕글 TOP 10 */}
         <Header
           title="요즘 뜨는 댕글 TOP 10"
-          onReClick={() => {}}
+          onReClick={() => mutateDaenggleTrending()}
           marginTop={40}
         />
         {isTrendingLoading && (
