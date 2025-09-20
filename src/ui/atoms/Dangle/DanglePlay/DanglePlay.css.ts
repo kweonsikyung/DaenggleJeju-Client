@@ -20,7 +20,6 @@ export const root = styleVariants({
       flexDirection: "column",
       justifyContent: "space-between",
       height: "266px",
-      borderRadius: "15px",
       overflow: "hidden",
     },
   ],
