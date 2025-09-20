@@ -6,18 +6,18 @@ import * as s from "./DanglePlay.css";
 
 export interface DanglePlayProps {
   /** 컴포넌트 타입 */
-  type: "small" | "medium";
+  type: "small" | "medium" | "short";
   /** 컴포넌트 너비 */
   width?: string | number;
   /** 배경 이미지 URL */
   imageUrl: string;
   /** 프로필 이미지 URL */
-  profileImageUrl: string;
+  profileImageUrl?: string;
   /** 사용자 이름 */
   name?: string;
-  /** 위치 정보 (medium 타입 전용) */
+  /** 위치 정보*/
   location?: string;
-  /** 위치 정보 (medium 타입 전용) */
+  /** 주소 정보*/
   address?: string;
   /** 제목 (medium 타입 전용) */
   title?: string;
@@ -48,9 +48,18 @@ export function DanglePlay({
   tags,
   onClick,
 }: DanglePlayProps) {
+  const isSmall = type === "small";
   const isMedium = type === "medium";
-  const imageWidth = isMedium ? 162 : 150;
-  const imageHeight = isMedium ? 242 : 225;
+  const isShort = type === "short";
+
+  // 타입에 따른 이미지 크기 동적 할당
+  // small (기본값)
+  let imageWidth = 150;
+  let imageHeight = 225;
+  if (isMedium || isShort) {
+    imageWidth = 162;
+    imageHeight = 242;
+  }
 
   const isValidImageUrl =
     typeof imageUrl === "string" &&
@@ -68,19 +77,22 @@ export function DanglePlay({
           height={imageHeight}
           className={s.image}
         />
-        <div className={s.profileOverlay}>
-          <div className={s.profileContainer}>
-            <Image
-              src={profileImageUrl}
-              alt={`${name}의 프로필 이미지`}
-              width={22}
-              height={22}
-              className={s.profileImage}
-            />
-            <span className={s.name}>{name}</span>
+        {!isShort && profileImageUrl && (
+          <div className={s.profileOverlay}>
+            <div className={s.profileContainer}>
+              <Image
+                src={profileImageUrl}
+                alt={`${name}의 프로필 이미지`}
+                width={22}
+                height={22}
+                className={s.profileImage}
+              />
+              <span className={s.name}>{name}</span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
       {isMedium && (
         <div className={s.content}>
           <div className={s.textInfo}>
@@ -124,6 +136,21 @@ export function DanglePlay({
             </div>
             <div className={s.statItem}>·</div>
             <div className={s.timeAgo}>{timeAgo}</div>
+          </div>
+        </div>
+      )}
+
+      {/* short 타입일 때의 위치 정보 */}
+      {isShort && (
+        <div className={s.content}>
+          <div className={s.location}>
+            {location}
+            {address && (
+              <>
+                {" · "}
+                <span className={s.address}>{address}</span>
+              </>
+            )}
           </div>
         </div>
       )}

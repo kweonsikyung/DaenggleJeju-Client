@@ -195,38 +195,14 @@ export default function Page() {
         {daenggleTrendingData && (
           <Grid className={s.pd}>
             {daenggleTrendingData.items.map((item, index) => {
-              const { cleanTitle, tags: extractedTags } = extractHashtags(
-                item.title
-              );
-
-              const { place: extractedPlace, region: extractedRegion } =
-                findLocationInfo(item.title);
-
-              // --- 로케이션/주소 추출 시도 ---
-              const finalPlace = extractedPlace || "";
-              const finalRegion =
-                extractedRegion || item.placePill || "제주 전체";
-
-              // --- 태그 병합  ---
-              const finalTags = [
-                ...new Set([...extractedTags, ...(item.tags || [])]),
-              ];
-
               return (
                 <DanglePlay
                   key={`${item.video_id}-${index}`}
-                  type="medium"
+                  type="short"
                   width="100%"
                   imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
-                  profileImageUrl={"/assets/profile-default.png"}
-                  name={item.authorName}
-                  location={finalRegion}
-                  address={finalPlace}
-                  title={cleanTitle}
-                  tags={finalTags}
-                  views={item.loveCount || 0}
-                  comments={item.scrapCount || 0}
-                  timeAgo={item.published_at}
+                  location={item.placeTitle}
+                  address="제주 전체"
                   onClick={() => {
                     router.push(
                       `/shorts?listType=trending&startIndex=${index}`

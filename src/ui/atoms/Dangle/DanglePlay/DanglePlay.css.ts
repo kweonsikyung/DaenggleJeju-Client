@@ -13,6 +13,17 @@ const baseRoot = style({
 });
 
 export const root = styleVariants({
+  short: [
+    baseRoot,
+    {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      height: "266px",
+      borderRadius: "15px",
+      overflow: "hidden",
+    },
+  ],
   small: [
     baseRoot,
     {
@@ -42,6 +53,7 @@ const baseImageWrapper = style({
 });
 
 export const imageWrapper = styleVariants({
+  short: [baseImageWrapper, { height: "242px" }],
   small: [baseImageWrapper, { height: "100%" }],
   medium: [baseImageWrapper, { height: "242px" }],
 });
