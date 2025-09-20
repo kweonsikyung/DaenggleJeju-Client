@@ -71,6 +71,7 @@ function ShortsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const contentId = searchParams.get("contentId") as string | null;
   const contextId = searchParams.get("contextId") as DaenggleContextId | null;
   const conceptKey = searchParams.get(
     "conceptKey"
@@ -79,7 +80,7 @@ function ShortsPageContent() {
   const startIndex = parseInt(searchParams.get("startIndex") || "0", 10);
 
   /** state */
-  const [isStarted, setIsStarted] = useState(false);
+  const [isStarted, setIsStarted] = useState(!!contentId);
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeSlideIndex, setActiveSlideIndex] = useState(startIndex);
   const playerRef = useRef<YT.Player | null>(null);
@@ -127,7 +128,23 @@ function ShortsPageContent() {
 
   /** utils */
   let formattedVideos: VideoData[] = [];
-  if (contextId && daenggleRegionsData?.items) {
+  if (contentId) {
+    formattedVideos = [
+      {
+        id: contentId,
+        loc: "",
+        videoId: contentId,
+        thumbnailUrl: `https://i.ytimg.com/vi/${contentId}/hqdefault.jpg`,
+        profileImageUrl: "",
+        userName: "",
+        description: "",
+        tags: [],
+        bookmarks: 0,
+        comments: 0,
+        likes: 0,
+      },
+    ];
+  } else if (contextId && daenggleRegionsData?.items) {
     formattedVideos = daenggleRegionsData.items.map(formatApiVideoToLocal);
   } else if (conceptKey && daenggleConceptsData?.shelves) {
     const shelf = daenggleConceptsData.shelves.find(
@@ -181,7 +198,7 @@ function ShortsPageContent() {
           setIsPlaying(true);
         },
         onStateChange: (event) => {
-          if (event.data === 0) {
+          if (event.data === 0 && !contentId) {
             swiperRef.current?.slideNext();
           }
         },
@@ -192,7 +209,7 @@ function ShortsPageContent() {
     return () => {
       player.destroy();
     };
-  }, [isStarted, activeSlideIndex, formattedVideos]);
+  }, [isStarted, activeSlideIndex, formattedVideos, contentId]);
 
   useEffect(() => {
     if (!isStarted || !playerRef.current?.playVideo) return;
@@ -206,7 +223,8 @@ function ShortsPageContent() {
 
   /** loading */
   const isLoading =
-    regionsLoading || conceptsLoading || accomLoading || trendingLoading;
+    !contentId &&
+    (regionsLoading || conceptsLoading || accomLoading || trendingLoading);
   const anyError = regionsError || conceptsError || accomError || trendingError;
   const currentVideo = formattedVideos[activeSlideIndex] || formattedVideos[0];
 
@@ -408,51 +426,61 @@ function ShortsPageContent() {
                       <div className={s.topGradient} />
                       <div className={s.bottomGradient} />
                       <TopBarSection />
-                      <div className={s.sideActions}>
-                        <button
-                          className={s.actionButton}
-                          onClick={(e) => handleToggleSave(e, video.videoId)}
-                        >
-                          <Image
-                            src={
-                              isCurrentVideoSaved
-                                ? "/assets/video/save-active.svg"
-                                : "/assets/video/save.svg"
-                            }
-                            alt="Save"
-                            width={28}
-                            height={28}
-                          />
-                          <span>
-                            {formatNumber(
-                              video.bookmarks + (isCurrentVideoSaved ? 1 : 0)
-                            )}
-                          </span>
-                        </button>
-                        <button
-                          className={s.actionButton}
-                          onClick={(e) => handleToggleLike(e, video.videoId)}
-                        >
-                          <Image
-                            src={
-                              isCurrentVideoLiked
-                                ? "/assets/video/heart-active.svg"
-                                : "/assets/video/heart.svg"
-                            }
-                            alt="Like"
-                            width={28}
-                            height={28}
-                          />
-                          <span>
-                            {formatNumber(
-                              (video.likes ?? 0) + (isCurrentVideoLiked ? 1 : 0)
-                            )}
-                          </span>
-                        </button>
-                      </div>
-                      <div className={s.bottom}>
-                        <ShortsBottomInfo video={video} />
-                      </div>
+                      {!contentId && (
+                        <>
+                          <div className={s.sideActions}>
+                            <button
+                              className={s.actionButton}
+                              onClick={(e) =>
+                                handleToggleSave(e, video.videoId)
+                              }
+                            >
+                              <Image
+                                src={
+                                  isCurrentVideoSaved
+                                    ? "/assets/video/save-active.svg"
+                                    : "/assets/video/save.svg"
+                                }
+                                alt="Save"
+                                width={28}
+                                height={28}
+                              />
+                              <span>
+                                {formatNumber(
+                                  video.bookmarks +
+                                    (isCurrentVideoSaved ? 1 : 0)
+                                )}
+                              </span>
+                            </button>
+                            <button
+                              className={s.actionButton}
+                              onClick={(e) =>
+                                handleToggleLike(e, video.videoId)
+                              }
+                            >
+                              <Image
+                                src={
+                                  isCurrentVideoLiked
+                                    ? "/assets/video/heart-active.svg"
+                                    : "/assets/video/heart.svg"
+                                }
+                                alt="Like"
+                                width={28}
+                                height={28}
+                              />
+                              <span>
+                                {formatNumber(
+                                  (video.likes ?? 0) +
+                                    (isCurrentVideoLiked ? 1 : 0)
+                                )}
+                              </span>
+                            </button>
+                          </div>
+                          <div className={s.bottom}>
+                            <ShortsBottomInfo video={video} />
+                          </div>
+                        </>
+                      )}
                     </ShortsOverlay>
 
                     {!isPlaying && (
