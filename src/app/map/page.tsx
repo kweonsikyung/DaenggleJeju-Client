@@ -25,6 +25,8 @@ import { usePostScrap } from "@/hooks/api/useScraps";
 import { GetPlaceMapReq, PlaceItem } from "@/types/place";
 import { normalizeChips } from "@/utils/normalizeChips";
 import { mutate } from "swr";
+import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
+import { DaengglePlacesMapResult } from "@/types/daenggle";
 
 /** type (related KAKAO) */
 declare global {
@@ -60,7 +62,13 @@ export default function MapPage() {
   const markersRef = useRef<any[]>([]);
 
   /** variables */
-  const { data: placeData, isLoading } = usePlaceMap(apiParams);
+  const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
+    activeFilter !== "dangle" ? apiParams : { bbox: "" }
+  );
+  const { daengglePlacesMapData, isLoading: isDaenggleLoading } =
+    useDaengglePlacesMap(activeFilter === "dangle" ? {} : undefined);
+
+  const isLoading = isPlaceLoading || isDaenggleLoading;
   const places = placeData?.items || [];
 
   const { postScrap, isPosting } = usePostScrap();
@@ -98,6 +106,7 @@ export default function MapPage() {
   );
 
   /** map load handler */
+  // 일반 칩 마커 로더
   const loadMarkers = (data: PlaceItem[]) => {
     if (!map || !window.kakao || !Array.isArray(data)) return;
 
@@ -130,12 +139,54 @@ export default function MapPage() {
       markersRef.current.push(marker);
     });
 
-    const firstItemPosition = new window.kakao.maps.LatLng(
-      data[0].lat,
-      data[0].lng
-    );
-    map.setCenter(firstItemPosition);
-    map.setLevel(8);
+    if (data.length > 0) {
+      const firstItemPosition = new window.kakao.maps.LatLng(
+        data[0].lat,
+        data[0].lng
+      );
+      map.setCenter(firstItemPosition);
+      map.setLevel(8);
+    }
+  };
+
+  // 댕글 칩 마커 로더
+  const loadDangleMarkers = (data: DaengglePlacesMapResult) => {
+    if (!map || !window.kakao || !Array.isArray(data)) return;
+
+    markersRef.current.forEach((marker) => marker.setMap(null));
+    markersRef.current = [];
+
+    if (data.length === 0) return;
+
+    data.forEach((item) => {
+      const imageUrl = MARKER_IMAGES.dangle;
+      const markerPosition = new window.kakao.maps.LatLng(item.mapy, item.mapx);
+      const markerImage = new window.kakao.maps.MarkerImage(
+        imageUrl,
+        new window.kakao.maps.Size(60, 60)
+      );
+      const marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+        image: markerImage,
+        title: item.placeTitle,
+      });
+
+      window.kakao.maps.event.addListener(marker, "click", () => {
+        router.push(`/shorts?contentId=${item.video_id}`);
+      });
+
+      marker.setMap(map);
+      markersRef.current.push(marker);
+    });
+
+    if (data.length > 0) {
+      const firstItemPosition = new window.kakao.maps.LatLng(
+        data[0].mapy,
+        data[0].mapx
+      );
+      map.setCenter(firstItemPosition);
+      map.setLevel(8);
+    }
   };
 
   /** filter handler */
@@ -241,7 +292,7 @@ export default function MapPage() {
 
   useEffect(() => {
     setApiParams((prev) => {
-      const newParams = { ...prev };
+      const newParams = { ...prev, bbox: JEJU_BBOX };
       const contentTypeId = FILTER_CHIP_ID_TO_CONTENT_TYPE_ID[activeFilter];
       if (contentTypeId) {
         newParams.contentTypeId = contentTypeId;
@@ -250,13 +301,25 @@ export default function MapPage() {
       }
       return newParams;
     });
+    setSelectedPlace(null);
   }, [activeFilter]);
 
   useEffect(() => {
-    if (map && places) {
-      loadMarkers(places);
+    if (map) {
+      if (activeFilter === "dangle") {
+        if (daengglePlacesMapData) {
+          loadDangleMarkers(daengglePlacesMapData);
+        }
+      } else if (places) {
+        loadMarkers(places);
+      }
     }
-  }, [places, map]);
+  }, [places, daengglePlacesMapData, map, activeFilter]);
+
+  const totalCount =
+    activeFilter === "dangle"
+      ? daengglePlacesMapData?.length || 0
+      : placeData?.total || 0;
 
   return (
     <div className={s.page}>
@@ -320,7 +383,7 @@ export default function MapPage() {
           onGpsClick={handleGpsClick}
           chipMapListProps={{
             text: "장소 목록",
-            cnt: placeData?.total || 0,
+            cnt: totalCount,
             onLocationListClick: handleLocationListClick,
           }}
           fabProps={{ onClick: handleDangleRecommendClick }}
