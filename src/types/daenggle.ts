@@ -221,6 +221,7 @@ export type GetDaengglePlaceRecommendationsRes =
  * 장소 연관 댕글 영상 리스트 조회 Request
  * @description GET /daenggle/places/all 요청의 Query Parameter 타입 (현재 없음)
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GetDaengglePlacesAllReq {}
 
 /**
@@ -246,6 +247,7 @@ export type GetDaengglePlacesAllRes = DaenggleApiRes<DaengglePlacesAllResult>;
  * 지도용 장소 연관 댕글 조회 Request
  * @description GET /daenggle/places/map 요청의 Query Parameter 타입
  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface GetDaengglePlacesMapReq {}
 
 /**
