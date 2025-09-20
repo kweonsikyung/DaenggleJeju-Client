@@ -123,11 +123,44 @@ export default function MapPage() {
       const markerPosition = new window.kakao.maps.LatLng(item.lat, item.lng);
       const markerImage = new window.kakao.maps.MarkerImage(
         imageUrl,
-        new window.kakao.maps.Size(60, 60)
+        new window.kakao.maps.Size(40, 40)
       );
       const marker = new window.kakao.maps.Marker({
         position: markerPosition,
         image: markerImage,
+      });
+
+      // 마우스오버를 위한 커스텀 오버레이 생성
+      const content = `
+      <div style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translateY(-15px);">
+        <style>
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .bubble-container {
+            animation: fadeIn 0.3s;
+          }
+        </style>
+        <div class="bubble-container">
+          <div style="padding: 8px 16px; background-color: #222; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold;">
+            ${item.title}
+          </div>
+          <div style="width: 0px; height: 0px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgb(34, 34, 34); margin: 0 auto;"></div>
+        </div>
+      </div>
+    `;
+      const customOverlay = new window.kakao.maps.CustomOverlay({
+        position: markerPosition,
+        content: content,
+        yAnchor: 1.7,
+      });
+
+      window.kakao.maps.event.addListener(marker, "mouseover", function () {
+        customOverlay.setMap(map);
+      });
+      window.kakao.maps.event.addListener(marker, "mouseout", function () {
+        customOverlay.setMap(null);
       });
 
       window.kakao.maps.event.addListener(marker, "click", () => {
@@ -163,12 +196,46 @@ export default function MapPage() {
       const markerPosition = new window.kakao.maps.LatLng(item.mapy, item.mapx);
       const markerImage = new window.kakao.maps.MarkerImage(
         imageUrl,
-        new window.kakao.maps.Size(60, 60)
+        new window.kakao.maps.Size(40, 40)
       );
       const marker = new window.kakao.maps.Marker({
         position: markerPosition,
         image: markerImage,
         title: item.placeTitle,
+      });
+
+      const content = `
+      <div style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translateY(-15px);">
+        <style>
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          .bubble-container {
+            animation: fadeIn 0.3s;
+          }
+        </style>
+        <div class="bubble-container">
+          <div style="padding: 8px 16px; background-color: #222; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold;">
+            ${item.placeTitle}
+          </div>
+          <div style="width: 0px; height: 0px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgb(34, 34, 34); margin: 0 auto;"></div>
+        </div>
+      </div>
+    `;
+
+      const customOverlay = new window.kakao.maps.CustomOverlay({
+        position: markerPosition,
+        content: content,
+        yAnchor: 1.7,
+      });
+
+      // 마커에 마우스오버, 마우스아웃 이벤트 추가
+      window.kakao.maps.event.addListener(marker, "mouseover", function () {
+        customOverlay.setMap(map);
+      });
+      window.kakao.maps.event.addListener(marker, "mouseout", function () {
+        customOverlay.setMap(null);
       });
 
       window.kakao.maps.event.addListener(marker, "click", () => {
