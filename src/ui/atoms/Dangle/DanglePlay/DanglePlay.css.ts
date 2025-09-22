@@ -34,7 +34,7 @@ export const root = styleVariants({
   medium: [
     baseRoot,
     {
-      height: "351px",
+      height: "356px",
       backgroundColor: "#fff",
       display: "flex",
       flexDirection: "column",
@@ -49,6 +49,7 @@ const baseImageWrapper = style({
   position: "relative",
   borderRadius: "15px",
   overflow: "hidden",
+  flexShrink: 0,
 });
 
 export const imageWrapper = styleVariants({
@@ -96,6 +97,8 @@ export const content = style({
   display: "flex",
   flexDirection: "column",
   gap: "8px",
+  justifyContent: "space-between",
+  flex: 1,
 });
 
 export const textInfo = style({
@@ -117,12 +120,17 @@ export const address = style({
 export const title = style({
   ...TYPO.LABEL1B,
   textAlign: "left",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });
 
 export const tagWrapper = style({
   display: "flex",
   flexWrap: "wrap",
   gap: "4px",
+  maxHeight: "40px",
+  overflow: "hidden",
 });
 
 export const tag = style({
