@@ -21,6 +21,7 @@ export const root = styleVariants({
       justifyContent: "space-between",
       height: "266px",
       overflow: "hidden",
+      gap: 8,
     },
   ],
   small: [
