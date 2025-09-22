@@ -406,7 +406,7 @@ function SearchPageContent() {
                                 address="제주 전체"
                                 onClick={() => {
                                   router.push(
-                                    `/shorts?listType=trending&startIndex=${index}`
+                                    `/shorts?contentId=${item.video_id}`
                                   );
                                 }}
                               />
