@@ -350,8 +350,8 @@ function SearchPageContent() {
                       />
                     ) : (
                       <Grid>
-                        {dangleResults.map((item: any, index) => {
-                          if (query) {
+                        {dangleResults.map((item, index) => {
+                          if ("authorName" in item) {
                             // 쿼리가 있을 때 (검색 결과)
                             const { cleanTitle, tags: extractedTags } =
                               extractHashtags(item.title);
@@ -406,7 +406,7 @@ function SearchPageContent() {
                                 address="제주 전체"
                                 onClick={() => {
                                   router.push(
-                                    `/shorts?contentId=${item.video_id}`
+                                    `/shorts?listType=trending&startIndex=${index}`
                                   );
                                 }}
                               />
