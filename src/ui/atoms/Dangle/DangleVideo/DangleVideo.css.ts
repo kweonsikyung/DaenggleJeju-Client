@@ -4,7 +4,7 @@ import { COLORS } from "@/styles/colors.css";
 
 export const root = style({
   width: "100%",
-  height: "80px",
+  height: "90px",
   display: "flex",
   alignItems: "center",
   gap: "16px",
@@ -15,8 +15,8 @@ export const root = style({
 });
 
 export const thumbnailWrapper = style({
-  width: "54px",
-  height: "80px",
+  width: "70px",
+  height: "90px",
   borderRadius: "6px",
   overflow: "hidden",
   flexShrink: 0,
@@ -33,11 +33,15 @@ export const contentWrapper = style({
   display: "flex",
   flexDirection: "column",
   gap: "8px",
+  minWidth: 0,
 });
 
 export const title = style({
   ...TYPO.LABEL1M,
   margin: 0,
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });
 
 export const stats = style({
@@ -69,4 +73,21 @@ export const timeAgo = style({
 export const playButtonWrapper = style({
   width: "32px",
   height: "32px",
+  flexShrink: "0",
+});
+
+export const tagWrapper = style({
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "4px",
+  maxHeight: "40px",
+  overflow: "hidden",
+});
+
+export const tag = style({
+  ...TYPO.CAPTION2M,
+  backgroundColor: COLORS.NEUTRAL100,
+  borderRadius: "1px",
+  padding: "2px 4px",
+  color: COLORS.NEUTRAL500,
 });

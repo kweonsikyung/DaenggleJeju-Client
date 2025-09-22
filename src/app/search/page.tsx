@@ -24,7 +24,6 @@ import { usePlaceSearch, usePlaceList } from "@/hooks/api/usePlaces";
 import { useDaenggleSearch } from "@/hooks/api/useDaenggle";
 
 // utils and types
-import { DANGLE_VIDEOS_DATA, KEYWORDS } from "@/utils/dummy_data";
 import {
   FILTER_CHIPS,
   OPTION_DATA,
@@ -35,6 +34,7 @@ import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
 import type { GetDaenggleSearchReq } from "@/types/daenggle";
 import { normalizeChips } from "@/utils/normalizeChips";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
+import { getThumbnailUrl } from "../dangle/_util";
 
 /**
  * 검색 페이지
@@ -131,6 +131,12 @@ function SearchPageContent() {
       ? undefined
       : { q: query, sort: "rank", limit: 20, offset: 0 }
   );
+
+  const {
+    daenggleSearchData: recommendationData,
+    isLoading: isRecommendationLoading,
+    error: recommendationError,
+  } = useDaenggleSearch({ q: "추천", sort: "rank", limit: 10, offset: 0 });
 
   // 최종 노출 아이템 결정
   const isLoading =
@@ -271,11 +277,35 @@ function SearchPageContent() {
             </div> */}
             <div className={s.section}>
               <h2 className={s.sectionTitle}>이번 주 제주 여기가 뜨겁댕!</h2>
-              <div className={s.videoList}>
-                {DANGLE_VIDEOS_DATA.map((v, i) => (
-                  <DangleVideo key={i} {...v} onClick={() => {}} />
-                ))}
-              </div>
+              {isRecommendationLoading && (
+                <EmptyState title="추천 장소 로딩 중" />
+              )}
+              {recommendationError && (
+                <EmptyState
+                  title="오류 발생"
+                  description="추천 장소를 불러오지 못했습니다."
+                />
+              )}
+              {recommendationData && (
+                <div className={s.videoList}>
+                  {recommendationData.items.map((item) => {
+                    const { cleanTitle, tags } = extractHashtags(item.title);
+                    return (
+                      <DangleVideo
+                        key={item.video_id}
+                        thumbnailUrl={getThumbnailUrl(item.video_id)}
+                        title={cleanTitle ? cleanTitle : tags[0] + tags[1]}
+                        views={item.loveCount}
+                        timeAgo={item.published_at}
+                        tags={tags}
+                        onClick={() =>
+                          router.push(`/shorts?contentId=${item.video_id}`)
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </>
         ) : (

@@ -56,7 +56,7 @@ export const keywordsWrapper = style({
 export const videoList = style({
   display: "flex",
   flexDirection: "column",
-  gap: "12px",
+  gap: "15px",
 });
 
 export const placeCard = style({

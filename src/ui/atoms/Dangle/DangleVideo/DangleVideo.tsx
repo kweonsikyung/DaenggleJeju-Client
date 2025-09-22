@@ -10,21 +10,24 @@ export interface DangleVideoProps {
   /** 제목 텍스트 */
   title: string;
   /** 조회수 */
-  views: number;
+  views?: number;
   /** 댓글 수 */
-  comments: number;
+  comments?: number;
   /** 업로드 시간 */
-  timeAgo: string;
+  timeAgo?: string;
   /** 클릭 이벤트 핸들러 */
   onClick?: () => void;
+  /** 해시태그 */
+  tags?: string[];
 }
 
 export function DangleVideo({
   thumbnailUrl,
   title,
-  views,
-  comments,
-  timeAgo,
+  views = 0,
+  comments = 0,
+  timeAgo = "1개월 전",
+  tags,
   onClick,
 }: DangleVideoProps) {
   return (
@@ -33,13 +36,22 @@ export function DangleVideo({
         <Image
           src={thumbnailUrl}
           alt="비디오 썸네일"
-          width={54}
-          height={80}
+          width={70}
+          height={90}
           className={s.thumbnail}
         />
       </div>
       <div className={s.contentWrapper}>
         <h3 className={s.title}>{title}</h3>
+        {tags && (
+          <div className={s.tagWrapper}>
+            {tags?.map((tag) => (
+              <span key={tag} className={s.tag}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
         <div className={s.stats}>
           <div className={s.statItem}>
             <Image
@@ -75,6 +87,5 @@ export function DangleVideo({
     </div>
   );
 }
-
 
 export default DangleVideo;
