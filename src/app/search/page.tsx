@@ -294,7 +294,7 @@ function SearchPageContent() {
                       <DangleVideo
                         key={item.video_id}
                         thumbnailUrl={getThumbnailUrl(item.video_id)}
-                        title={cleanTitle ? cleanTitle : tags[0] + tags[1]}
+                        title={cleanTitle ? cleanTitle : tags.join(" ")}
                         views={item.loveCount}
                         timeAgo={item.published_at}
                         tags={tags}
@@ -392,29 +392,33 @@ function SearchPageContent() {
                       />
                     ) : (
                       <div className={s.grid}>
-                        {placeResults.map((item) => (
-                          <DanglePlace
-                            key={item.contentId}
-                            thumbnailUrl={item.thumbnail}
-                            locationCategory={
-                              item.metaLine
-                                ? `${item.metaLine} · ${
-                                    item.contentType?.name ?? ""
-                                  }`
-                                : item.contentType?.name ?? ""
-                            }
-                            name={item.title}
-                            distance={item.distanceText}
-                            playCount={0}
-                            bookmarkCount={item.scrapCount ?? 0}
-                            tags={normalizeChips(
-                              (item as unknown as { chips: unknown }).chips
-                            )}
-                            onClick={() =>
-                              router.push(`/detail/${item.contentId}`)
-                            }
-                          />
-                        ))}
+                        {placeResults.map((item) => {
+                          const count = item.scrapCount
+                            ? Object.values(item.scrapCount)[0] || 0
+                            : 0;
+
+                          return (
+                            <DanglePlace
+                              key={item.contentId}
+                              thumbnailUrl={item.thumbnail}
+                              locationCategory={
+                                item.metaLine
+                                  ? `${item.metaLine} · ${
+                                      item.contentType?.name ?? ""
+                                    }`
+                                  : item.contentType?.name ?? ""
+                              }
+                              name={item.title}
+                              distance={item.distanceText}
+                              playCount={0}
+                              bookmarkCount={Number(count)}
+                              tags={item.chips || []}
+                              onClick={() =>
+                                router.push(`/detail/${item.contentId}`)
+                              }
+                            />
+                          );
+                        })}
                       </div>
                     )}
                   </>
