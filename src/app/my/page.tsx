@@ -39,19 +39,19 @@ export default function Page() {
       <TopBar
         backIconHandler={() => router.back()}
         title="마이댕글"
-        rightIcons={[
-          {
-            icon: (
-              <Image
-                alt="알림"
-                height={24}
-                width={24}
-                src="/assets/icon24/bell-active_line.svg"
-              />
-            ),
-            onClick: () => router.push("/notification"),
-          },
-        ]}
+        // rightIcons={[
+        //   {
+        //     icon: (
+        //       <Image
+        //         alt="알림"
+        //         height={24}
+        //         width={24}
+        //         src="/assets/icon24/bell-active_line.svg"
+        //       />
+        //     ),
+        //     onClick: () => router.push("/notification"),
+        //   },
+        // ]}
       />
 
       {/* container */}
