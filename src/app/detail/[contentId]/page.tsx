@@ -277,7 +277,9 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   type="small"
                   imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
                   profileImageUrl={"/assets/dangle/dog.png"}
-                  onClick={() => window.open(item.playbackUrl, "_blank")}
+                  onClick={() =>
+                    router.push(`/shorts?contentId=${item.video_id}`)
+                  }
                 />
               ))}
             </Carousel>

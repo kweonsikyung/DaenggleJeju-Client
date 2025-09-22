@@ -372,7 +372,9 @@ function SearchPageContent() {
                               comments={item.scrapCount || 0}
                               timeAgo={item.published_at}
                               onClick={() =>
-                                window.open(item.playbackUrl, "_blank")
+                                router.push(
+                                  `/shorts?contentId=${item.video_id}`
+                                )
                               }
                             />
                           );
