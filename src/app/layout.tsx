@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: ogImageUrl,
-        width: 1488,
-        height: 558,
+        width: 1200,
+        height: 630,
         alt: "댕글제주 - 반려견 동반 제주 여행",
       },
     ],
