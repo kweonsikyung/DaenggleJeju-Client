@@ -14,9 +14,36 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const ogImageUrl = `${siteUrl}/og-image.png`;
+
 export const metadata: Metadata = {
   title: "댕글제주",
   description: "15초 영상 추천 반려견 여행 앱",
+  icons: {
+    icon: "/favicon.ico",
+  },
+  openGraph: {
+    title: "댕글제주",
+    description: "15초 영상 추천 반려견 여행 앱",
+    url: siteUrl,
+    siteName: "댕글제주",
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1488,
+        height: 558,
+        alt: "댕글제주 - 반려견 동반 제주 여행",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "댕글제주",
+    description: "15초 영상 추천 반려견 여행 앱",
+    images: [ogImageUrl],
+  },
 };
 
 export default function RootLayout({
