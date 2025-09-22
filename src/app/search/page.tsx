@@ -21,7 +21,10 @@ import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
 // hooks
 import { usePlaceSearch, usePlaceList } from "@/hooks/api/usePlaces";
-import { useDaenggleSearch } from "@/hooks/api/useDaenggle";
+import {
+  useDaenggleSearch,
+  useDaengglePlacesAll,
+} from "@/hooks/api/useDaenggle";
 
 // utils and types
 import {
@@ -32,7 +35,6 @@ import {
 } from "../map/_util";
 import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
 import type { GetDaenggleSearchReq } from "@/types/daenggle";
-import { normalizeChips } from "@/utils/normalizeChips";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getThumbnailUrl } from "../dangle/_util";
 
@@ -127,25 +129,37 @@ function SearchPageContent() {
     error: dangleError,
     isLoading: dangleIsLoading,
   } = useDaenggleSearch(
-    isFilteredListMode
-      ? undefined
-      : { q: query, sort: "rank", limit: 20, offset: 0 }
+    !query ? undefined : { q: query, sort: "rank", limit: 20, offset: 0 }
   );
 
   const {
     daenggleSearchData: recommendationData,
     isLoading: isRecommendationLoading,
     error: recommendationError,
-  } = useDaenggleSearch({ q: "추천", sort: "rank", limit: 10, offset: 0 });
+  } = useDaenggleSearch(
+    !isSearchMode
+      ? { q: "추천", sort: "rank", limit: 10, offset: 0 }
+      : undefined
+  );
+  const {
+    daengglePlacesAllData,
+    isLoading: isPlacesAllLoading,
+    error: PlacesAllError,
+  } = useDaengglePlacesAll();
 
   // 최종 노출 아이템 결정
   const isLoading =
-    placeSearchIsLoading || placeListIsLoading || dangleIsLoading;
-  const isError = placeSearchError || placeListError || dangleError;
+    placeSearchIsLoading ||
+    placeListIsLoading ||
+    dangleIsLoading ||
+    isPlacesAllLoading;
+  const isError =
+    placeSearchError || placeListError || dangleError || PlacesAllError;
   const placeResults = isFilteredListMode
     ? placeListData?.items ?? []
     : placeSearchData?.items ?? [];
-  const dangleResults = daenggleSearchData?.items ?? [];
+  const dangleResults =
+    (query ? daenggleSearchData?.items : daengglePlacesAllData?.items) ?? [];
 
   /** 필터 핸들러 */
   const handleFilterSelect = (group: string, id: string) => {
@@ -238,6 +252,7 @@ function SearchPageContent() {
                   if (chip.id === "filter") {
                     setIsBottomSheetOpen(true);
                   } else {
+                    router.push(`/search?q=${query}&filter=${chip.id}`);
                     setActiveFilter(chip.id);
                   }
                 }}
@@ -324,7 +339,7 @@ function SearchPageContent() {
               />
             )}
             {!isLoading && !isError && (
-              // 댕글 외 칩
+              // 댕글 칩
               <>
                 {activeFilter === "dangle" ? (
                   <>
@@ -335,49 +350,68 @@ function SearchPageContent() {
                       />
                     ) : (
                       <Grid>
-                        {dangleResults.map((item, index) => {
-                          const { cleanTitle, tags: extractedTags } =
-                            extractHashtags(item.title);
+                        {dangleResults.map((item: any, index) => {
+                          if (query) {
+                            // 쿼리가 있을 때 (검색 결과)
+                            const { cleanTitle, tags: extractedTags } =
+                              extractHashtags(item.title);
+                            const {
+                              place: extractedPlace,
+                              region: extractedRegion,
+                            } = findLocationInfo(item.title);
 
-                          const {
-                            place: extractedPlace,
-                            region: extractedRegion,
-                          } = findLocationInfo(item.title);
+                            // --- 로케이션/주소 추출 시도 ---
+                            const finalPlace = extractedPlace || "";
+                            const finalRegion =
+                              extractedRegion || item.placePill || "제주 전체";
+                            // --- 태그 병합 (중복 제거) ---
+                            const finalTags = [
+                              ...new Set([
+                                ...extractedTags,
+                                ...(item.tags || []),
+                              ]),
+                            ];
 
-                          // --- 로케이션/주소 추출 시도 ---
-                          const finalPlace = extractedPlace || "";
-                          const finalRegion =
-                            extractedRegion || item.placePill || "제주 전체";
-                          // --- 태그 병합 (중복 제거) ---
-                          const finalTags = [
-                            ...new Set([
-                              ...extractedTags,
-                              ...(item.tags || []),
-                            ]),
-                          ];
-
-                          return (
-                            <DanglePlay
-                              key={`${item.video_id}-${index}`}
-                              type="medium"
-                              width="100%"
-                              imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
-                              profileImageUrl={"/assets/profile-default.png"}
-                              name={item.authorName}
-                              location={finalRegion}
-                              address={finalPlace}
-                              title={cleanTitle}
-                              tags={finalTags}
-                              views={item.loveCount || 0}
-                              comments={item.scrapCount || 0}
-                              timeAgo={item.published_at}
-                              onClick={() =>
-                                router.push(
-                                  `/shorts?contentId=${item.video_id}`
-                                )
-                              }
-                            />
-                          );
+                            return (
+                              <DanglePlay
+                                key={`${item.video_id}-${index}`}
+                                type="medium"
+                                width="100%"
+                                imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
+                                profileImageUrl={"/assets/profile-default.png"}
+                                name={item.authorName}
+                                location={finalRegion}
+                                address={finalPlace}
+                                title={cleanTitle}
+                                tags={finalTags}
+                                views={item.loveCount || 0}
+                                comments={item.scrapCount || 0}
+                                timeAgo={item.published_at}
+                                onClick={() =>
+                                  router.push(
+                                    `/shorts?contentId=${item.video_id}`
+                                  )
+                                }
+                              />
+                            );
+                          } else {
+                            // 쿼리가 없을 때 (전체 장소)
+                            return (
+                              <DanglePlay
+                                key={`${item.video_id}-${index}`}
+                                type="short"
+                                width="100%"
+                                imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
+                                location={item.placeTitle}
+                                address="제주 전체"
+                                onClick={() => {
+                                  router.push(
+                                    `/shorts?contentId=${item.video_id}`
+                                  );
+                                }}
+                              />
+                            );
+                          }
                         })}
                       </Grid>
                     )}
