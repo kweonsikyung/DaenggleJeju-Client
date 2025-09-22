@@ -196,15 +196,13 @@ export function useDaengglePlaceRecommendations(
  * @hook useDaengglePlacesAll
  * @description SWR 훅: 장소 연관 댕글 영상 리스트 전체 조회
  */
-export function useDaengglePlacesAll(params?: GetDaengglePlacesAllReq) {
-  const key = params ? ["/daenggle/places/all", params] : null;
+export function useDaengglePlacesAll() {
+  const key = "/daenggle/places/all";
 
   const { data, error, isLoading, mutate } = useSWR<
     DaengglePlacesAllResult,
     ApiError
-  >(key, ([, queryParams]: [string, GetDaengglePlacesAllReq]) =>
-    getDaengglePlacesAll(queryParams)
-  );
+  >(key, getDaengglePlacesAll);
 
   return {
     daengglePlacesAllData: data,
