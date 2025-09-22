@@ -33,7 +33,11 @@ import {
   FILTER_OPTION_ID_TO_API_PARAM,
   getContentTypeIdByChipId,
 } from "../map/_util";
-import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
+import type {
+  GetPlaceSearchReq,
+  GetPlaceListReq,
+  PlaceItem,
+} from "@/types/place";
 import type { GetDaenggleSearchReq } from "@/types/daenggle";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getThumbnailUrl } from "../dangle/_util";
@@ -382,7 +386,7 @@ function SearchPageContent() {
                       />
                     ) : (
                       <div className={s.grid}>
-                        {placeResults.map((item: any) => {
+                        {placeResults.map((item: PlaceItem) => {
                           const count = item.scrapCount
                             ? Object.values(item.scrapCount)[0] || 0
                             : 0;
