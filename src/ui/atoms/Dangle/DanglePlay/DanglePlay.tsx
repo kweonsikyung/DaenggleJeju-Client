@@ -114,29 +114,33 @@ export function DanglePlay({
               ))}
             </div>
           </div>
-          <div className={s.stats}>
-            <div className={s.statItem}>
-              <Image
-                src="/assets/icon12/eye-outlined.svg"
-                alt="조회수"
-                width={12}
-                height={12}
-              />
-              <span className={s.statValue}>{views?.toLocaleString()}</span>
+          {views && (
+            <div className={s.stats}>
+              <div className={s.statItem}>
+                <Image
+                  src="/assets/icon12/eye-outlined.svg"
+                  alt="조회수"
+                  width={12}
+                  height={12}
+                />
+                <span className={s.statValue}>{views?.toLocaleString()}</span>
+              </div>
+              <div className={s.statItem}>·</div>
+              <div className={s.statItem}>
+                <Image
+                  alt="댓글"
+                  width={12}
+                  height={12}
+                  src="/assets/icon12/bookmark_filled.svg"
+                />
+                <span className={s.statValue}>
+                  {comments?.toLocaleString()}
+                </span>
+              </div>
+              <div className={s.statItem}>·</div>
+              <div className={s.timeAgo}>{timeAgo}</div>
             </div>
-            <div className={s.statItem}>·</div>
-            <div className={s.statItem}>
-              <Image
-                alt="댓글"
-                width={12}
-                height={12}
-                src="/assets/icon12/bookmark_filled.svg"
-              />
-              <span className={s.statValue}>{comments?.toLocaleString()}</span>
-            </div>
-            <div className={s.statItem}>·</div>
-            <div className={s.timeAgo}>{timeAgo}</div>
-          </div>
+          )}
         </div>
       )}
 

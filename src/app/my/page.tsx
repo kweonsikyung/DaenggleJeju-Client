@@ -24,6 +24,7 @@ import { usePetProfileList } from "@/hooks/api/usePetProfile";
 import { useScrapList } from "@/hooks/api/useScraps";
 import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
+import { extractHashtags } from "@/utils/textParsing";
 
 /**
  * 마이 페이지
@@ -132,22 +133,25 @@ export default function Page() {
               description={currentEmptyState.description}
             />
           ) : activeSubTab === "dangle" ? (
-            <div className={s.gridContainer}>
-              {(filteredItems as ScrapDangleItem[]).map((item, index) => (
-                <DanglePlay
-                  key={`${item.videoId}-${index}`}
-                  type="medium"
-                  width="100%"
-                  imageUrl={item.thumbnailUrl}
-                  profileImageUrl={getRandomAvatar()}
-                  name={item.channelTitle}
-                  title={item.title}
-                  tags={[...item.tags, ...item.styles]}
-                  onClick={() =>
-                    router.push(`/shorts?contentId=${item.videoId}`)
-                  }
-                />
-              ))}
+            <div className={s.placeList}>
+              {(filteredItems as ScrapDangleItem[]).map((item, index) => {
+                const { cleanTitle, tags } = extractHashtags(item.title);
+                return (
+                  <DanglePlay
+                    key={`${item.videoId}-${index}`}
+                    type="medium"
+                    width="100%"
+                    imageUrl={item.thumbnailUrl}
+                    profileImageUrl={getRandomAvatar()}
+                    name={item.channelTitle}
+                    title={cleanTitle}
+                    tags={tags}
+                    onClick={() =>
+                      router.push(`/shorts?contentId=${item.videoId}`)
+                    }
+                  />
+                );
+              })}
             </div>
           ) : (
             <div className={s.placeList}>
