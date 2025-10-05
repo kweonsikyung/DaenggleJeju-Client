@@ -91,6 +91,10 @@ export const profileImage = style({
 export const name = style({
   ...TYPO.LABEL2M,
   color: "#fff",
+
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 });
 
 export const content = style({

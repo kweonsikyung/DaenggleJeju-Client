@@ -37,6 +37,7 @@ import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
 import type { GetDaenggleSearchReq } from "@/types/daenggle";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getThumbnailUrl } from "../dangle/_util";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 /**
  * 검색 페이지
@@ -378,7 +379,7 @@ function SearchPageContent() {
                                 type="medium"
                                 width="100%"
                                 imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
-                                profileImageUrl={"/assets/profile-default.png"}
+                                profileImageUrl={getRandomAvatar()}
                                 name={item.authorName}
                                 location={finalRegion}
                                 address={finalPlace}

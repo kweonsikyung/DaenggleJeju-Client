@@ -1,6 +1,7 @@
 import { DaenggleVideoItem } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
 import { DropdownOption } from "@/ui/atoms/Dropdown/Dropdown";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 export const JEJU_REGIONS: DropdownOption[] = [
   { value: "PLACE_jeju_si", label: "제주시(도심)" },
@@ -39,7 +40,7 @@ export function formatApiVideoToLocal(video: ApiVideoFormat): VideoData {
     id: videoId as string,
     videoId: videoId as string,
     thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-    profileImageUrl: "/assets/dangle/dog.png",
+    profileImageUrl: getRandomAvatar(),
     userName: author || "댕글 추천",
     description: caption as string,
     tags: video.tags || [],

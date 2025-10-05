@@ -27,6 +27,7 @@ import { useVisitedRegions } from "@/hooks/useVisitedRegions";
 import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
 import { JEJU_DATA } from "@/utils/dummy_data";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 /**
  * 댕글추천 페이지
@@ -162,7 +163,7 @@ export default function Page() {
                 key={item.video_id}
                 type="small"
                 imageUrl={getThumbnailUrl(item.video_id)}
-                profileImageUrl="/assets/dangle/dog.png"
+                profileImageUrl={getRandomAvatar()}
                 name={item.authorName}
                 onClick={() => {
                   router.push(
