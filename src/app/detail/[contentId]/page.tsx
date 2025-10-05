@@ -22,6 +22,7 @@ import { usePostScrap } from "@/hooks/api/useScraps";
 import { normalizeChipsArray } from "@/utils/normalizeChipsArray";
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { REVIEW_DATA } from "@/utils/dummy_data";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 const averageRating = 4.3;
 const roundedRating = Math.round(averageRating);
@@ -276,7 +277,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   key={item.video_id}
                   type="small"
                   imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
-                  profileImageUrl={"/assets/dangle/dog.png"}
                   onClick={() =>
                     router.push(`/shorts?contentId=${item.video_id}`)
                   }

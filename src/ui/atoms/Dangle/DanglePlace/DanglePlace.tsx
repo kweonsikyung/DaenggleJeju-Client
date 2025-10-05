@@ -28,7 +28,7 @@ export interface DanglePlaceProps {
   /** 북마크 상태 */
   isBookmarked?: boolean;
   /** 북마크 클릭 이벤트 핸들러 */
-  onBookmarkClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onBookmarkClick?: () => Promise<void> | void;
 }
 
 export function DanglePlace({
