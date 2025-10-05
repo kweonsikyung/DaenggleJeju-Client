@@ -22,3 +22,14 @@ export const contentWrapper = style({
   flexDirection: "column",
   gap: "16px",
 });
+
+export const listContainer = style({
+  padding: "16px",
+  flex: 1,
+});
+
+export const placeList = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+});
