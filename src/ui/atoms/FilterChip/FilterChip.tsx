@@ -27,7 +27,11 @@ export function FilterChip({
       onClick={onClick}
       role="button"
     >
-      {iconUrl && <Image src={iconUrl} alt="" width={16} height={16} />}
+      {iconUrl && (
+        <div className={s.icon[selected ? "selected" : "default"]}>
+          <Image src={iconUrl} alt="" width={16} height={16} />
+        </div>
+      )}
       <span className={s.text[selected ? "selected" : "default"]}>{text}</span>
     </button>
   );

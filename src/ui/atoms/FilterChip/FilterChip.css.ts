@@ -37,3 +37,12 @@ export const text = styleVariants({
     color: "#404040",
   },
 });
+
+export const icon = styleVariants({
+  selected: {
+    filter: "brightness(0) invert(1)",
+  },
+  default: {
+    filter: "none",
+  },
+});
