@@ -132,11 +132,12 @@ export default function Page() {
               description={currentEmptyState.description}
             />
           ) : activeSubTab === "dangle" ? (
-            <Grid>
+            <div className={s.gridContainer}>
               {(filteredItems as ScrapDangleItem[]).map((item, index) => (
                 <DanglePlay
                   key={`${item.videoId}-${index}`}
                   type="medium"
+                  width="100%"
                   imageUrl={item.thumbnailUrl}
                   profileImageUrl={getRandomAvatar()}
                   name={item.channelTitle}
@@ -150,7 +151,7 @@ export default function Page() {
                   }
                 />
               ))}
-            </Grid>
+            </div>
           ) : (
             <div className={s.placeList}>
               {(filteredItems as ScrapPlaceItem[]).map((item) => (
