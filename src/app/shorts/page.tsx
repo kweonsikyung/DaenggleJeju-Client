@@ -442,8 +442,8 @@ function ShortsPageContent() {
                                     : "/assets/video/save.svg"
                                 }
                                 alt="Save"
-                                width={28}
-                                height={28}
+                                width={40}
+                                height={40}
                               />
                               <span>
                                 {formatNumber(
@@ -465,8 +465,8 @@ function ShortsPageContent() {
                                     : "/assets/video/heart.svg"
                                 }
                                 alt="Like"
-                                width={28}
-                                height={28}
+                                width={40}
+                                height={40}
                               />
                               <span>
                                 {formatNumber(
