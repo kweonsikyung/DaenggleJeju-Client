@@ -14,6 +14,36 @@ export interface GetScrapListReq {
   offset?: number;
 }
 
+/** 스크랩된 장소 아이템 타입 */
+export interface ScrapPlaceItem {
+  contentId: number;
+  contentType: {
+    id: number;
+    name: string;
+  };
+  title: string;
+  thumbnail: string | null;
+  metaLine: string;
+  distanceText: string | null;
+  isScrapped: boolean;
+  chips: string[];
+  scrapCount: number;
+}
+
+/** 스크랩된 댕글 아이템 타입 */
+export interface ScrapDangleItem {
+  videoId: string;
+  title: string;
+  channelTitle: string;
+  publishedAt: string;
+  durationSeconds: number;
+  thumbnailUrl: string;
+  watchUrl: string;
+  tags: string[];
+  styles: string[];
+  isScrapped: boolean;
+}
+
 /**
  * 사용자 본인이 스크랩한 항목 조회 Response
  * @description GET /scraps/my 요청의 성공 응답 타입
@@ -23,7 +53,7 @@ export interface GetScrapListReq {
  */
 export interface GetScrapListRes {
   total: number;
-  items: [];
+  items: (ScrapPlaceItem | ScrapDangleItem)[];
 }
 
 /**

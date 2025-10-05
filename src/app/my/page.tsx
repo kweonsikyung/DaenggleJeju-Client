@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import * as s from "./style.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,10 +14,15 @@ import Tabs from "@/ui/atoms/Tabs/Tabs";
 import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
+import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
+import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import Grid from "@/ui/molecules/Grid/Grid";
 
 //utils and hooks
 import { mainTabs, subTabs, emptyStateContent } from "./_util";
 import { usePetProfileList } from "@/hooks/api/usePetProfile";
+import { useScrapList } from "@/hooks/api/useScraps";
+import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 /**
@@ -32,48 +37,52 @@ export default function Page() {
   const [activeMainTab, setActiveMainTab] = useState("saved");
   const [activeSubTab, setActiveSubTab] = useState("dangle");
 
-  const { petProfileList, isLoading, error } = usePetProfileList();
-
-  if (isLoading) return <div>프로필 정보를 불러오는 중</div>;
-  if (error) return <div>오류가 발생했습니다</div>;
-
+  const { petProfileList, isLoading: isPetProfileLoading } =
+    usePetProfileList();
   const myPet = petProfileList?.at(-1);
 
-  const detailsParts = [
+  const scrapType = activeSubTab === "dangle" ? "daenggle" : "place";
+  const { scrapData, isLoading: isScrapsLoading } = useScrapList({
+    type: scrapType,
+    limit: 50,
+  });
+  const tabIdToContentType: Record<string, string> = {
+    accom: "숙소",
+    restaurant: "음식점",
+    tourist: "관광지",
+    activity: "레포츠",
+  };
+
+  const filteredItems = useMemo(() => {
+    if (!scrapData?.items) return [];
+    if (activeSubTab === "dangle") {
+      return scrapData.items as ScrapDangleItem[];
+    }
+    const targetContentType = tabIdToContentType[activeSubTab];
+    return (scrapData.items as ScrapPlaceItem[]).filter(
+      (item) => item.contentType?.name === targetContentType
+    );
+  }, [scrapData, activeSubTab]);
+
+  const detailsString = [
     myPet?.breedNameKo,
     myPet?.sizeLabelKo,
     myPet?.ageYears ? `${myPet.ageYears}살` : null,
-  ];
-  const detailsString = detailsParts.filter(Boolean).join(" · ");
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const currentEmptyState =
     emptyStateContent[activeMainTab as keyof typeof emptyStateContent];
 
   return (
     <div className={s.page}>
-      {/* Topbar */}
-      <TopBar
-        backIconHandler={() => router.back()}
-        title="마이댕글"
-        // rightIcons={[
-        //   {
-        //     icon: (
-        //       <Image
-        //         alt="알림"
-        //         height={24}
-        //         width={24}
-        //         src="/assets/icon24/bell-active_line.svg"
-        //       />
-        //     ),
-        //     onClick: () => router.push("/notification"),
-        //   },
-        // ]}
-      />
-
-      {/* container */}
+      <TopBar backIconHandler={() => router.back()} title="마이댕글" />
       <div className={s.container}>
         <div className={s.contentWrapper}>
-          {myPet ? (
+          {isPetProfileLoading ? (
+            <div>프로필 로딩 중...</div>
+          ) : myPet ? (
             <ProfileCard
               imageUrl="/assets/dangle/dog.png"
               name={myPet.name}
@@ -113,11 +122,56 @@ export default function Page() {
           activeTab={activeSubTab}
           onTabClick={setActiveSubTab}
         />
-        <EmptyState
-          imageUrl={currentEmptyState.imageUrl}
-          title={currentEmptyState.title}
-          description={currentEmptyState.description}
-        />
+        <div className={s.listContainer}>
+          {isScrapsLoading ? (
+            <p>스크랩 목록을 불러오는 중입니다...</p>
+          ) : filteredItems.length === 0 ? (
+            <EmptyState
+              imageUrl={currentEmptyState.imageUrl}
+              title={currentEmptyState.title}
+              description={currentEmptyState.description}
+            />
+          ) : activeSubTab === "dangle" ? (
+            <Grid>
+              {(filteredItems as ScrapDangleItem[]).map((item, index) => (
+                <DanglePlay
+                  key={`${item.videoId}-${index}`}
+                  type="medium"
+                  imageUrl={item.thumbnailUrl}
+                  profileImageUrl={getRandomAvatar()}
+                  name={item.channelTitle}
+                  title={item.title}
+                  tags={[...item.tags, ...item.styles]}
+                  views={0}
+                  comments={0}
+                  timeAgo={item.publishedAt}
+                  onClick={() =>
+                    router.push(`/shorts?contentId=${item.videoId}`)
+                  }
+                />
+              ))}
+            </Grid>
+          ) : (
+            <div className={s.placeList}>
+              {(filteredItems as ScrapPlaceItem[]).map((item) => (
+                <DanglePlace
+                  key={item.contentId}
+                  thumbnailUrl={item.thumbnail || ""}
+                  locationCategory={
+                    item.metaLine || item.contentType?.name || ""
+                  }
+                  name={item.title}
+                  distance={item.distanceText}
+                  playCount={0}
+                  bookmarkCount={item.scrapCount || 0}
+                  tags={item.chips}
+                  isBookmarked={item.isScrapped}
+                  onClick={() => router.push(`/detail/${item.contentId}`)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Nav */}
