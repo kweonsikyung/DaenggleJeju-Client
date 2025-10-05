@@ -54,7 +54,7 @@ export function DanglePlace({
   const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (onBookmarkClick) {
-      onBookmarkClick(e);
+      onBookmarkClick();
     }
   };
 
