@@ -45,3 +45,20 @@ export function usePostPetProfile() {
     createError: error,
   };
 }
+
+/**
+ * @hook usePetProfileList
+ * @description 내 모든 반려견 프로필 목록을 조회하는 SWR 훅
+ * @returns 반려견 프로필 목록 데이터, 로딩 상태, 에러 객체
+ */
+export function usePetProfileList() {
+  const { data, error, isLoading } = useSWR<PetProfileRes[], ApiError>(
+    "/pets/profiles-list"
+  );
+
+  return {
+    petProfileList: data,
+    error,
+    isLoading,
+  };
+}

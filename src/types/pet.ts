@@ -42,5 +42,5 @@ export interface PetProfileRes {
   name: string;
   breedNameKo: string;
   sizeLabelKo: string;
-  ageYears: string | null;
+  ageYears: number | null;
 }
