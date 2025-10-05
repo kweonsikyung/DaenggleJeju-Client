@@ -143,9 +143,6 @@ export default function Page() {
                   name={item.channelTitle}
                   title={item.title}
                   tags={[...item.tags, ...item.styles]}
-                  views={0}
-                  comments={0}
-                  timeAgo={item.publishedAt}
                   onClick={() =>
                     router.push(`/shorts?contentId=${item.videoId}`)
                   }
@@ -163,10 +160,7 @@ export default function Page() {
                   }
                   name={item.title}
                   distance={item.distanceText}
-                  playCount={0}
-                  bookmarkCount={item.scrapCount || 0}
                   tags={item.chips}
-                  isBookmarked={item.isScrapped}
                   onClick={() => router.push(`/detail/${item.contentId}`)}
                 />
               ))}
