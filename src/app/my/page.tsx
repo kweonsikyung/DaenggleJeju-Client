@@ -47,7 +47,7 @@ export default function Page() {
     limit: 50,
   });
   const tabIdToContentType: Record<string, string> = {
-    accom: "숙소",
+    accom: "숙박",
     restaurant: "음식점",
     tourist: "관광지",
     activity: "레포츠",

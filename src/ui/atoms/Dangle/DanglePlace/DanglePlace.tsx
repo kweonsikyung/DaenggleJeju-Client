@@ -122,18 +122,20 @@ export function DanglePlace({
             ))}
           </div>
         </div>
-        <button className={s.bookmarkButton} onClick={handleBookmarkClick}>
-          <Image
-            alt="북마크"
-            width={24}
-            height={24}
-            src={
-              isBookmarked
-                ? "/assets/icon24/bookmark_filled.svg"
-                : "/assets/icon24/bookmark_line.svg"
-            }
-          />
-        </button>
+        {onBookmarkClick && (
+          <button className={s.bookmarkButton} onClick={handleBookmarkClick}>
+            <Image
+              alt="북마크"
+              width={24}
+              height={24}
+              src={
+                isBookmarked
+                  ? "/assets/icon24/bookmark_filled.svg"
+                  : "/assets/icon24/bookmark_line.svg"
+              }
+            />
+          </button>
+        )}
       </div>
       {isExpanded && (
         <div className={s.expandedContent}>
