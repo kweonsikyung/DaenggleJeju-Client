@@ -73,7 +73,11 @@ export const FILTER_CHIPS = [
     iconUrl: "/assets/icon12/restaurant_filled.svg",
   },
   { id: "travel", text: "여행지", iconUrl: "/assets/icon12/travel_filled.svg" },
-  { id: "report", text: "레포츠", iconUrl: "/assets/icon12/care-filled.svg" },
+  {
+    id: "report",
+    text: "레포츠",
+    iconUrl: "/assets/icon12/snorkle_filled.svg",
+  },
 ];
 
 /**
