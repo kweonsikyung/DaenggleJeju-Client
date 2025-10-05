@@ -133,7 +133,7 @@ export default function Page() {
               description={currentEmptyState.description}
             />
           ) : activeSubTab === "dangle" ? (
-            <div className={s.gridContainer}>
+            <div className={s.placeList}>
               {(filteredItems as ScrapDangleItem[]).map((item, index) => {
                 const { cleanTitle, tags } = extractHashtags(item.title);
                 return (

@@ -29,13 +29,6 @@ export const listContainer = style({
   flex: 1,
 });
 
-export const gridContainer = style({
-  display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
-  gap: "12px",
-  padding: "16px",
-});
-
 export const placeList = style({
   padding: "16px",
   display: "flex",
