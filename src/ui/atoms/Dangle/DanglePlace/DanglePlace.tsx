@@ -14,9 +14,9 @@ export interface DanglePlaceProps {
   /** 거리 */
   distance: string | null;
   /** 재생 수 */
-  playCount: number;
+  playCount?: number;
   /** 북마크 수 */
-  bookmarkCount: number;
+  bookmarkCount?: number;
   /** 태그 목록 */
   tags?: string[];
   /** 카드 확장 여부 */
@@ -77,32 +77,43 @@ export function DanglePlace({
           <span className={s.locationCategory}>{locationCategory}</span>
           <h3 className={s.name}>{name}</h3>
           <div className={s.stats}>
-            {distance && (
-              <>
-                <span className={s.statValue}>{distance}km</span>
+            {distance && <span className={s.statValue}>{distance}km</span>}
+            {distance &&
+              (typeof playCount === "number" ||
+                typeof bookmarkCount === "number") && (
                 <div className={s.statItem}>·</div>
-              </>
+              )}
+
+            {typeof playCount === "number" && (
+              <div className={s.statItem}>
+                <Image
+                  alt="재생 수"
+                  width={12}
+                  height={12}
+                  src="/assets/icon12/play_filled.svg"
+                />
+                <span className={s.statValue}>{playCount}</span>
+              </div>
             )}
-            <div className={s.statItem}>
-              <Image
-                alt="재생 수"
-                width={12}
-                height={12}
-                src="/assets/icon12/play_filled.svg"
-              />
-              <span className={s.statValue}>{playCount}</span>
-            </div>
-            <div className={s.statItem}>·</div>
-            <div className={s.statItem}>
-              <Image
-                alt="북마크"
-                width={12}
-                height={12}
-                src="/assets/icon12/bookmark_filled.svg"
-              />
-              <span className={s.statValue}>{bookmarkCount}</span>
-            </div>
+
+            {typeof playCount === "number" &&
+              typeof bookmarkCount === "number" && (
+                <div className={s.statItem}>·</div>
+              )}
+
+            {typeof bookmarkCount === "number" && (
+              <div className={s.statItem}>
+                <Image
+                  alt="북마크"
+                  width={12}
+                  height={12}
+                  src="/assets/icon12/bookmark_filled.svg"
+                />
+                <span className={s.statValue}>{bookmarkCount}</span>
+              </div>
+            )}
           </div>
+
           <div className={s.tags}>
             {tags.map((tag) => (
               <span key={tag} className={s.tag}>

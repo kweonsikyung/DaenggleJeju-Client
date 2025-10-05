@@ -132,25 +132,23 @@ export default function Page() {
               description={currentEmptyState.description}
             />
           ) : activeSubTab === "dangle" ? (
-            <Grid>
+            <div className={s.gridContainer}>
               {(filteredItems as ScrapDangleItem[]).map((item, index) => (
                 <DanglePlay
                   key={`${item.videoId}-${index}`}
                   type="medium"
+                  width="100%"
                   imageUrl={item.thumbnailUrl}
                   profileImageUrl={getRandomAvatar()}
                   name={item.channelTitle}
                   title={item.title}
                   tags={[...item.tags, ...item.styles]}
-                  views={0}
-                  comments={0}
-                  timeAgo={item.publishedAt}
                   onClick={() =>
                     router.push(`/shorts?contentId=${item.videoId}`)
                   }
                 />
               ))}
-            </Grid>
+            </div>
           ) : (
             <div className={s.placeList}>
               {(filteredItems as ScrapPlaceItem[]).map((item) => (
@@ -162,10 +160,7 @@ export default function Page() {
                   }
                   name={item.title}
                   distance={item.distanceText}
-                  playCount={0}
-                  bookmarkCount={item.scrapCount || 0}
                   tags={item.chips}
-                  isBookmarked={item.isScrapped}
                   onClick={() => router.push(`/detail/${item.contentId}`)}
                 />
               ))}
