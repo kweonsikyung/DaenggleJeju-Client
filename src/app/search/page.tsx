@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as s from "./style.css";
+import { mutate } from "swr";
 
 // components
 import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
@@ -25,6 +26,7 @@ import {
   useDaenggleSearch,
   useDaengglePlacesAll,
 } from "@/hooks/api/useDaenggle";
+import { usePostScrap } from "@/hooks/api/useScraps";
 
 // utils and types
 import {
@@ -147,6 +149,27 @@ function SearchPageContent() {
     isLoading: isPlacesAllLoading,
     error: PlacesAllError,
   } = useDaengglePlacesAll();
+
+  const { postScrap, isPosting } = usePostScrap();
+  const handleScrapToggle = async (
+    contentId: number,
+    currentIsScrapped: boolean
+  ) => {
+    if (isPosting) return;
+
+    try {
+      await postScrap({ id: contentId, type: "place" });
+
+      if (isFilteredListMode) {
+        mutate(["/places/list", placeListReq]);
+      } else {
+        mutate(["/places/search", placeSearchReq]);
+      }
+    } catch (e) {
+      console.error("Scrap action failed:", e);
+      alert("스크랩 작업에 실패했습니다.");
+    }
+  };
 
   // 최종 노출 아이템 결정
   const isLoading =
@@ -447,6 +470,13 @@ function SearchPageContent() {
                               distance={item.distanceText}
                               playCount={0}
                               bookmarkCount={Number(count)}
+                              onBookmarkClick={() =>
+                                handleScrapToggle(
+                                  item.contentId,
+                                  item.isScrapped
+                                )
+                              }
+                              isBookmarked={item.isScrapped}
                               tags={item.chips || []}
                               onClick={() =>
                                 router.push(`/detail/${item.contentId}`)
