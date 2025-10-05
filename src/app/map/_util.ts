@@ -90,7 +90,7 @@ export const MARKER_IMAGES: Record<string, string> = {
   "39": "/assets/map/pin/restaurant.svg", // 음식점
   "12": "/assets/map/pin/travel.svg", // 관광지
   "38": "/assets/map/pin/shopping.svg", // 쇼핑
-  "28": "/assets/map/pin/care.svg", // 레포츠
+  "28": "/assets/map/pin/beach.svg", // 레포츠
   dangle: "/assets/map/pin/dangle.svg", // 댕글
 };
 

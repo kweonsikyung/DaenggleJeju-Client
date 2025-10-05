@@ -32,3 +32,12 @@ export async function getPetProfile(
   const { petId } = params;
   return await getRequest<PetProfileRes>(`/pets/profiles/${petId}`);
 }
+
+/**
+ * @function getPetProfileList
+ * @description 내 반려견 프로필 목록 조회 (GET /pets/profiles-list)
+ * @returns {Promise<PetProfileRes>} 반려견 프로필 정보
+ */
+export async function getPetProfileList(): Promise<PetProfileRes[]> {
+  return await getRequest<PetProfileRes[]>(`/pets/profiles-list`);
+}

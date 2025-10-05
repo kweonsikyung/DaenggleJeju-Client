@@ -15,8 +15,10 @@ import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
-//utils
+//utils and hooks
 import { mainTabs, subTabs, emptyStateContent } from "./_util";
+import { usePetProfileList } from "@/hooks/api/usePetProfile";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 /**
  * 마이 페이지
@@ -29,6 +31,20 @@ export default function Page() {
   /** state */
   const [activeMainTab, setActiveMainTab] = useState("saved");
   const [activeSubTab, setActiveSubTab] = useState("dangle");
+
+  const { petProfileList, isLoading, error } = usePetProfileList();
+
+  if (isLoading) return <div>프로필 정보를 불러오는 중</div>;
+  if (error) return <div>오류가 발생했습니다</div>;
+
+  const myPet = petProfileList?.at(-1);
+
+  const detailsParts = [
+    myPet?.breedNameKo,
+    myPet?.sizeLabelKo,
+    myPet?.ageYears ? `${myPet.ageYears}살` : null,
+  ];
+  const detailsString = detailsParts.filter(Boolean).join(" · ");
 
   const currentEmptyState =
     emptyStateContent[activeMainTab as keyof typeof emptyStateContent];
@@ -57,13 +73,23 @@ export default function Page() {
       {/* container */}
       <div className={s.container}>
         <div className={s.contentWrapper}>
-          <ProfileCard
-            imageUrl="/assets/dangle/dog.png"
-            name="해투"
-            description="견주님"
-            details="골든리트리버 · 대형견 (25~30kg 미만) · 7살"
-            onEditClick={() => router.push("/my/edit-profile")}
-          />
+          {myPet ? (
+            <ProfileCard
+              imageUrl="/assets/dangle/dog.png"
+              name={myPet.name}
+              description="견주님"
+              details={detailsString}
+              onEditClick={() => router.push("/curation")}
+            />
+          ) : (
+            <ProfileCard
+              name="반려견 없음"
+              description="프로필을 등록해주세요."
+              imageUrl={getRandomAvatar()}
+              details="내 반려견을 동록하고 맞춤형 정보를 받아볼 수 있어요!"
+              onEditClick={() => router.push("/curation")}
+            />
+          )}
 
           <SegmentedControl
             options={mainTabs}

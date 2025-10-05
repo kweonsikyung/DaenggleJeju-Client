@@ -10,10 +10,8 @@ export const subTabs: Tab[] = [
   { id: "dangle", label: "댕글" },
   { id: "accom", label: "숙소" },
   { id: "restaurant", label: "음식점" },
-  { id: "cafe", label: "해변" },
-  { id: "beach", label: "카페" },
   { id: "tourist", label: "여행지" },
-  { id: "activity", label: "애견운동장" },
+  { id: "activity", label: "레포츠" },
 ];
 
 export const emptyStateContent = {
