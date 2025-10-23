@@ -20,6 +20,7 @@ const nextConfig = {
       "api.cdn.visitjeju.net",
       "cdn.visitkorea.or.kr",
       "lh3.googleusercontent.com",
+      "storage.doopedia.co.kr",
     ],
   },
 };
