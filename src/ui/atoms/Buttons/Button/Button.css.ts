@@ -44,6 +44,11 @@ export const state = styleVariants({
     color: COLORS.GREEN700,
     boxShadow: `inset 0 0 0 2px ${COLORS.GREEN600}`,
   },
+  primary: {
+    ...TYPO.BODY1B,
+    background: COLORS.GREEN600,
+    color: COLORS.NEUTRAL0,
+  },
 });
 
 /** 라벨 */
