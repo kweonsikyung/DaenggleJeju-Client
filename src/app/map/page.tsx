@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import * as s from "./style.css";
 import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
@@ -26,15 +26,11 @@ import { GetPlaceMapReq, PlaceItem } from "@/types/place";
 import { normalizeChips } from "@/utils/normalizeChips";
 import { mutate } from "swr";
 import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
-import { DaengglePlacesMapResult } from "@/types/daenggle";
+import { useKakaoMap } from "@/hooks/useKakaoMap";
+import { WelcomeOverlay } from "@/ui/molecules/WelcomeOverlay/WelcomeOverlay";
+import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
 
-/** type (related KAKAO) */
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    kakao: any;
-  }
-}
+const LOCAL_STORAGE_KEY = "hasVisitedMap";
 
 /**
  * 내근처(지도) 페이지
@@ -45,8 +41,6 @@ export default function MapPage() {
   const router = useRouter();
 
   /** state */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [map, setMap] = useState<any>(null);
   const [activeFilter, setActiveFilter] = useState("dangle");
   const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -56,12 +50,9 @@ export default function MapPage() {
   const [apiParams, setApiParams] = useState<GetPlaceMapReq>({
     bbox: JEJU_BBOX,
   });
+  const [showWelcomeOverlay, setShowWelcomeOverlay] = useState(false);
 
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const markersRef = useRef<any[]>([]);
-
-  /** variables */
+  /** data fetching */
   const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
     activeFilter !== "dangle" ? apiParams : { bbox: "" }
   );
@@ -73,6 +64,28 @@ export default function MapPage() {
 
   const { postScrap, isPosting } = usePostScrap();
 
+  /** Map Hook */
+  const handlePlaceSelect = useCallback((place: PlaceItem | null) => {
+    setSelectedPlace(place);
+  }, []);
+
+  const handleDangleClick = useCallback(
+    (videoId: string | number) => {
+      router.push(`/shorts?contentId=${videoId}`);
+    },
+    [router]
+  );
+
+  const { mapContainerRef, centerToJeju } = useKakaoMap({
+    places: places,
+    daengglePlaces: daengglePlacesMapData,
+    activeFilter: activeFilter,
+    onPlaceSelect: handlePlaceSelect,
+    onDangleClick: handleDangleClick,
+    markerImages: MARKER_IMAGES,
+  });
+
+  /** Scrap handler */
   const handleScrapToggle = async (_contentId: number) => {
     if (isPosting || !selectedPlace) return;
 
@@ -101,162 +114,12 @@ export default function MapPage() {
     }
   };
 
+  /** filter state helpers */
   const isAnyFilterSelected = Object.values(selectedFilters).some(
     (arr) => arr.length > 0
   );
 
-  /** map load handler */
-  // 일반 칩 마커 로더
-  const loadMarkers = (data: PlaceItem[]) => {
-    if (!map || !window.kakao || !Array.isArray(data)) return;
-
-    markersRef.current.forEach((marker) => marker.setMap(null));
-    markersRef.current = [];
-
-    if (data.length === 0) return;
-
-    data.forEach((item) => {
-      const imageUrl =
-        MARKER_IMAGES[item.contentType.id.toString()] || MARKER_IMAGES.dangle;
-      if (!imageUrl) return;
-
-      const markerPosition = new window.kakao.maps.LatLng(item.lat, item.lng);
-      const markerImage = new window.kakao.maps.MarkerImage(
-        imageUrl,
-        new window.kakao.maps.Size(40, 40)
-      );
-      const marker = new window.kakao.maps.Marker({
-        position: markerPosition,
-        image: markerImage,
-      });
-
-      // 마우스오버를 위한 커스텀 오버레이 생성
-      const content = `
-      <div style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translateY(-15px);">
-        <style>
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .bubble-container {
-            animation: fadeIn 0.3s;
-          }
-        </style>
-        <div class="bubble-container">
-          <div style="padding: 8px 16px; background-color: #222; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold;">
-            ${item.title}
-          </div>
-          <div style="width: 0px; height: 0px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgb(34, 34, 34); margin: 0 auto;"></div>
-        </div>
-      </div>
-    `;
-      const customOverlay = new window.kakao.maps.CustomOverlay({
-        position: markerPosition,
-        content: content,
-        yAnchor: 1.7,
-      });
-
-      window.kakao.maps.event.addListener(marker, "mouseover", function () {
-        customOverlay.setMap(map);
-      });
-      window.kakao.maps.event.addListener(marker, "mouseout", function () {
-        customOverlay.setMap(null);
-      });
-
-      window.kakao.maps.event.addListener(marker, "click", () => {
-        setSelectedPlace(item);
-        map.panTo(markerPosition);
-      });
-
-      marker.setMap(map);
-      markersRef.current.push(marker);
-    });
-
-    if (data.length > 0) {
-      const firstItemPosition = new window.kakao.maps.LatLng(
-        data[0].lat,
-        data[0].lng
-      );
-      map.setCenter(firstItemPosition);
-      map.setLevel(8);
-    }
-  };
-
-  // 댕글 칩 마커 로더
-  const loadDangleMarkers = (data: DaengglePlacesMapResult) => {
-    if (!map || !window.kakao || !Array.isArray(data)) return;
-
-    markersRef.current.forEach((marker) => marker.setMap(null));
-    markersRef.current = [];
-
-    if (data.length === 0) return;
-
-    data.forEach((item) => {
-      const imageUrl = MARKER_IMAGES.dangle;
-      const markerPosition = new window.kakao.maps.LatLng(item.mapy, item.mapx);
-      const markerImage = new window.kakao.maps.MarkerImage(
-        imageUrl,
-        new window.kakao.maps.Size(40, 40)
-      );
-      const marker = new window.kakao.maps.Marker({
-        position: markerPosition,
-        image: markerImage,
-        title: item.placeTitle,
-      });
-
-      const content = `
-      <div style="position: relative; display: flex; flex-direction: column; align-items: center; transform: translateY(-15px);">
-        <style>
-          @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .bubble-container {
-            animation: fadeIn 0.3s;
-          }
-        </style>
-        <div class="bubble-container">
-          <div style="padding: 8px 16px; background-color: #222; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold;">
-            ${item.placeTitle}
-          </div>
-          <div style="width: 0px; height: 0px; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid rgb(34, 34, 34); margin: 0 auto;"></div>
-        </div>
-      </div>
-    `;
-
-      const customOverlay = new window.kakao.maps.CustomOverlay({
-        position: markerPosition,
-        content: content,
-        yAnchor: 1.7,
-      });
-
-      // 마커에 마우스오버, 마우스아웃 이벤트 추가
-      window.kakao.maps.event.addListener(marker, "mouseover", function () {
-        customOverlay.setMap(map);
-      });
-      window.kakao.maps.event.addListener(marker, "mouseout", function () {
-        customOverlay.setMap(null);
-      });
-
-      window.kakao.maps.event.addListener(marker, "click", () => {
-        router.push(`/shorts?contentId=${item.video_id}`);
-      });
-
-      marker.setMap(map);
-      markersRef.current.push(marker);
-    });
-
-    if (data.length > 0) {
-      const firstItemPosition = new window.kakao.maps.LatLng(
-        data[0].mapy,
-        data[0].mapx
-      );
-      map.setCenter(firstItemPosition);
-      map.setLevel(8);
-    }
-  };
-
-  /** filter handler */
+  /** filter handlers */
   const handleFilterSelect = (group: string, id: string) => {
     setSelectedFilters((prev) => {
       const existing = prev[group] || [];
@@ -306,15 +169,7 @@ export default function MapPage() {
     setIsBottomSheetOpen(false);
   };
 
-  /** map util handler */
-  const handleGpsClick = () => {
-    if (!map || !window.kakao) return;
-    const swLatLng = new window.kakao.maps.LatLng(33.1, 126.1);
-    const neLatLng = new window.kakao.maps.LatLng(33.6, 126.9);
-    const bounds = new window.kakao.maps.LatLngBounds(swLatLng, neLatLng);
-    map.setBounds(bounds);
-  };
-
+  /** navigation handlers */
   const handleLocationListClick = () => {
     router.push(`/search?filter=${activeFilter}`);
   };
@@ -325,36 +180,11 @@ export default function MapPage() {
 
   /** lifecycle */
   useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_API_KEY}&autoload=false&libraries=services,clusterer`;
-    document.head.appendChild(script);
-
-    script.onload = () => {
-      window.kakao.maps.load(() => {
-        if (mapContainerRef.current) {
-          const options = {
-            center: new window.kakao.maps.LatLng(33.36, 126.57),
-            level: 8,
-          };
-          const newMap = new window.kakao.maps.Map(
-            mapContainerRef.current,
-            options
-          );
-
-          window.kakao.maps.event.addListener(newMap, "click", () => {
-            setSelectedPlace(null);
-          });
-
-          setMap(newMap);
-        }
-      });
-    };
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script);
-      }
-    };
+    const hasVisited = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!hasVisited) {
+      setShowWelcomeOverlay(true);
+      localStorage.setItem(LOCAL_STORAGE_KEY, "true");
+    }
   }, []);
 
   useEffect(() => {
@@ -371,18 +201,6 @@ export default function MapPage() {
     setSelectedPlace(null);
   }, [activeFilter]);
 
-  useEffect(() => {
-    if (map) {
-      if (activeFilter === "dangle") {
-        if (daengglePlacesMapData) {
-          loadDangleMarkers(daengglePlacesMapData);
-        }
-      } else if (places) {
-        loadMarkers(places);
-      }
-    }
-  }, [places, daengglePlacesMapData, map, activeFilter]);
-
   const totalCount =
     activeFilter === "dangle"
       ? daengglePlacesMapData?.length || 0
@@ -390,6 +208,8 @@ export default function MapPage() {
 
   return (
     <div className={s.page}>
+      {isLoading && <LoadingSpinner />}
+
       {/* top */}
       <div className={s.topContainer}>
         <SearchHeader
@@ -447,7 +267,7 @@ export default function MapPage() {
       {/* bottom */}
       <div className={s.bottomContainer}>
         <MapFloatingButtons
-          onGpsClick={handleGpsClick}
+          onGpsClick={centerToJeju}
           chipMapListProps={{
             text: "장소 목록",
             cnt: totalCount,
@@ -459,6 +279,9 @@ export default function MapPage() {
 
       {/* nav */}
       <NavBar activePage="near" />
+
+      {/* WelcomeOverlay 컴포넌트 */}
+      {showWelcomeOverlay && <WelcomeOverlay />}
 
       {/* bottomSheet */}
       <BottomSheet
