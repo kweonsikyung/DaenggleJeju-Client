@@ -17,15 +17,12 @@ import Carousel from "@/ui/molecules/Carousel/Carousel";
 import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
 import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
 import { usePostScrap } from "@/hooks/api/useScraps";
+import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 
 // utils
-import { normalizeChipsArray } from "@/utils/normalizeChipsArray";
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
-import { REVIEW_DATA } from "@/utils/dummy_data";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-
-const averageRating = 4.3;
-const roundedRating = Math.round(averageRating);
+import { processChips } from "./_util";
 
 /**
  * 장소 상세 페이지 (내부 로직)
@@ -52,6 +49,21 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     limit: 10,
     offset: 0,
   });
+
+  const {
+    placeFootprintsData,
+    error: footprintsError,
+    isLoading: isFootprintsLoading,
+  } = usePlaceFootprints({
+    contentId: String(contentId),
+    limit: 5,
+    offset: 0,
+  });
+
+  const { infoTags, policyBoxTags } = useMemo(
+    () => processChips(data?.chips),
+    [data?.chips]
+  );
 
   const { postScrap, isPosting } = usePostScrap();
   const handleScrapToggle = async () => {
@@ -83,6 +95,29 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
     return [...defaultNotes, ...additionalNotes];
   }, [data?.petPolicy?.notes]);
+
+  /** 발자국 리뷰 통계 계산 useMemo */
+  const reviewStats = useMemo(() => {
+    const total = placeFootprintsData?.total || 0;
+
+    if (
+      !placeFootprintsData ||
+      !placeFootprintsData.items ||
+      placeFootprintsData.items.length === 0
+    ) {
+      return { average: 0, rounded: 0, total: total };
+    }
+
+    const items = placeFootprintsData.items;
+    const sum = items.reduce((acc, item) => acc + item.welcome, 0);
+    const average = sum / items.length;
+
+    return {
+      average: parseFloat(average.toFixed(1)),
+      rounded: Math.round(average),
+      total: total,
+    };
+  }, [placeFootprintsData]);
 
   /** lifecycle */
   useEffect(() => {
@@ -142,8 +177,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   <div>
                     <h1 className={s.placeName}>{data.title}</h1>
                     <div className={s.placeStats}>
-                      <span className={s.statText}>0km</span>
-                      <span className={s.statText}>·</span>
                       <Image
                         alt="play"
                         width={12}
@@ -161,25 +194,29 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                       <span className={s.statText}>{data.scrapCount}</span>
                     </div>
                   </div>
-                  <div className={s.visitChip}>
-                    <Image
-                      alt="check"
-                      width={12}
-                      height={12}
-                      src="/assets/icon12/check.svg"
-                    />
-                    <span>3개월이내 방문 댕글 영상 2</span>
+                  <div>
+                    {infoTags.map((tag) => (
+                      <div key={tag} className={s.visitChip}>
+                        {tag}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-              <div className={s.tagGroup}>
-                {normalizeChipsArray(data.chips).map((tag, index, arr) => (
-                  <React.Fragment key={tag}>
-                    <div className={s.tagItem}>{tag}</div>
-                    {index < arr.length - 1 && <div className={s.tagDivider} />}
-                  </React.Fragment>
-                ))}
-              </div>
+
+              {policyBoxTags.length > 0 && (
+                <div className={s.tagGroup}>
+                  {policyBoxTags.map((tag, index) => (
+                    <React.Fragment key={tag}>
+                      <span className={s.tagItem}>{tag}</span>
+                      {index < policyBoxTags.length - 1 && (
+                        <div className={s.tagDivider} />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
+
               <ul className={s.infoList}>
                 <li className={s.infoItem}>
                   <Image
@@ -244,7 +281,9 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
               </div>
               <div className={s.attentionBox}>
                 <h4 className={s.attentionTitle}>
-                  {data.petPolicy?.acmpyTypeCd || "반려동물 동반 정책"}
+                  {data.petPolicy.acmpyTypeCd === "정보없음"
+                    ? "반려동물 동반 정책"
+                    : data.petPolicy.acmpyTypeCd}
                 </h4>
                 <ul className={s.attentionList}>
                   {processedNotes.map((note, index) => (
@@ -259,7 +298,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
         <section className={s.section}>
           <div className={s.sectionHeader}>
             <h2 className={s.sectionTitle}>
-              연관 댕글 영상 ({recommendationsData?.total})
+              연관 댕글 영상 ({recommendationsData?.total || 0})
             </h2>
           </div>
 
@@ -288,41 +327,73 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
         <section className={s.section}>
           <div className={s.sectionHeader}>
-            <h2 className={s.sectionTitle}>발자국 인증(3)</h2>
+            <h2 className={s.sectionTitle}>
+              발자국 인증 ({isFootprintsLoading ? "..." : reviewStats.total})
+            </h2>
             <span
               className={s.sectionActionText}
               onClick={() => {
-                router.push("/review");
+                router.push(`/footprint/new?contentId=${contentId}`);
               }}
             >
               발자국 남기기
             </span>
           </div>
-          <div className={s.reviewSummary}>
-            <div className={s.reviewRating}>
-              <div className={s.pawRatingContainer}>
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Image
-                    key={index}
-                    alt={`paw ${index + 1}`}
-                    width={24}
-                    height={24}
-                    src={
-                      index < roundedRating
-                        ? "/assets/icon24/dogfootprint-blue.svg"
-                        : "/assets/icon24/dogfootprint-white.svg"
-                    }
-                  />
-                ))}
+
+          {reviewStats.total > 0 && (
+            <div className={s.reviewSummary}>
+              <div className={s.reviewRating}>
+                <div className={s.pawRatingContainer}>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Image
+                      key={index}
+                      alt={`paw ${index + 1}`}
+                      width={24}
+                      height={24}
+                      src={
+                        index < reviewStats.rounded
+                          ? "/assets/icon24/dogfootprint-blue.svg"
+                          : "/assets/icon24/dogfootprint-white.svg"
+                      }
+                    />
+                  ))}
+                </div>
+                <span>
+                  {isFootprintsLoading ? "..." : reviewStats.average.toFixed(1)}
+                </span>
               </div>
-              <span>{averageRating}</span>
+              <p className={s.reviewCount}>{reviewStats.total}개의 평가</p>
             </div>
-            <p className={s.reviewCount}>8203개의 평가</p>
-          </div>
+          )}
+
           <div className={s.reviewList}>
-            {REVIEW_DATA.map((review) => (
-              <DangleReview key={review.id} {...review} />
-            ))}
+            {isFootprintsLoading && <div>발자국을 불러오는 중입니다...</div>}
+            {footprintsError && (
+              <EmptyState
+                title="발자국 로드 실패"
+                description="리뷰를 불러오는 중 문제가 발생했습니다."
+              />
+            )}
+            {placeFootprintsData && placeFootprintsData.items.length > 0
+              ? placeFootprintsData.items.map((review) => (
+                  <DangleReview
+                    key={review.footprintId}
+                    profileImageUrl={getRandomAvatar()}
+                    userName={review.writer.handle}
+                    rating={review.welcome}
+                    date={review.createdAtText}
+                    chips={review.chips}
+                    content={review.body}
+                  />
+                ))
+              : !isFootprintsLoading &&
+                (!placeFootprintsData ||
+                  placeFootprintsData.items.length === 0) && (
+                  <EmptyState
+                    title="첫 발자국을 남겨주세요"
+                    description="이 장소에 대한 첫 번째 리뷰를 작성해보세요."
+                  />
+                )}
           </div>
         </section>
       </div>

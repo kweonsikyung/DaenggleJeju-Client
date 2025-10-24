@@ -230,8 +230,11 @@ export interface PetPolicy {
   notes: string[];
 }
 
+/**
+ * API 응답의 chips 객체 (e.g., "areas", "conditions", "policy" 등)
+ */
 export interface Chips {
-  conditions: string;
+  [key: string]: string | string[] | undefined;
 }
 
 /**
