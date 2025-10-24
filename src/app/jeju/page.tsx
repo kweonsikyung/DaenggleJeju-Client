@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import TopBar from "@/ui/atoms/TopBar/TopBar";
@@ -10,12 +10,12 @@ import { jejuOptions } from "./_util";
 import { useWebShare } from "@/hooks/useWebShare";
 import { useNotice } from "@/hooks/useNotice";
 import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
+import { ProgressCircle } from "@/ui/atoms/ProgressCircle/ProgressCircle";
 
 /**
  * 제주 이동 방법 메인 & 상세 페이지
  * * style/ page = topbar + container + nav(jeju)
  */
-// 2. 기존 컴포넌트의 이름을 JejuPageContent로 변경합니다.
 function JejuPageContent() {
   /** router */
   const router = useRouter();
@@ -26,6 +26,38 @@ function JejuPageContent() {
   const { share } = useWebShare();
   const { shouldRender, animation, hideNotice } = useNotice();
 
+  /**
+   * type(URL 파라미터)에 따라 currentOption과 imageCount를 계산
+   */
+  const { currentOption, imageCount } = useMemo(() => {
+    if (!type) {
+      return { currentOption: null, imageCount: 0 };
+    }
+    const option = jejuOptions.find((option) => option.type === type);
+    return {
+      currentOption: option || null,
+      imageCount: option?.cnt || 0,
+    };
+  }, [type]);
+
+  const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    if (imageCount > 0) {
+      setImagesLoaded(new Array(imageCount).fill(false));
+    } else {
+      setImagesLoaded([]);
+    }
+  }, [imageCount]);
+
+  const handleImageLoad = (index: number) => {
+    setImagesLoaded((prev) => {
+      const newStates = [...prev];
+      newStates[index] = true;
+      return newStates;
+    });
+  };
+
   /** share handler */
   const handleShare = () => {
     share({
@@ -35,13 +67,10 @@ function JejuPageContent() {
   };
 
   /** render detail page */
-  const renderDetailPage = (currentType: string) => {
-    const currentOption = jejuOptions.find(
-      (option) => option.type === currentType
-    );
-    if (!currentOption) return renderMainPage();
-
-    const imageCount = currentOption.cnt;
+  const renderDetailPage = () => {
+    if (!currentOption) {
+      return renderMainPage();
+    }
 
     return (
       <>
@@ -84,17 +113,32 @@ function JejuPageContent() {
           </div>
 
           <div className={s.detailImageWrapper}>
-            {Array.from({ length: imageCount }, (_, i) => i + 1).map((num) => (
-              <Image
-                key={num}
-                src={`/assets/jeju/${currentType}/${num}.png`}
-                alt={`${currentOption.title} 상세 이미지 ${num}`}
-                width={340}
-                height={440}
-                sizes="100vw"
-                className={s.detailImage}
-              />
-            ))}
+            {Array.from({ length: imageCount }, (_, i) => i + 1).map(
+              (num, index) => (
+                <div key={num} className={s.detailImageContainer}>
+                  {!imagesLoaded[index] && (
+                    <div className={s.spinnerContainer}>
+                      <ProgressCircle
+                        size={40}
+                        active
+                        className={s.spinner}
+                        color="#a5fbc5ff"
+                      />
+                    </div>
+                  )}
+                  <Image
+                    src={`/assets/jeju/${type}/${num}.png`}
+                    alt={`${currentOption.title} 상세 이미지 ${num}`}
+                    width={340}
+                    height={440}
+                    sizes="100vw"
+                    className={s.detailImage}
+                    onLoad={() => handleImageLoad(index)}
+                    style={{ opacity: imagesLoaded[index] ? 1 : 0 }}
+                  />
+                </div>
+              )
+            )}
           </div>
         </div>
       </>
@@ -138,7 +182,7 @@ function JejuPageContent() {
 
   return (
     <div className={s.page}>
-      {type ? renderDetailPage(type) : renderMainPage()}
+      {type ? renderDetailPage() : renderMainPage()}
       <NavBar activePage="jeju" />
     </div>
   );

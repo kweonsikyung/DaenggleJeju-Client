@@ -13,6 +13,11 @@ const fadeInUp = keyframes({
   },
 });
 
+const spin = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+});
+
 /* --- Layout --- */
 export const page = style({
   width: "100%",
@@ -80,7 +85,6 @@ export const box = style({
   cursor: "pointer",
 
   ":hover": {
-    transform: "scale(1.1)",
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
   },
 });
@@ -127,9 +131,42 @@ export const detailImageWrapper = style({
   gap: "16px",
 });
 
-export const detailImage = style({
+export const detailImageContainer = style({
+  position: "relative",
   width: "100%",
   height: "auto",
   borderRadius: "16px",
-  backgroundColor: COLORS.GREEN100,
+  backgroundColor: "#fff",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  overflow: "hidden",
+});
+
+export const detailImage = style({
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  borderRadius: "16px",
+  transition: "opacity 0.3s ease-in-out",
+});
+
+/* --- Spinner Styles --- */
+export const spinnerContainer = style({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  zIndex: 10,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "100%",
+  backgroundColor: COLORS.GREEN50,
+  borderRadius: "16px",
+});
+
+export const spinner = style({
+  animation: `${spin} 1s linear infinite`,
 });
