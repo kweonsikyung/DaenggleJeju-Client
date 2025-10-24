@@ -47,7 +47,12 @@ button {
 
 body {
   -ms-overflow-style: none;
+  font-family: var(--font-pretendard);
 }
 ::-webkit-scrollbar {
   display: none;
+}
+
+.font-laundry {
+  font-family: var(--font-laundry), var(--font-pretendard), sans-serif;
 }
