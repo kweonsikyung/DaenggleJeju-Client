@@ -1,11 +1,14 @@
+"use client";
+
 import React from "react";
 import * as s from "./style.css";
 
 interface ProgressCircleProps {
   size?: number;
   color?: string;
-  progress?: number; // 0~1 (0%~100%)
-  active?: boolean; // 현재 스텝이 활성 상태인지
+  progress?: number;
+  active?: boolean;
+  className?: string;
 }
 
 export function ProgressCircle({
@@ -13,6 +16,7 @@ export function ProgressCircle({
   color = "#00A63E",
   progress = 0,
   active = false,
+  className = "",
 }: ProgressCircleProps) {
   const radius = 10;
   const circumference = 2 * Math.PI * radius;
@@ -20,7 +24,7 @@ export function ProgressCircle({
 
   return (
     <svg
-      className={s.circleBase}
+      className={`${s.circleBase} ${className}`}
       width={size}
       height={size}
       viewBox="0 0 24 24"

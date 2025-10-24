@@ -95,6 +95,12 @@ export const visitChip = style([
   },
 ]);
 
+export const infoTagGroup = style({
+  display: "flex",
+  gap: "3px",
+  flexWrap: "wrap",
+});
+
 export const tagGroup = style({
   display: "flex",
   justifyContent: "space-around",
@@ -197,3 +203,71 @@ export const pawRatingContainer = style({
 });
 
 export const reviewCount = style([TYPO.BODY3, { color: COLORS.NEUTRAL600 }]);
+
+/* --- Modal Section --- */
+export const formContainer = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+});
+
+export const formDescription = style({
+  ...TYPO.CAPTION1M,
+  color: COLORS.NEUTRAL700,
+  margin: "0 0 8px 0",
+});
+
+export const textareaWrapper = style({
+  position: "relative",
+  width: "100%",
+});
+
+export const textarea = style({
+  width: "100%",
+  minHeight: "120px",
+  padding: "12px 16px",
+  borderRadius: "8px",
+  border: `1px solid ${COLORS.NEUTRAL300}`,
+  ...TYPO.BODY3,
+  resize: "none",
+  transition: "border-color 0.2s ease",
+  ":focus": {
+    borderColor: COLORS.GREEN700,
+    outline: "none",
+  },
+  "::placeholder": {
+    color: COLORS.NEUTRAL500,
+  },
+});
+
+export const textareaError = style({
+  borderColor: "#ff4141ff",
+  ":focus": {
+    borderColor: "#ff4141ff",
+  },
+});
+
+export const charCountWrapper = style({
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: "4px",
+});
+
+export const charCount = style({
+  ...TYPO.CAPTION1M,
+  color: COLORS.NEUTRAL500,
+  textAlign: "right",
+  flexGrow: 1,
+});
+
+export const errorText = style({
+  ...TYPO.CAPTION1M,
+  color: "#ff4141ff",
+  marginRight: "8px", // 글자 수 카운터와의 간격
+});
+
+export const submitButton = style({
+  width: "100%", // 버튼 너비 100%
+  marginTop: "8px", // 텍스트 에어리어 그룹과의 간격
+});

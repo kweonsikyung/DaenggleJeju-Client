@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import * as s from "./style.css";
@@ -12,17 +12,22 @@ import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
 import Carousel from "@/ui/molecules/Carousel/Carousel";
+import { Modal } from "@/ui/atoms/Modal/Modal";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 
 // hooks
 import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
 import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
 import { usePostScrap } from "@/hooks/api/useScraps";
 import { usePlaceFootprints } from "@/hooks/api/useFootprints";
+import { useModal } from "@/hooks/useModal";
 
 // utils
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 import { processChips } from "./_util";
+import { Button } from "@/ui/atoms/Buttons/Button/Button";
+const MAX_LENGTH = 200;
 
 /**
  * 장소 상세 페이지 (내부 로직)
@@ -34,6 +39,27 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
   /** state */
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const {
+    isOpen: isInfoUpdateModalOpen,
+    openModal: openInfoUpdateModal,
+    closeModal: closeInfoUpdateModal,
+  } = useModal();
+
+  const [requestText, setRequestText] = useState("");
+  const textLength = requestText.length;
+  const isButtonActive = textLength >= 10;
+  const isError = textLength > MAX_LENGTH;
+
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setRequestText(e.target.value);
+  };
+
+  const handleInfoUpdateRequest = () => {
+    if (isButtonActive && !isError) {
+      closeInfoUpdateModal();
+      setRequestText("");
+    }
+  };
 
   /** api handler */
   const { data, error, mutate } = usePlaceFullDetail({
@@ -194,7 +220,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                       <span className={s.statText}>{data.scrapCount}</span>
                     </div>
                   </div>
-                  <div>
+                  <div className={s.infoTagGroup}>
                     {infoTags.map((tag) => (
                       <div key={tag} className={s.visitChip}>
                         {tag}
@@ -275,7 +301,10 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             <section className={s.section}>
               <div className={s.sectionHeader}>
                 <h2 className={s.sectionTitle}>애견 동반 주의 사항</h2>
-                <span className={s.sectionActionText} onClick={() => {}}>
+                <span
+                  className={s.sectionActionText}
+                  onClick={openInfoUpdateModal}
+                >
                   정보 수정 요청
                 </span>
               </div>
@@ -333,7 +362,16 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             <span
               className={s.sectionActionText}
               onClick={() => {
-                router.push(`/footprint/new?contentId=${contentId}`);
+                if (data?.title) {
+                  const placeName = encodeURIComponent(data.title);
+                  router.push(
+                    `/review?contentId=${contentId}&placeName=${placeName}`
+                  );
+                } else {
+                  alert(
+                    "장소 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요."
+                  );
+                }
               }}
             >
               발자국 남기기
@@ -397,6 +435,51 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
           </div>
         </section>
       </div>
+
+      <Modal
+        isOpen={isInfoUpdateModalOpen}
+        onClose={closeInfoUpdateModal}
+        title="정보 수정 요청"
+      >
+        <div className={s.formContainer}>
+          <p className={s.formDescription}>
+            제공된 정보는 많은 반려인에게 도움이 됩니다. 감사합니다☺️
+            <br />
+            *제출된 사항은 검토 후 반영될 예정입니다.
+          </p>
+          <div className={s.textareaWrapper}>
+            <textarea
+              className={`${s.textarea} ${isError ? s.textareaError : ""}`}
+              placeholder="예) 운영 시간이 오전 9시에서 오후8시로 변경되었어요. (10~200 글자)"
+              value={requestText}
+              onChange={handleTextChange}
+              maxLength={MAX_LENGTH + 1}
+            />
+            <div className={s.charCountWrapper}>
+              {isError && (
+                <span className={s.errorText}>
+                  {MAX_LENGTH}자 이하로 입력해주세요.
+                </span>
+              )}
+              <span className={s.charCount}>
+                {textLength}/{MAX_LENGTH}
+              </span>
+            </div>
+          </div>
+          <Button
+            size={ButtonSize.MEDIUM}
+            status={
+              isButtonActive && !isError
+                ? ButtonStatus.PRIMARY
+                : ButtonStatus.DISABLED
+            }
+            text="요청하기"
+            onClick={handleInfoUpdateRequest}
+            disabled={!isButtonActive || isError}
+            className={s.submitButton}
+          />
+        </div>
+      </Modal>
 
       <NavBar activePage="near" />
     </div>
