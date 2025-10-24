@@ -168,7 +168,7 @@ function LeaveFootprintPage() {
               text="작성한 후기 보기"
               status={ButtonStatus.ACTIVE}
               size={ButtonSize.LARGE}
-              onClick={() => router.push("/my")}
+              onClick={() => router.push(`/detail/${contentId}`)}
             />
           </div>
         </>
