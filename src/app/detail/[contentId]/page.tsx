@@ -20,9 +20,9 @@ import { usePostScrap } from "@/hooks/api/useScraps";
 import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 
 // utils
-import { normalizeChipsArray } from "@/utils/normalizeChipsArray";
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
+import { processChips } from "./_util";
 
 /**
  * 장소 상세 페이지 (내부 로직)
@@ -60,6 +60,11 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     offset: 0,
   });
 
+  const { infoTags, policyBoxTags } = useMemo(
+    () => processChips(data?.chips),
+    [data?.chips]
+  );
+
   const { postScrap, isPosting } = usePostScrap();
   const handleScrapToggle = async () => {
     if (isPosting) return;
@@ -91,6 +96,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     return [...defaultNotes, ...additionalNotes];
   }, [data?.petPolicy?.notes]);
 
+  /** 발자국 리뷰 통계 계산 useMemo */
   const reviewStats = useMemo(() => {
     const total = placeFootprintsData?.total || 0;
 
@@ -103,7 +109,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     }
 
     const items = placeFootprintsData.items;
-
     const sum = items.reduce((acc, item) => acc + item.welcome, 0);
     const average = sum / items.length;
 
@@ -172,8 +177,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   <div>
                     <h1 className={s.placeName}>{data.title}</h1>
                     <div className={s.placeStats}>
-                      <span className={s.statText}>0km</span>
-                      <span className={s.statText}>·</span>
                       <Image
                         alt="play"
                         width={12}
@@ -191,25 +194,29 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                       <span className={s.statText}>{data.scrapCount}</span>
                     </div>
                   </div>
-                  <div className={s.visitChip}>
-                    <Image
-                      alt="check"
-                      width={12}
-                      height={12}
-                      src="/assets/icon12/check.svg"
-                    />
-                    <span>3개월이내 방문 댕글 영상 2</span>
+                  <div>
+                    {infoTags.map((tag) => (
+                      <div key={tag} className={s.visitChip}>
+                        {tag}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
-              <div className={s.tagGroup}>
-                {normalizeChipsArray(data.chips).map((tag, index, arr) => (
-                  <React.Fragment key={tag}>
-                    <div className={s.tagItem}>{tag}</div>
-                    {index < arr.length - 1 && <div className={s.tagDivider} />}
-                  </React.Fragment>
-                ))}
-              </div>
+
+              {policyBoxTags.length > 0 && (
+                <div className={s.tagGroup}>
+                  {policyBoxTags.map((tag, index) => (
+                    <React.Fragment key={tag}>
+                      <span className={s.tagItem}>{tag}</span>
+                      {index < policyBoxTags.length - 1 && (
+                        <div className={s.tagDivider} />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
+
               <ul className={s.infoList}>
                 <li className={s.infoItem}>
                   <Image
@@ -274,7 +281,9 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
               </div>
               <div className={s.attentionBox}>
                 <h4 className={s.attentionTitle}>
-                  {data.petPolicy?.acmpyTypeCd || "반려동물 동반 정책"}
+                  {data.petPolicy.acmpyTypeCd === "정보없음"
+                    ? "반려동물 동반 정책"
+                    : data.petPolicy.acmpyTypeCd}
                 </h4>
                 <ul className={s.attentionList}>
                   {processedNotes.map((note, index) => (
