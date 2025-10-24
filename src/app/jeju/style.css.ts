@@ -1,6 +1,17 @@
-import { style } from "@vanilla-extract/css";
+import { style, keyframes } from "@vanilla-extract/css";
 import { TYPO } from "@/styles/typography.css";
 import { COLORS } from "@/styles/colors.css";
+
+const fadeInUp = keyframes({
+  "0%": {
+    opacity: 0,
+    transform: "translateY(-16px)",
+  },
+  "100%": {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+});
 
 /* --- Layout --- */
 export const page = style({
@@ -58,6 +69,20 @@ export const box = style({
   alignItems: "center",
   justifyContent: "space-between",
   gap: "16px",
+
+  opacity: 0,
+  animationName: fadeInUp,
+  animationDuration: "0.5s",
+  animationTimingFunction: "ease-out",
+  animationFillMode: "forwards",
+
+  transition: "transform 0.2s ease-out, box-shadow 0.2s ease-out",
+  cursor: "pointer",
+
+  ":hover": {
+    transform: "scale(1.1)",
+    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.05)",
+  },
 });
 
 export const left = style({

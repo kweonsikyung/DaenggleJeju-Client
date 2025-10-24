@@ -114,11 +114,14 @@ function JejuPageContent() {
             쉽게 안내해 드릴게요
           </div>
           <div className={s.box_container}>
-            {jejuOptions.map((item) => (
+            {jejuOptions.map((item, index) => (
               <div
                 key={item.id}
                 className={s.box}
                 onClick={() => router.push(`/jeju?type=${item.type}`)}
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                }}
               >
                 <div className={s.left}>
                   <div className={s.top}>{item.title}</div>
