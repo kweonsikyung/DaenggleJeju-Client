@@ -51,6 +51,7 @@ export default function MapPage() {
     bbox: JEJU_BBOX,
   });
   const [showWelcomeOverlay, setShowWelcomeOverlay] = useState(false);
+  const [showDanglePickTooltip, setShowDanglePickTooltip] = useState(true);
 
   /** data fetching */
   const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
@@ -274,6 +275,13 @@ export default function MapPage() {
             onLocationListClick: handleLocationListClick,
           }}
           fabProps={{ onClick: handleDangleRecommendClick }}
+          tooltipProps={{
+            title: "댕글제주 PICK!",
+            text: "제주의 다양한 영상을 지역, 테마, 인기별로 발견해보세요.",
+            onClose: () => setShowDanglePickTooltip(false),
+            isVisible: showDanglePickTooltip,
+            position: "top",
+          }}
         />
       </div>
 
