@@ -8,6 +8,7 @@ import {
   ChipMapList,
   ChipMapListProps,
 } from "@/ui/atoms/Chip/ChipMapList/ChipMapList";
+import { Tooltip, TooltipProps } from "@/ui/atoms/Tooltip/Tooltip";
 
 export interface MapFloatingButtonsProps {
   /** GPS 버튼 클릭 이벤트 핸들러 */
@@ -16,12 +17,15 @@ export interface MapFloatingButtonsProps {
   chipMapListProps: ChipMapListProps;
   /** 댕글추천 FAB 컴포넌트 props */
   fabProps: FabProps;
+  /** 툴팁 props */
+  tooltipProps: TooltipProps;
 }
 
 export function MapFloatingButtons({
   onGpsClick,
   chipMapListProps,
   fabProps,
+  tooltipProps,
 }: MapFloatingButtonsProps) {
   return (
     <div className={s.root}>
@@ -38,8 +42,9 @@ export function MapFloatingButtons({
       <div>
         <ChipMapList {...chipMapListProps} />
       </div>
-      <div>
+      <div className={s.fabWithTooltipContainer}>
         <Fab {...fabProps} />
+        <Tooltip {...tooltipProps} />
       </div>
     </div>
   );
