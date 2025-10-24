@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import * as s from "./style.css";
 
@@ -15,6 +15,14 @@ import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
 // utils & data
 import { entryOptions, conditionChips, welcomeOptions } from "./_util";
+
+// hooks
+import { usePostFootprint } from "@/hooks/api/useFootprints";
+import {
+  PostFootprintReq,
+  ConditionType,
+  WelcomeScore,
+} from "@/types/footprint";
 
 interface PawRatingProps {
   rating: number;
@@ -51,13 +59,22 @@ const PawRating = ({ rating, setRating }: PawRatingProps) => {
   );
 };
 
-export default function LeaveFootprintPage() {
+function LeaveFootprintPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const contentId = searchParams.get("contentId");
+  const placeName = searchParams.get("placeName");
+
+  const { createFootprint, isCreating } = usePostFootprint();
+
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [entryStatus, setEntryStatus] = useState<string | null>("yes");
-  const [welcomeStatus, setWelcomeStatus] = useState<string | null>(null);
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
+  const [rating, setRating] = useState(0); // 상단 별점
+  const [entryStatus, setEntryStatus] = useState<string | null>("yes"); // 출입 가능 여부
+  const [entryDetailText, setEntryDetailText] = useState(""); // 출입 상세
+  const [selectedConditions, setSelectedConditions] = useState<string[]>([]); //출입 조건
+  const [welcomeStatus, setWelcomeStatus] = useState<number | null>(null); // 환영 지수
+  const [bodyText, setBodyText] = useState(""); // 후기 본문
 
   const handleChipClick = (id: string) => {
     setSelectedConditions((prev) =>
@@ -65,7 +82,60 @@ export default function LeaveFootprintPage() {
     );
   };
 
-  const isFormValid = welcomeStatus && rating > 0;
+  // API 명세에 따른 유효성 검사
+  const isEntryDetailValid =
+    entryStatus !== "conditional" ||
+    (entryStatus === "conditional" &&
+      entryDetailText.length >= 5 &&
+      entryDetailText.length <= 20);
+  const isBodyValid = bodyText.length >= 5 && bodyText.length <= 500;
+
+  const isFormValid =
+    !!welcomeStatus && // 0이 아닌 1-5 값이므로 truthy 체크 가능
+    rating > 0 &&
+    isBodyValid &&
+    isEntryDetailValid &&
+    !!contentId;
+
+  // 제출 핸들러
+  const handleSubmit = async () => {
+    if (!isFormValid || !contentId || !welcomeStatus) {
+      alert("폼을 올바르게 입력해주세요.");
+      return;
+    }
+
+    // entryStatus 값 API 명세에 맞게 변환
+    let apiEntryStatus: "allow" | "deny" | "detail";
+    if (entryStatus === "yes") {
+      apiEntryStatus = "allow";
+    } else if (entryStatus === "no") {
+      apiEntryStatus = "deny";
+    } else if (entryStatus === "conditional") {
+      apiEntryStatus = "detail";
+    } else {
+      return; // 비정상 상태
+    }
+
+    // API 페이로드 생성
+    const payload: PostFootprintReq = {
+      contentId: parseInt(contentId, 10),
+      entryStatus: apiEntryStatus,
+      entryStatusDetail:
+        apiEntryStatus === "detail" ? entryDetailText : undefined,
+      conditions: selectedConditions as ConditionType[],
+      // [FIX 2] welcomeStatus가 이미 number이므로 parseInt 제거
+      welcome: welcomeStatus as WelcomeScore,
+      body: bodyText,
+    };
+
+    try {
+      await createFootprint(payload);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Failed to post footprint:", error);
+      alert("리뷰 등록에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   return (
     <div className={s.page}>
@@ -114,8 +184,7 @@ export default function LeaveFootprintPage() {
                 </p>
               </div>
               <div>
-                <span className={s.placeLocation}>제주시 애월읍 ・ 루트문</span>
-                <h3 className={s.placeName}>한화리조트 제주</h3>
+                <h3 className={s.placeName}>{placeName || "장소 정보 없음"}</h3>
               </div>
               <PawRating rating={rating} setRating={setRating} />
             </div>
@@ -133,6 +202,9 @@ export default function LeaveFootprintPage() {
                     <TextField
                       placeholder="어디까지 함께 들어갈 수 있었나요?"
                       helperText="최소 5자, 최대 20자"
+                      value={entryDetailText}
+                      onChange={(e) => setEntryDetailText(e.target.value)}
+                      maxLength={20}
                     />
                   </div>
                 )}
@@ -151,9 +223,15 @@ export default function LeaveFootprintPage() {
               <div className={s.formSection}>
                 <RadioGroup
                   label="환영 지수"
-                  options={welcomeOptions}
-                  selectedValue={welcomeStatus}
-                  onSelect={setWelcomeStatus}
+                  // [FIX 1] options의 value를 string으로 변환
+                  options={welcomeOptions.map((opt) => ({
+                    ...opt,
+                    value: String(opt.value),
+                  }))}
+                  selectedValue={
+                    welcomeStatus !== null ? String(welcomeStatus) : null
+                  }
+                  onSelect={(value) => setWelcomeStatus(parseInt(value, 10))}
                 />
               </div>
 
@@ -161,21 +239,32 @@ export default function LeaveFootprintPage() {
                 <TextField
                   placeholder="강아지와 함께한 순간이 궁금해요!"
                   helperText="최소 5자, 최대 500자"
+                  value={bodyText}
+                  onChange={(e) => setBodyText(e.target.value)}
+                  maxLength={500}
                 />
               </div>
             </div>
           </div>
           <div className={s.footer}>
             <Button
-              text="작성 완료"
+              text={isCreating ? "등록 중..." : "작성 완료"}
               status={isFormValid ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED}
               size={ButtonSize.LARGE}
-              onClick={() => setIsSubmitted(true)}
-              disabled={!isFormValid}
+              onClick={handleSubmit}
+              disabled={!isFormValid || isCreating}
             />
           </div>
         </>
       )}
     </div>
+  );
+}
+
+export default function LeaveFootprintPageWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LeaveFootprintPage />
+    </Suspense>
   );
 }

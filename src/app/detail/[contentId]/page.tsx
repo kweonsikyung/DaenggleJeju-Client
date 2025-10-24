@@ -362,7 +362,16 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             <span
               className={s.sectionActionText}
               onClick={() => {
-                router.push(`/footprint/new?contentId=${contentId}`);
+                if (data?.title) {
+                  const placeName = encodeURIComponent(data.title);
+                  router.push(
+                    `/review?contentId=${contentId}&placeName=${placeName}`
+                  );
+                } else {
+                  alert(
+                    "장소 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요."
+                  );
+                }
               }}
             >
               발자국 남기기

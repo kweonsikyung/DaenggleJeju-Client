@@ -1,26 +1,43 @@
-// ================= POST /footprints =================
-
 /**
  * 발자국(리뷰)의 출입 상태
+ * @description
+ * - allow: 출입 가능
+ * - deny: 출입 불가
+ * - detail: 상세 입력 필요
  */
-export type EntryStatus = "allow" | "deny";
+export type EntryStatus = "allow" | "deny" | "detail";
+
+/**
+ * 방문 조건
+ * @description
+ * - leash: 목줄
+ * - carrier: 이동가방
+ * - leash_free: 목줄 미착용
+ * - diaper: 기저귀/매너벨트
+ */
+export type ConditionType = "leash" | "carrier" | "leash_free" | "diaper";
+
+/**
+ * 환영도 점수 (1~5)
+ */
+export type WelcomeScore = 1 | 2 | 3 | 4 | 5;
 
 /**
  * 발자국(리뷰) 생성 Request
  * @description POST /footprints 요청의 Body 타입
  * @property {number} contentId - 장소 ID
  * @property {EntryStatus} entryStatus - 출입 가능 여부
- * @property {string} entryStatusDetail - 출입 상세 정보 (예: "소형견만 가능")
- * @property {string[]} conditions - 방문 조건 (예: "목줄", "기저귀")
- * @property {number} welcome - 환영도 점수 (1~5)
+ * @property {string} [entryStatusDetail] - 출입 상세 정보 (entryStatus가 'detail'일 때만)
+ * @property {ConditionType[]} [conditions] - 방문 조건 (선택)
+ * @property {WelcomeScore} welcome - 환영도 점수 (1~5)
  * @property {string} body - 리뷰 본문
  */
 export interface PostFootprintReq {
   contentId: number;
   entryStatus: EntryStatus;
-  entryStatusDetail: string;
-  conditions: string[];
-  welcome: number;
+  entryStatusDetail?: string;
+  conditions?: ConditionType[];
+  welcome: WelcomeScore;
   body: string;
 }
 
