@@ -3,15 +3,43 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { SWRProvider } from "@/components/providers/SWRProvider";
+import localFont from "next/font/local";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const pretendard = localFont({
+  src: [
+    { path: "./fonts/Pretendard-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/Pretendard-Medium.ttf", weight: "500", style: "normal" },
+    { path: "./fonts/Pretendard-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "./fonts/Pretendard-Bold.ttf", weight: "700", style: "normal" },
+    {
+      path: "./fonts/Pretendard-ExtraBold.ttf",
+      weight: "800",
+      style: "normal",
+    },
+    { path: "./fonts/Pretendard-Black.ttf", weight: "900", style: "normal" },
+    { path: "./fonts/Pretendard-Light.ttf", weight: "300", style: "normal" },
+    {
+      path: "./fonts/Pretendard-ExtraLight.ttf",
+      weight: "200",
+      style: "normal",
+    },
+    { path: "./fonts/Pretendard-Thin.ttf", weight: "100", style: "normal" },
+  ],
+  display: "swap",
+  variable: "--font-pretendard",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const laundryGothic = localFont({
+  src: [
+    {
+      path: "./fonts/LaundryGothic-Regular.woff",
+      weight: "400",
+      style: "normal",
+    },
+    { path: "./fonts/LaundryGothic-Bold.woff", weight: "700", style: "normal" },
+  ],
+  display: "swap",
+  variable: "--font-laundry",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -52,8 +80,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html
+      lang="ko"
+      className={`${pretendard.variable} ${laundryGothic.variable}`}
+    >
+      <body>
         {process.env.NEXT_PUBLIC_KAKAOMAP_API_KEY ? (
           <Script
             src={`https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAOMAP_API_KEY}&autoload=false&libraries=services,clusterer`}

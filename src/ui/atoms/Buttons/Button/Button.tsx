@@ -14,12 +14,13 @@ export interface ButtonProps
 
 const STATUS_KEY: Record<
   ButtonStatus,
-  "active" | "disabled" | "default" | "selected"
+  "active" | "disabled" | "default" | "selected" | "primary"
 > = {
   [ButtonStatus.ACTIVE]: "active",
   [ButtonStatus.DISABLED]: "disabled",
   [ButtonStatus.DEFAULT]: "default",
   [ButtonStatus.SELECTED]: "selected",
+  [ButtonStatus.PRIMARY]: "primary",
 };
 
 const SIZE_KEY: Record<ButtonSize, "medium" | "large"> = {

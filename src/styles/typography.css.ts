@@ -1,5 +1,6 @@
 export const TYPO = {
   DISPLAY: {
+    fontFamily: "var(--font-laundry)",
     fontSize: "22px",
     fontWeight: 700,
     lineHeight: "32px",

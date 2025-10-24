@@ -31,3 +31,7 @@ export const gpsButton = style({
     transform: "scale(0.95)",
   },
 });
+
+export const fabWithTooltipContainer = style({
+  position: "relative",
+});

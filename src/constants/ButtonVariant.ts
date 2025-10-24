@@ -16,4 +16,5 @@ export enum ButtonStatus {
   DISABLED = "disabled",
   DEFAULT = "default",
   SELECTED = "selected",
+  PRIMARY = "primary",
 }
