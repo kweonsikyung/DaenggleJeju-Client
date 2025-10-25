@@ -21,6 +21,7 @@ const nextConfig = {
       "cdn.visitkorea.or.kr",
       "lh3.googleusercontent.com",
       "storage.doopedia.co.kr",
+      "googleusercontent.com",
     ],
   },
 };
