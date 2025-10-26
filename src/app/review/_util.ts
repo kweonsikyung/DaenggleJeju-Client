@@ -1,6 +1,6 @@
 export const entryOptions = [
-  { value: "yes", label: "동반 출입 가능" },
-  { value: "no", label: "동반 출입 불가능" },
+  { value: "allow", label: "동반 출입 가능" },
+  { value: "deny", label: "동반 출입 불가능" },
   { value: "detail", label: "상세 입력" },
 ];
 
