@@ -210,7 +210,7 @@ export default function Page() {
                       item.metaLine || item.contentType?.name || ""
                     }
                     placeName={item.title}
-                    rating={item.welcome}
+                    rating={item.rating}
                     date={item.createdAtText}
                     chips={item.chips}
                     content={item.body}
