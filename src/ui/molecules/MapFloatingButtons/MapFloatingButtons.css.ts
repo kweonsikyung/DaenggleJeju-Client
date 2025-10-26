@@ -1,4 +1,4 @@
-import { style } from "@vanilla-extract/css";
+import { style, keyframes } from "@vanilla-extract/css";
 
 export const root = style({
   position: "absolute",
@@ -30,6 +30,19 @@ export const gpsButton = style({
   ":active": {
     transform: "scale(0.95)",
   },
+});
+
+const pulseAnimation = keyframes({
+  "0%": { transform: "scale(1)" },
+  "50%": { transform: "scale(1.1)" },
+  "100%": { transform: "scale(1)" },
+});
+
+export const fabPulse = style({
+  animationName: pulseAnimation,
+  animationDuration: "0.7s",
+  animationIterationCount: 3,
+  animationTimingFunction: "ease-in-out",
 });
 
 export const fabWithTooltipContainer = style({

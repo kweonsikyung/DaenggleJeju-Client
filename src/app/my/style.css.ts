@@ -24,12 +24,12 @@ export const contentWrapper = style({
 });
 
 export const listContainer = style({
+  padding: "16px",
   overflow: "scroll",
   flex: 1,
 });
 
 export const placeList = style({
-  padding: "16px",
   display: "flex",
   flexDirection: "column",
   gap: "12px",
