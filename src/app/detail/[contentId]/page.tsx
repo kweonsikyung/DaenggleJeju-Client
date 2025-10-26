@@ -25,7 +25,6 @@ import { useModal } from "@/hooks/useModal";
 // utils
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { processChips } from "./_util";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 const MAX_LENGTH = 200;
 
@@ -50,6 +49,43 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
   const isButtonActive = textLength >= 10;
   const isError = textLength > MAX_LENGTH;
 
+  // api handler
+  const { data, error, mutate } = usePlaceFullDetail({
+    contentId: contentId,
+  });
+
+  // 이미지 URL 디코딩 및 최종 src 결정 (useMemo)
+  const decodedImageSrc = useMemo(() => {
+    let url = data?.thumbnail || null;
+    if (typeof url === "string" && url.includes("%")) {
+      try {
+        url = decodeURIComponent(url);
+      } catch (e) {
+        console.error("URL 디코딩 실패:", url, e);
+        url = null;
+      }
+    }
+
+    if (
+      typeof url === "string" &&
+      url !== "사진 없음" &&
+      /^https?:\/\//i.test(url)
+    ) {
+      return url;
+    }
+    return "/assets/jeju.png";
+  }, [data?.thumbnail]);
+
+  // 이미지 로드 실패 시 fallback 처리를 위한 state
+  const [currentImageSrc, setCurrentImageSrc] = useState(decodedImageSrc);
+  useEffect(() => {
+    setCurrentImageSrc(decodedImageSrc);
+  }, [decodedImageSrc]);
+
+  const handleImageError = () => {
+    setCurrentImageSrc("/assets/jeju.png");
+  };
+
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setRequestText(e.target.value);
   };
@@ -60,11 +96,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
       setRequestText("");
     }
   };
-
-  /** api handler */
-  const { data, error, mutate } = usePlaceFullDetail({
-    contentId: contentId,
-  });
 
   const {
     daengglePlaceRecommendationsData: recommendationsData,
@@ -86,11 +117,6 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     offset: 0,
   });
 
-  const { infoTags, policyBoxTags } = useMemo(
-    () => processChips(data?.chips),
-    [data?.chips]
-  );
-
   const { postScrap, isPosting } = usePostScrap();
   const handleScrapToggle = async () => {
     if (isPosting) return;
@@ -109,15 +135,28 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
       "동반 조건은 달라질 수 있어, 방문 전 장소에 문의",
     ];
 
-    if (!data?.petPolicy?.notes || data.petPolicy.notes.length === 0) {
+    if (
+      !data?.petPolicy?.notes ||
+      data.petPolicy.notes.length < 2 ||
+      !data.petPolicy.notes[1]
+    ) {
       return defaultNotes;
     }
 
-    const additionalNotes = data.petPolicy.notes
-      .flatMap((note) => note.split(/↵|\n/))
-      .flatMap((line) => (line.includes("-") ? line.split("-") : [line]))
-      .map((item) => item.trim())
-      .filter((item) => item);
+    const dirtyNote = data.petPolicy.notes[1];
+    const bracketIndex = dirtyNote.indexOf("]");
+    let cleanNote = "";
+
+    if (bracketIndex !== -1) {
+      cleanNote = dirtyNote.substring(bracketIndex + 1).trim();
+    } else {
+      cleanNote = dirtyNote.trim();
+    }
+
+    const additionalNotes = cleanNote
+      .split(".")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
 
     return [...defaultNotes, ...additionalNotes];
   }, [data?.petPolicy?.notes]);
@@ -135,7 +174,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     }
 
     const items = placeFootprintsData.items;
-    const sum = items.reduce((acc, item) => acc + item.welcome, 0);
+    const sum = items.reduce((acc, item) => acc + item.rating, 0);
     const average = sum / items.length;
 
     return {
@@ -145,12 +184,15 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     };
   }, [placeFootprintsData]);
 
-  /** lifecycle */
   useEffect(() => {
     if (data) {
       setIsBookmarked(data.isScrapped);
     }
   }, [data]);
+
+  useEffect(() => {
+    setCurrentImageSrc(decodedImageSrc);
+  }, [decodedImageSrc]);
 
   return (
     <div className={s.page}>
@@ -187,17 +229,12 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             <section className={s.placeInfoSection}>
               <div className={s.placeHeader}>
                 <Image
-                  src={
-                    data.thumbnail &&
-                    data.thumbnail !== "사진 없음" &&
-                    /^https?:\/\//i.test(data.thumbnail)
-                      ? data.thumbnail
-                      : "/assets/jeju.png"
-                  }
+                  src={currentImageSrc}
                   alt={data.title}
                   width={80}
                   height={80}
                   className={s.placeImage}
+                  onError={handleImageError}
                 />
                 <div className={s.placeDetails}>
                   <div>
@@ -221,7 +258,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                     </div>
                   </div>
                   <div className={s.infoTagGroup}>
-                    {infoTags.map((tag) => (
+                    {data.chips2.map((tag) => (
                       <div key={tag} className={s.visitChip}>
                         {tag}
                       </div>
@@ -230,12 +267,12 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                 </div>
               </div>
 
-              {policyBoxTags.length > 0 && (
+              {data.chips1.length > 0 && (
                 <div className={s.tagGroup}>
-                  {policyBoxTags.map((tag, index) => (
-                    <React.Fragment key={tag}>
+                  {data.chips1.map((tag, index) => (
+                    <React.Fragment key={`${tag}-${index}`}>
                       <span className={s.tagItem}>{tag}</span>
-                      {index < policyBoxTags.length - 1 && (
+                      {index < data.chips1.length - 1 && (
                         <div className={s.tagDivider} />
                       )}
                     </React.Fragment>
@@ -417,8 +454,9 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   <DangleReview
                     key={review.footprintId}
                     profileImageUrl={getRandomAvatar()}
-                    userName={review.writer.handle}
-                    rating={review.welcome}
+                    userName={review.writer.pet.name}
+                    dogInfo={review.writer.pet.sizeLabelKo}
+                    rating={review.rating}
                     date={review.createdAtText}
                     chips={review.chips}
                     content={review.body}

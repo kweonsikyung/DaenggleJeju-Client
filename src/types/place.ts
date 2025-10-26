@@ -20,7 +20,8 @@ export interface ContentType {
  * @property isScrapped - 사용자가 해당 장소를 스크랩했는지 여부
  * @property scrapCount - 해당 장소의 총 스크랩 수
  * @property metaLine - 위치/카테고리 정보 (e.g., "서귀포시 남원읍 · 숙소")
- * @property chips - 태그 배열 (e.g., ["마당"])
+ * @property chips1 - 태그 배열 (e.g., ["마당"])
+ * @property chips2 - 태그 배열 (e.g., ["마당"])
  * @property distanceText - 거리 텍스트 (e.g., "4.9km", 없을 경우 null)
  */
 export interface PlaceItem {
@@ -33,7 +34,8 @@ export interface PlaceItem {
   isScrapped: boolean;
   scrapCount: number;
   metaLine: string;
-  chips?: string[];
+  chips1?: string[];
+  chips2?: string[];
   distanceText: string | null;
 }
 
@@ -231,13 +233,6 @@ export interface PetPolicy {
 }
 
 /**
- * API 응답의 chips 객체 (e.g., "areas", "conditions", "policy" 등)
- */
-export interface Chips {
-  [key: string]: string | string[] | undefined;
-}
-
-/**
  * 장소 상세 정보 전체 조회 Response
  * @description GET /places/{contentId}/full 요청의 성공 응답 타입
  * @property title - 장소의 제목
@@ -246,10 +241,10 @@ export interface Chips {
  * @property openHours - 장소의 운영 시간
  * @property homepage - 장소의 홈페이지 URL
  * @property thumbnail - 썸네일 이미지 URL (없을 경우 null)
- * @property overview - 장소에 대한 개요 설명
- * @property conditions - 반려동물 동반 조건 목록
+ * @property images - 장소 이미지 목록
+ * @property chips1 - 칩 목록 1 (e.g., 반려동물 조건)
+ * @property chips2 - 칩 목록 2 (e.g., 편의시설)
  * @property petPolicy - 반려동물 동반 정책 상세 설명
- * @property notes - 기타 참고 사항
  * @property isScrapped - 사용자가 해당 장소를 스크랩했는지 여부
  * @property scrapCount - 해당 장소의 총 스크랩 수
  */
@@ -260,9 +255,9 @@ export interface GetPlaceFullDetailRes {
   openHours: string;
   homepage: string;
   thumbnail: string | null;
-  overview: string;
   images: ImageItem[];
-  chips: Chips;
+  chips1: string[];
+  chips2: string[];
   petPolicy: PetPolicy;
   isScrapped: boolean;
   scrapCount: number;

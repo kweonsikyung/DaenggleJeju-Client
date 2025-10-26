@@ -124,12 +124,17 @@ export interface PlaceFootprintItem {
   writer: {
     userId: number;
     handle: string;
+    pet: {
+      name: string;
+      breedNameKo: string;
+      sizeLabelKo: string;
+    };
   };
   createdAtText: string;
   chips: string[];
-  welcome: number;
+  rating: number;
   body: string;
-  isLiked: boolean;
+  isMine: boolean;
 }
 
 /**
