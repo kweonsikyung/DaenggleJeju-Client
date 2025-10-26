@@ -24,7 +24,6 @@ export const contentWrapper = style({
 });
 
 export const listContainer = style({
-  padding: "16px",
   overflow: "scroll",
   flex: 1,
 });
