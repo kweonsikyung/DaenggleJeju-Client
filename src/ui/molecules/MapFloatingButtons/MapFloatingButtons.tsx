@@ -27,6 +27,11 @@ export function MapFloatingButtons({
   fabProps,
   tooltipProps,
 }: MapFloatingButtonsProps) {
+  const animatedFabProps: FabProps = {
+    ...fabProps,
+    className: [fabProps.className, s.fabPulse].filter(Boolean).join(" "),
+  };
+
   return (
     <div className={s.root}>
       <div>
@@ -43,7 +48,7 @@ export function MapFloatingButtons({
         <ChipMapList {...chipMapListProps} />
       </div>
       <div className={s.fabWithTooltipContainer}>
-        <Fab {...fabProps} />
+        <Fab {...animatedFabProps} />
         <Tooltip {...tooltipProps} />
       </div>
     </div>

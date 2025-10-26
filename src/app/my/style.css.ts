@@ -30,7 +30,6 @@ export const listContainer = style({
 });
 
 export const placeList = style({
-  padding: "16px",
   display: "flex",
   flexDirection: "column",
   gap: "12px",
