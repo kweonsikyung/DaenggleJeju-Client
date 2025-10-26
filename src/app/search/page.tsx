@@ -550,28 +550,10 @@ function SearchPageContent() {
 }
 
 /**
- * 검색 페이지
+ * 검색 페이지 (서버 컴포넌트)
+ * 실제 UI 로직은 SearchPageContent에 위임하고,
+ * 로딩 상태는 app/search/loading.tsx가 처리합니다.
  */
 export default function SearchPage() {
-  const FallbackUI = (
-    <div className={s.page}>
-      <SearchHeader
-        backIconHandler={() => {}}
-        searchFieldProps={{
-          placeholder: "제주 지역 또는 장소명 검색",
-          disabled: true,
-        }}
-      />
-      <div className={s.container}>
-        <EmptyState title="불러오는 중" description="잠시만 기다려 주세요." />
-      </div>
-      <NavBar activePage="near" />
-    </div>
-  );
-
-  return (
-    <Suspense fallback={FallbackUI}>
-      <SearchPageContent />
-    </Suspense>
-  );
+  return <SearchPageContent />;
 }
