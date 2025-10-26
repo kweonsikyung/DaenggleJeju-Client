@@ -144,7 +144,7 @@ export default function Page() {
                   description={currentEmptyState.description}
                 />
               ) : activeSubTab === "dangle" ? (
-                <div className={s.placeList}>
+                <Grid>
                   {(filteredItems as ScrapDangleItem[]).map((item, index) => {
                     const { cleanTitle, tags } = extractHashtags(item.title);
                     return (
@@ -163,7 +163,7 @@ export default function Page() {
                       />
                     );
                   })}
-                </div>
+                </Grid>
               ) : (
                 <div className={s.placeList}>
                   {(filteredItems as ScrapPlaceItem[]).map((item) => (
@@ -206,11 +206,15 @@ export default function Page() {
                   <DangleReview
                     isMine={true}
                     key={item.footprintId}
-                    profileImageUrl={getRandomAvatar()}
+                    locationCategory={
+                      item.metaLine || item.contentType?.name || ""
+                    }
+                    placeName={item.title}
                     rating={item.welcome}
                     date={item.createdAtText}
                     chips={item.chips}
                     content={item.body}
+                    onClick={() => router.push(`/detail/${item.contentId}`)}
                   />
                 ))}
               </div>
