@@ -84,11 +84,17 @@ export interface MyFootprintItem {
     name: string;
   };
   title: string;
+  pet: {
+    name: string;
+    breedNameKo: string;
+    sizeLabelKo: string;
+    ageYears: number;
+  };
   metaLine: string;
   createdAtText: string;
   thumbnail: string | null;
   chips: string[];
-  welcome: number;
+  rating: number;
   body: string;
 }
 
