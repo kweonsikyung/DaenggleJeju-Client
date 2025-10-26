@@ -22,6 +22,7 @@ import {
   PostFootprintReq,
   ConditionType,
   WelcomeScore,
+  EntryStatus,
 } from "@/types/footprint";
 
 interface PawRatingProps {
@@ -70,7 +71,7 @@ function LeaveFootprintPage() {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [rating, setRating] = useState(0); // 상단 별점
-  const [entryStatus, setEntryStatus] = useState<string | null>("yes"); // 출입 가능 여부
+  const [entryStatus, setEntryStatus] = useState<string | null>("allow");
   const [entryDetailText, setEntryDetailText] = useState(""); // 출입 상세
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]); //출입 조건
   const [welcomeStatus, setWelcomeStatus] = useState<number | null>(null); // 환영 지수
@@ -84,14 +85,14 @@ function LeaveFootprintPage() {
 
   // API 명세에 따른 유효성 검사
   const isEntryDetailValid =
-    entryStatus !== "conditional" ||
-    (entryStatus === "conditional" &&
+    entryStatus !== "detail" ||
+    (entryStatus === "detail" &&
       entryDetailText.length >= 5 &&
       entryDetailText.length <= 20);
   const isBodyValid = bodyText.length >= 5 && bodyText.length <= 500;
 
   const isFormValid =
-    !!welcomeStatus && // 0이 아닌 1-5 값이므로 truthy 체크 가능
+    !!welcomeStatus &&
     rating > 0 &&
     isBodyValid &&
     isEntryDetailValid &&
@@ -104,27 +105,23 @@ function LeaveFootprintPage() {
       return;
     }
 
-    // entryStatus 값 API 명세에 맞게 변환
-    let apiEntryStatus: "allow" | "deny" | "detail";
-    if (entryStatus === "yes") {
-      apiEntryStatus = "allow";
-    } else if (entryStatus === "no") {
-      apiEntryStatus = "deny";
-    } else if (entryStatus === "conditional") {
-      apiEntryStatus = "detail";
-    } else {
+    if (
+      entryStatus !== "allow" &&
+      entryStatus !== "deny" &&
+      entryStatus !== "detail"
+    ) {
+      console.error("Invalid entryStatus:", entryStatus);
       return; // 비정상 상태
     }
 
     // API 페이로드 생성
     const payload: PostFootprintReq = {
       contentId: parseInt(contentId, 10),
-      entryStatus: apiEntryStatus,
-      entryStatusDetail:
-        apiEntryStatus === "detail" ? entryDetailText : undefined,
+      entryStatus: entryStatus,
+      entryStatusDetail: entryStatus === "detail" ? entryDetailText : undefined,
       conditions: selectedConditions as ConditionType[],
-      // [FIX 2] welcomeStatus가 이미 number이므로 parseInt 제거
       welcome: welcomeStatus as WelcomeScore,
+      rating: rating,
       body: bodyText,
     };
 
@@ -197,7 +194,7 @@ function LeaveFootprintPage() {
                   selectedValue={entryStatus}
                   onSelect={setEntryStatus}
                 />
-                {entryStatus === "conditional" && (
+                {entryStatus === "detail" && (
                   <div className={s.textFieldWrapper}>
                     <TextField
                       placeholder="어디까지 함께 들어갈 수 있었나요?"
@@ -223,7 +220,6 @@ function LeaveFootprintPage() {
               <div className={s.formSection}>
                 <RadioGroup
                   label="환영 지수"
-                  // [FIX 1] options의 value를 string으로 변환
                   options={welcomeOptions.map((opt) => ({
                     ...opt,
                     value: String(opt.value),

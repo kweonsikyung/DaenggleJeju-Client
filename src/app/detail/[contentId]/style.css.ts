@@ -83,11 +83,11 @@ export const placeStats = style({
 export const statText = style([TYPO.CAPTION1M, { color: COLORS.NEUTRAL500 }]);
 
 export const visitChip = style([
-  TYPO.CAPTION1B,
+  TYPO.CAPTION2M,
   {
     backgroundColor: COLORS.GREEN50,
     color: COLORS.GREEN500,
-    padding: "4px 8px",
+    padding: "2px 4px",
     borderRadius: "6px",
     display: "inline-flex",
     alignItems: "center",

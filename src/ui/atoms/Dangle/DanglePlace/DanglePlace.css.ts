@@ -20,7 +20,7 @@ export const root = styleVariants({
 
 export const headerContainer = style({
   display: "flex",
-  alignItems: "center",
+  alignItems: "flex-start",
   gap: "12px",
   position: "relative",
 });

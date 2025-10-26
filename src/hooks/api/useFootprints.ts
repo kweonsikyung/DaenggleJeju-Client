@@ -41,11 +41,11 @@ export function usePostFootprint() {
 /**
  * @hook useMyFootprints
  * @description 내가 작성한 발자국 목록을 조회하는 SWR 훅
- * @param {GetMyFootprintsReq} params - Query Parameter 객체
+ * @param {GetMyFootprintsReq | undefined} params - Query Parameter 객체. 없으면 요청 안함.
  * @returns 나의 발자국 목록 데이터, 로딩 상태, 에러 객체, 수동 갱신 함수
  */
-export function useMyFootprints(params: GetMyFootprintsReq) {
-  const key = ["/footprints/my", params];
+export function useMyFootprints(params?: GetMyFootprintsReq) {
+  const key = params ? ["/footprints/my", params] : null;
   const { data, error, isLoading, mutate } = useSWR<
     GetMyFootprintsRes,
     ApiError

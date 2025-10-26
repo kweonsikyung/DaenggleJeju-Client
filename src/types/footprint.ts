@@ -30,7 +30,8 @@ export type WelcomeScore = 1 | 2 | 3 | 4 | 5;
  * @property {string} [entryStatusDetail] - 출입 상세 정보 (entryStatus가 'detail'일 때만)
  * @property {ConditionType[]} [conditions] - 방문 조건 (선택)
  * @property {WelcomeScore} welcome - 환영도 점수 (1~5)
- * @property {string} body - 리뷰 본문
+ * @property {number} rating - 장소 평점 (1~5)
+ * @property {string} [body] - 리뷰 본문 (선택, 5~500자)
  */
 export interface PostFootprintReq {
   contentId: number;
@@ -38,6 +39,7 @@ export interface PostFootprintReq {
   entryStatusDetail?: string;
   conditions?: ConditionType[];
   welcome: WelcomeScore;
+  rating: number;
   body: string;
 }
 
@@ -124,12 +126,17 @@ export interface PlaceFootprintItem {
   writer: {
     userId: number;
     handle: string;
+    pet: {
+      name: string;
+      breedNameKo: string;
+      sizeLabelKo: string;
+    };
   };
   createdAtText: string;
   chips: string[];
-  welcome: number;
+  rating: number;
   body: string;
-  isLiked: boolean;
+  isMine: boolean;
 }
 
 /**

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import * as s from "./DanglePlace.css";
 
@@ -45,11 +45,40 @@ export function DanglePlace({
   isBookmarked = false,
   onBookmarkClick,
 }: DanglePlaceProps) {
-  const isValidUrl =
-    typeof thumbnailUrl === "string" &&
-    thumbnailUrl !== "사진 없음" &&
-    /^https?:\/\//i.test(thumbnailUrl);
-  const imageSrc = isValidUrl ? thumbnailUrl : "/assets/jeju.png";
+  // 1. 초기 이미지 URL 디코딩 및 유효성 검사
+  const initialImageSrc = useMemo(() => {
+    let decodedThumbnailUrl = thumbnailUrl;
+    if (typeof thumbnailUrl === "string" && thumbnailUrl.includes("%")) {
+      try {
+        decodedThumbnailUrl = decodeURIComponent(thumbnailUrl);
+      } catch (e) {
+        console.error("URL 디코딩 실패:", thumbnailUrl, e);
+        decodedThumbnailUrl = null;
+      }
+    }
+
+    if (
+      typeof decodedThumbnailUrl === "string" &&
+      decodedThumbnailUrl !== "사진 없음" &&
+      /^https?:\/\//i.test(decodedThumbnailUrl)
+    ) {
+      return decodedThumbnailUrl; // 유효한 URL
+    }
+    return "/assets/jeju.png"; // 기본 이미지
+  }, [thumbnailUrl]);
+
+  // 2. 이미지 URL 상태 관리
+  const [currentImageSrc, setCurrentImageSrc] = useState(initialImageSrc);
+
+  // 3. thumbnailUrl prop이 변경될 때 상태 업데이트
+  useEffect(() => {
+    setCurrentImageSrc(initialImageSrc);
+  }, [initialImageSrc]);
+
+  // 4. 이미지 로드 에러 핸들러
+  const handleImageError = () => {
+    setCurrentImageSrc("/assets/jeju.png");
+  };
 
   const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -66,11 +95,12 @@ export function DanglePlace({
       <div className={s.headerContainer}>
         <div className={s.thumbnailWrapper}>
           <Image
-            src={imageSrc}
+            src={currentImageSrc}
             alt={"이미지"}
             width={80}
             height={80}
             className={s.thumbnail}
+            onError={handleImageError}
           />
         </div>
         <div className={s.contentWrapper}>
@@ -115,8 +145,8 @@ export function DanglePlace({
           </div>
 
           <div className={s.tags}>
-            {tags.map((tag) => (
-              <span key={tag} className={s.tag}>
+            {tags.map((tag, index) => (
+              <span key={`${tag}-${index}`} className={s.tag}>
                 {tag}
               </span>
             ))}

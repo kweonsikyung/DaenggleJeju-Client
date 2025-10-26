@@ -17,6 +17,20 @@ export const userInfo = style({
   gap: "8px",
 });
 
+// [NEW] 'isMine={true}'일 때 사용될 장소 정보 스타일
+export const placeInfo = style({
+  display: "flex",
+  flexDirection: "column",
+  gap: "2px",
+});
+
+export const locationCategory = style([
+  TYPO.CAPTION2M,
+  { color: COLORS.NEUTRAL500 },
+]);
+
+export const placeName = style([TYPO.BODY2B, { color: "#262626" }]);
+
 export const profileImage = style({
   width: "32px",
   height: "32px",

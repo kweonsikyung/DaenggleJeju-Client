@@ -477,7 +477,10 @@ function SearchPageContent() {
                                 )
                               }
                               isBookmarked={item.isScrapped}
-                              tags={item.chips || []}
+                              tags={[
+                                ...(item.chips1 || []),
+                                ...(item.chips2 || []),
+                              ]}
                               onClick={() =>
                                 router.push(`/detail/${item.contentId}`)
                               }

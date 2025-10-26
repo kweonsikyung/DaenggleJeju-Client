@@ -17,11 +17,13 @@ import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import Grid from "@/ui/molecules/Grid/Grid";
+import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 
 //utils and hooks
 import { mainTabs, subTabs, emptyStateContent } from "./_util";
 import { usePetProfileList } from "@/hooks/api/usePetProfile";
 import { useScrapList } from "@/hooks/api/useScraps";
+import { useMyFootprints } from "@/hooks/api/useFootprints";
 import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 import { extractHashtags } from "@/utils/textParsing";
@@ -43,10 +45,27 @@ export default function Page() {
   const myPet = petProfileList?.at(-1);
 
   const scrapType = activeSubTab === "dangle" ? "daenggle" : "place";
-  const { scrapData, isLoading: isScrapsLoading } = useScrapList({
-    type: scrapType,
-    limit: 50,
-  });
+  const { scrapData, isLoading: isScrapsLoading } = useScrapList(
+    activeMainTab === "saved"
+      ? {
+          type: scrapType,
+          limit: 50,
+        }
+      : undefined
+  );
+
+  const {
+    myFootprintsData,
+    isLoading: isFootprintsLoading,
+    error: footprintsError,
+  } = useMyFootprints(
+    activeMainTab === "footprint"
+      ? {
+          limit: 50,
+        }
+      : undefined
+  );
+
   const tabIdToContentType: Record<string, string> = {
     accom: "숙박",
     restaurant: "음식점",
@@ -55,7 +74,7 @@ export default function Page() {
   };
 
   const filteredItems = useMemo(() => {
-    if (!scrapData?.items) return [];
+    if (activeMainTab !== "saved" || !scrapData?.items) return [];
     if (activeSubTab === "dangle") {
       return scrapData.items as ScrapDangleItem[];
     }
@@ -63,7 +82,7 @@ export default function Page() {
     return (scrapData.items as ScrapPlaceItem[]).filter(
       (item) => item.contentType?.name === targetContentType
     );
-  }, [scrapData, activeSubTab]);
+  }, [scrapData, activeSubTab, activeMainTab]);
 
   const detailsString = [
     myPet?.breedNameKo,
@@ -106,71 +125,98 @@ export default function Page() {
             activeOption={activeMainTab}
             onSelect={setActiveMainTab}
           />
+        </div>
 
-          {activeMainTab === "footprint" && (
-            <Button
-              status={ButtonStatus.ACTIVE}
-              size={ButtonSize.MEDIUM}
-              text="발자국 남기기"
-              onClick={() => {
-                router.push("/review");
-              }}
+        {activeMainTab === "saved" && (
+          <>
+            <Tabs
+              tabs={subTabs}
+              activeTab={activeSubTab}
+              onTabClick={setActiveSubTab}
             />
-          )}
-        </div>
-        <Tabs
-          tabs={subTabs}
-          activeTab={activeSubTab}
-          onTabClick={setActiveSubTab}
-        />
-        <div className={s.listContainer}>
-          {isScrapsLoading ? (
-            <p>스크랩 목록을 불러오는 중입니다...</p>
-          ) : filteredItems.length === 0 ? (
-            <EmptyState
-              imageUrl={currentEmptyState.imageUrl}
-              title={currentEmptyState.title}
-              description={currentEmptyState.description}
-            />
-          ) : activeSubTab === "dangle" ? (
-            <div className={s.placeList}>
-              {(filteredItems as ScrapDangleItem[]).map((item, index) => {
-                const { cleanTitle, tags } = extractHashtags(item.title);
-                return (
-                  <DanglePlay
-                    key={`${item.videoId}-${index}`}
-                    type="medium"
-                    width="100%"
-                    imageUrl={item.thumbnailUrl}
-                    profileImageUrl={getRandomAvatar()}
-                    name={item.channelTitle}
-                    title={cleanTitle}
-                    tags={tags}
-                    onClick={() =>
-                      router.push(`/shorts?contentId=${item.videoId}`)
-                    }
-                  />
-                );
-              })}
-            </div>
-          ) : (
-            <div className={s.placeList}>
-              {(filteredItems as ScrapPlaceItem[]).map((item) => (
-                <DanglePlace
-                  key={item.contentId}
-                  thumbnailUrl={item.thumbnail || ""}
-                  locationCategory={
-                    item.metaLine || item.contentType?.name || ""
-                  }
-                  name={item.title}
-                  distance={item.distanceText}
-                  tags={item.chips}
-                  onClick={() => router.push(`/detail/${item.contentId}`)}
+            <div className={s.listContainer}>
+              {isScrapsLoading ? (
+                <p>스크랩 목록을 불러오는 중입니다...</p>
+              ) : filteredItems.length === 0 ? (
+                <EmptyState
+                  imageUrl={currentEmptyState.imageUrl}
+                  title={currentEmptyState.title}
+                  description={currentEmptyState.description}
                 />
-              ))}
+              ) : activeSubTab === "dangle" ? (
+                <div className={s.placeList}>
+                  {(filteredItems as ScrapDangleItem[]).map((item, index) => {
+                    const { cleanTitle, tags } = extractHashtags(item.title);
+                    return (
+                      <DanglePlay
+                        key={`${item.videoId}-${index}`}
+                        type="medium"
+                        width="100%"
+                        imageUrl={item.thumbnailUrl}
+                        profileImageUrl={getRandomAvatar()}
+                        name={item.channelTitle}
+                        title={cleanTitle}
+                        tags={tags}
+                        onClick={() =>
+                          router.push(`/shorts?contentId=${item.videoId}`)
+                        }
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className={s.placeList}>
+                  {(filteredItems as ScrapPlaceItem[]).map((item) => (
+                    <DanglePlace
+                      key={item.contentId}
+                      thumbnailUrl={item.thumbnail || ""}
+                      locationCategory={
+                        item.metaLine || item.contentType?.name || ""
+                      }
+                      name={item.title}
+                      distance={item.distanceText}
+                      tags={item.chips}
+                      onClick={() => router.push(`/detail/${item.contentId}`)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
+
+        {activeMainTab === "footprint" && (
+          <div className={s.listContainer}>
+            {isFootprintsLoading ? (
+              <p>발자국 목록을 불러오는 중입니다...</p>
+            ) : footprintsError ? (
+              <EmptyState
+                title="오류 발생"
+                description="발자국 목록을 불러오지 못했습니다."
+              />
+            ) : !myFootprintsData || myFootprintsData.items.length === 0 ? (
+              <EmptyState
+                imageUrl={currentEmptyState.imageUrl}
+                title={currentEmptyState.title}
+                description={currentEmptyState.description}
+              />
+            ) : (
+              <div className={s.placeList}>
+                {myFootprintsData.items.map((item) => (
+                  <DangleReview
+                    isMine={true}
+                    key={item.footprintId}
+                    profileImageUrl={getRandomAvatar()}
+                    rating={item.welcome}
+                    date={item.createdAtText}
+                    chips={item.chips}
+                    content={item.body}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Nav */}

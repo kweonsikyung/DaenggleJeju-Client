@@ -255,9 +255,10 @@ export default function MapPage() {
             distance={selectedPlace.distanceText}
             playCount={0}
             bookmarkCount={selectedPlace.scrapCount}
-            tags={normalizeChips(
-              (selectedPlace as unknown as { chips: unknown }).chips
-            )}
+            tags={[
+              ...(selectedPlace.chips1 || []),
+              ...(selectedPlace.chips2 || []),
+            ]}
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
             onBookmarkClick={() => handleScrapToggle(selectedPlace.contentId)}
             isBookmarked={selectedPlace.isScrapped}
