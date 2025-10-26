@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import * as s from "./Carousel.css";
 
 export interface CarouselProps {
@@ -13,6 +14,8 @@ export interface CarouselProps {
   itemWidth?: number;
   /** 컴포넌트 좌우 여백 */
   paddingHoriz?: string | number;
+  /** 캐러셀 반복 여부 (무한 스크롤) */
+  loop?: boolean;
 }
 
 export function Carousel({
@@ -21,11 +24,19 @@ export function Carousel({
   itemHeight,
   itemWidth,
   paddingHoriz,
+  loop = false,
 }: CarouselProps) {
+  const [emblaRef] = useEmblaCarousel({
+    align: "start",
+    dragFree: true,
+    containScroll: "trimSnaps",
+    loop: loop,
+  });
+
   return (
-    <div className={s.wrapper}>
+    <div className={s.embla} ref={emblaRef}>
       <div
-        className={s.container}
+        className={s.embla__container}
         style={{
           gap: `${gap}px`,
           paddingLeft: paddingHoriz,
@@ -34,10 +45,14 @@ export function Carousel({
       >
         {React.Children.map(children, (child) => (
           <div
-            className={s.item}
+            className={s.embla__slide}
             style={{
-              ...(itemHeight ? { height: `${itemHeight}px` } : {}),
-              ...(itemWidth ? { width: `${itemWidth}px` } : {}),
+              ...(itemHeight
+                ? { height: `${itemHeight}px` }
+                : { height: "auto" }),
+              ...(itemWidth
+                ? { flex: `0 0 ${itemWidth}px` }
+                : { flex: "0 0 auto" }),
             }}
           >
             {child}

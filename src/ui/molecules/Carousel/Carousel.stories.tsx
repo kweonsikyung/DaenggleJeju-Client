@@ -15,6 +15,8 @@ const generateItems = (count: number, width: number = 200) => {
         fontSize: "16px",
         borderRadius: "8px",
         border: "1px solid #ddd",
+        width: "100%",
+        height: "100%",
       }}
     >
       <img
@@ -37,6 +39,7 @@ const meta = {
     gap: { control: "number", description: "아이템 간의 간격 (px)" },
     itemHeight: { control: "number", description: "아이템의 높이 (px)" },
     itemWidth: { control: "number", description: "아이템의 너비 (px)" },
+    loop: { control: "boolean", description: "캐러셀 반복 여부" },
   },
 } satisfies Meta<typeof Carousel>;
 
@@ -50,6 +53,7 @@ export const Default: Story = {
     gap: 16,
     itemWidth: 150,
     itemHeight: 200,
+    loop: false,
   },
 };
 
@@ -58,5 +62,16 @@ export const WithCustomHeight: Story = {
     children: generateItems(8, 200),
     gap: 10,
     itemHeight: 250,
+    loop: false,
+  },
+};
+
+export const Looping: Story = {
+  args: {
+    children: generateItems(5, 150),
+    gap: 16,
+    itemWidth: 150,
+    itemHeight: 200,
+    loop: true,
   },
 };
