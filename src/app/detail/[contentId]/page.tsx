@@ -452,10 +452,11 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             {placeFootprintsData && placeFootprintsData.items.length > 0
               ? placeFootprintsData.items.map((review) => (
                   <DangleReview
+                    isMine={false}
                     key={review.footprintId}
                     profileImageUrl={getRandomAvatar()}
-                    userName={review.writer.pet.name}
-                    dogInfo={review.writer.pet.sizeLabelKo}
+                    userName={review.writer.pet?.name || "댕글제주"}
+                    dogInfo={review.writer.pet?.sizeLabelKo || "중형견(6~15kg)"}
                     rating={review.rating}
                     date={review.createdAtText}
                     chips={review.chips}

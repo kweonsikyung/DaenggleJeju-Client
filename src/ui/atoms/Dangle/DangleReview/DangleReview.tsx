@@ -13,13 +13,19 @@ import * as s from "./DangleReview.css";
 const CHIP_LABELS = ["출입 가능 여부", "출입 조건", "반려견 친화도"];
 
 export interface DangleReviewProps {
-  /** 리뷰 작성자의 프로필 이미지 URL */
-  profileImageUrl: string;
-  /** 리뷰 작성자의 이름 */
-  userName: string;
-  /** 리뷰 작성자의 반려견 정보 */
+  /** [isMine=false] 리뷰 작성자의 프로필 이미지 URL */
+  profileImageUrl?: string;
+  /** [isMine=false] 리뷰 작성자의 이름 */
+  userName?: string;
+  /** [isMine=false] 리뷰 작성자의 반려견 정보 */
   dogInfo?: string;
-  /** 평점 (1-5 사이의 숫자, API: welcome) */
+  /** [isMine=true] 장소 위치/카테고리 */
+  locationCategory?: string;
+  /** [isMine=true] 장소명 */
+  placeName?: string;
+  /** 내가 쓴 리뷰인지 여부 */
+  isMine: boolean;
+  /** 평점 (1-5 사이의 숫자) */
   rating: number;
   /** 리뷰 작성 날짜 (API: createdAtText) */
   date: string;
@@ -27,6 +33,8 @@ export interface DangleReviewProps {
   chips: string[];
   /** 리뷰 본문 내용 (API: body) */
   content: string;
+  /** [isMine=true] 카드 클릭 이벤트 핸들러 */
+  onClick?: () => void;
 }
 
 /**
@@ -56,27 +64,40 @@ export function DangleReview({
   profileImageUrl,
   userName,
   dogInfo,
+  locationCategory,
+  placeName,
+  isMine,
   rating,
   date,
   chips,
   content,
+  onClick,
 }: DangleReviewProps) {
   return (
-    <div className={s.root}>
-      {/* 유저 정보 */}
-      <div className={s.userInfo}>
-        <Image
-          src={profileImageUrl}
-          alt={userName}
-          width={24}
-          height={24}
-          className={s.profileImage}
-        />
-        <div className={s.userInfoText}>
-          <span className={s.userName}>{userName}</span>
-          {dogInfo && <span className={s.dogInfo}>{dogInfo}</span>}
+    <div className={s.root} onClick={onClick}>
+      {/* isMine 여부에 따라 장소 정보 또는 유저 정보 렌더링 */}
+      {isMine ? (
+        // 내 리뷰일 경우 (장소 정보)
+        <div className={s.placeInfo}>
+          <span className={s.locationCategory}>{locationCategory}</span>
+          <div className={s.placeName}>{placeName}</div>
         </div>
-      </div>
+      ) : (
+        // 다른 사람 리뷰일 경우 (유저 정보)
+        <div className={s.userInfo}>
+          <Image
+            src={profileImageUrl || "/assets/dangle/dog.png"} // 기본 이미지
+            alt={userName || "user"}
+            width={24}
+            height={24}
+            className={s.profileImage}
+          />
+          <div className={s.userInfoText}>
+            <span className={s.userName}>{userName}</span>
+            {dogInfo && <span className={s.dogInfo}>{dogInfo}</span>}
+          </div>
+        </div>
+      )}
 
       {/* 리뷰 상세 */}
       <div className={s.reviewDetails}>
