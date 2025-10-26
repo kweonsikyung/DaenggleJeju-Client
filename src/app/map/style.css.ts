@@ -1,3 +1,4 @@
+import { TYPO } from "@/styles/typography.css";
 import { style } from "@vanilla-extract/css";
 
 export const page = style({
@@ -72,4 +73,22 @@ export const placeCardContainer = style({
   backgroundColor: "#fff",
   overflow: "hidden",
   borderRadius: "12px",
+});
+
+export const gpsToast = style({
+  ...TYPO.CAPTION1M,
+  width: "90%",
+  textAlign: "center",
+
+  position: "absolute",
+  bottom: "20%",
+  left: "50%",
+  transform: "translateX(-50%)",
+  padding: "16px",
+  borderRadius: "30px",
+  backgroundColor: "#000000D1",
+  color: "white",
+  whiteSpace: "nowrap",
+  zIndex: 12,
+  transition: "opacity 0.3s ease",
 });

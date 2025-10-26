@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import * as s from "./style.css";
 import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
@@ -52,6 +52,7 @@ export default function MapPage() {
   });
   const [showWelcomeOverlay, setShowWelcomeOverlay] = useState(false);
   const [showDanglePickTooltip, setShowDanglePickTooltip] = useState(true);
+  const [showGpsToast, setShowGpsToast] = useState(false);
 
   /** data fetching */
   const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
@@ -61,7 +62,12 @@ export default function MapPage() {
     useDaengglePlacesMap(activeFilter === "dangle" ? {} : undefined);
 
   const isLoading = isPlaceLoading || isDaenggleLoading;
-  const places = placeData?.items || [];
+
+  const places = useMemo(() => placeData?.items || [], [placeData]);
+  const daenggleData = useMemo(
+    () => daengglePlacesMapData,
+    [daengglePlacesMapData]
+  );
 
   const { postScrap, isPosting } = usePostScrap();
 
@@ -77,14 +83,31 @@ export default function MapPage() {
     [router]
   );
 
-  const { mapContainerRef, centerToJeju } = useKakaoMap({
-    places: places,
-    daengglePlaces: daengglePlacesMapData,
+  const { mapContainerRef, centerToJeju, map } = useKakaoMap({
+    places: places, // Memoized 'places'
+    daengglePlaces: daenggleData, // Memoized 'daenggleData'
     activeFilter: activeFilter,
     onPlaceSelect: handlePlaceSelect,
     onDangleClick: handleDangleClick,
     markerImages: MARKER_IMAGES,
   });
+
+  const handleGpsClick = () => {
+    if (map && window.kakao) {
+      const jejuCenter = new window.kakao.maps.LatLng(33.3846, 126.5535);
+      const zoomLevel = 10;
+
+      map.setLevel(zoomLevel);
+      map.panTo(jejuCenter);
+    } else {
+      centerToJeju();
+    }
+
+    setShowGpsToast(true);
+    setTimeout(() => {
+      setShowGpsToast(false);
+    }, 3000);
+  };
 
   /** Scrap handler */
   const handleScrapToggle = async (_contentId: number) => {
@@ -204,12 +227,18 @@ export default function MapPage() {
 
   const totalCount =
     activeFilter === "dangle"
-      ? daengglePlacesMapData?.length || 0
+      ? daenggleData?.length || 0
       : placeData?.total || 0;
 
   return (
     <div className={s.page}>
       {isLoading && <LoadingSpinner />}
+
+      {showGpsToast && (
+        <div className={s.gpsToast}>
+          현재 위치는 제주 밖이에요. 제주로 안내해드릴게요.
+        </div>
+      )}
 
       {/* top */}
       <div className={s.topContainer}>
@@ -269,7 +298,7 @@ export default function MapPage() {
       {/* bottom */}
       <div className={s.bottomContainer}>
         <MapFloatingButtons
-          onGpsClick={centerToJeju}
+          onGpsClick={handleGpsClick}
           chipMapListProps={{
             text: "장소 목록",
             cnt: totalCount,

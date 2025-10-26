@@ -238,11 +238,13 @@ export const useKakaoMap = ({
   // 4. Expose Map Utilities
   const centerToJeju = useCallback(() => {
     if (!map || !window.kakao) return;
-    const swLatLng = new window.kakao.maps.LatLng(33.1, 126.1);
-    const neLatLng = new window.kakao.maps.LatLng(33.6, 126.9);
-    const bounds = new window.kakao.maps.LatLngBounds(swLatLng, neLatLng);
-    map.setBounds(bounds);
+
+    const jejuCenter = new window.kakao.maps.LatLng(33.3846, 126.5535);
+    const zoomLevel = 10;
+
+    map.setLevel(zoomLevel);
+    map.panTo(jejuCenter);
   }, [map]);
 
-  return { mapContainerRef, centerToJeju };
+  return { mapContainerRef, centerToJeju, map };
 };
