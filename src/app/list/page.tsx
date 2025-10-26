@@ -160,7 +160,7 @@ export default function ListClientPage() {
                 distance={item.distanceText}
                 playCount={0}
                 bookmarkCount={item.scrapCount}
-                tags={item.chips}
+                tags={[...(item.chips1 || []), ...(item.chips2 || [])]}
                 onClick={() => router.push(`/detail/${item.contentId}`)}
               />
             </div>
