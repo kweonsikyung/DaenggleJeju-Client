@@ -468,7 +468,7 @@ function SearchPageContent() {
                               }
                               name={item.title}
                               distance={item.distanceText}
-                              playCount={0}
+                              playCount={item.daenggleCount}
                               bookmarkCount={Number(count)}
                               onBookmarkClick={() =>
                                 handleScrapToggle(
