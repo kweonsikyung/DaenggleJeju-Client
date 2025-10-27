@@ -33,6 +33,7 @@ export interface PlaceItem {
   thumbnail: string | null;
   isScrapped: boolean;
   scrapCount: number;
+  daenggleCount: number;
   metaLine: string;
   chips1?: string[];
   chips2?: string[];

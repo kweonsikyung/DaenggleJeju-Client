@@ -282,7 +282,7 @@ export default function MapPage() {
             }
             name={selectedPlace.title}
             distance={selectedPlace.distanceText}
-            playCount={0}
+            playCount={selectedPlace.daenggleCount}
             bookmarkCount={selectedPlace.scrapCount}
             tags={[
               ...(selectedPlace.chips1 || []),
