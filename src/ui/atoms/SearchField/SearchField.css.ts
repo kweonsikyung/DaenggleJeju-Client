@@ -1,6 +1,11 @@
-import { style, styleVariants } from "@vanilla-extract/css";
+import { style, styleVariants, keyframes } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 import { TYPO } from "@/styles/typography.css";
+
+const rotateAnimation = keyframes({
+  "0%": { transform: "rotate(0deg)" },
+  "100%": { transform: "rotate(360deg)" },
+});
 
 export const wrapper = style({
   width: "100%",
@@ -26,10 +31,14 @@ export const state = styleVariants({
     boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL200}`,
   },
   filled: {},
-  error: { boxShadow: `inset 0 0 0 1.5px #E5484D` },
+  error: { 
+    boxShadow: `inset 0 0 0 1.5px #E5484D`,
+    background: "#FFF5F5"
+  },
   disabled: {
     background: COLORS.NEUTRAL50,
     boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL200}`,
+    opacity: 0.6,
   },
 });
 
@@ -37,6 +46,10 @@ export const icon = style({
   width: "16px",
   height: "16px",
   flexShrink: 0,
+});
+
+export const rotate = style({
+  animation: `${rotateAnimation} 1s linear infinite`,
 });
 
 export const input = style({
@@ -51,7 +64,7 @@ export const input = style({
       color: COLORS.NEUTRAL400,
     },
     "&:disabled": {
-      color: "#000",
+      color: COLORS.NEUTRAL400,
     },
   },
 });
@@ -65,4 +78,11 @@ export const clearButton = style({
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 0,
+});
+
+export const errorMessage = style({
+  ...TYPO.CAPTION1M,
+  color: "#E5484D",
+  marginTop: "4px",
+  paddingLeft: "12px",
 });
