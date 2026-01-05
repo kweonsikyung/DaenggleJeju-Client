@@ -1,4 +1,3 @@
-// .storybook/main.ts
 import type { StorybookConfig } from "@storybook/nextjs-vite";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import path from "path";
@@ -8,12 +7,11 @@ const config: StorybookConfig = {
     "../src/**/*.mdx",
     "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../src/ui/**/*.stories.@(ts|tsx|mdx)",
-    "../src/ui/views/Sample/**/*.stories.@(ts|tsx|mdx)",
   ],
   addons: [
     "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-onboarding",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
     "@storybook/addon-a11y",
     "@storybook/addon-vitest",
   ],
@@ -27,7 +25,7 @@ const config: StorybookConfig = {
       ...(config.resolve ?? {}),
       alias: {
         ...(config.resolve?.alias ?? {}),
-        "@": path.resolve(__dirname, "../src"),
+        "@": path.resolve(process.cwd(), "src"),
       },
     };
     return config;
