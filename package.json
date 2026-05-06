@@ -10,7 +10,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build:ui": "tsup && cp package.ui.json dist/ui/package.json && cp README.ui.md dist/ui/README.md",
-    "release:ui": "pnpm build:ui && cd dist/ui && npm publish"
+    "release:ui": "pnpm run build:ui && cd dist/ui && npm publish"
   },
   "dependencies": {
     "@vanilla-extract/css": "^1.17.4",
