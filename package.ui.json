@@ -12,6 +12,9 @@
       "require": "./index.js"
     }
   },
+  "keywords": ["react", "ui", "components", "next.js", "vanilla-extract", "design-system"],
+  "author": "Daenggle Team",
+  "license": "MIT",
   "files": ["**/*"],
   "peerDependencies": {
     "next": ">=14.0.0",
