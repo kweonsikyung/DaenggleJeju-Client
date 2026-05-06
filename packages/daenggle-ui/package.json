@@ -21,6 +21,10 @@
   "scripts": {
     "build": "tsup"
   },
+  "devDependencies": {
+    "tsup": "^8.5.1",
+    "typescript": "^5"
+  },
   "keywords": ["react", "ui", "components", "next.js", "vanilla-extract", "design-system"],
   "author": "kweonsikyung",
   "license": "MIT",
