@@ -2,12 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import * as s from "./style.css";
-import { useLocationStore } from "@/stores/locationStore";
 import { ProgressCircle } from "@/ui/atoms/ProgressCircle/ProgressCircle";
 import Image from "next/image";
-
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { ButtonSize, ButtonStatus } from "../../../constants/ButtonVariant";
 
 const STEPS = [
   "반려동물 정보 분석 중",
@@ -15,7 +13,21 @@ const STEPS = [
   "위치 정보 확인 중(선택)",
 ];
 
-export function WelcomeOverlay() {
+interface WelcomeOverlayProps {
+  onFetchLocation: () => Promise<void>;
+  latitude: number | null;
+  longitude: number | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+export function WelcomeOverlay({
+  onFetchLocation,
+  latitude,
+  longitude,
+  isLoading,
+  error,
+}: WelcomeOverlayProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [completed, setCompleted] = useState<boolean[]>(
     new Array(STEPS.length).fill(false)
@@ -23,13 +35,10 @@ export function WelcomeOverlay() {
   const [isVisible, setIsVisible] = useState(true);
   const [isReadyToAnimate, setIsReadyToAnimate] = useState(false);
 
-  const { fetchLocation, latitude, longitude, isLoading, error } =
-    useLocationStore();
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsReadyToAnimate(true);
-    }, 1000); // 1초(1000ms) 딜레이
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -58,9 +67,9 @@ export function WelcomeOverlay() {
 
   useEffect(() => {
     if (currentStep === STEPS.length) {
-      fetchLocation().catch(() => {});
+      onFetchLocation().catch(() => {});
     }
-  }, [currentStep, fetchLocation]);
+  }, [currentStep, onFetchLocation]);
 
   if (!isVisible) return null;
 

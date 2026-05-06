@@ -2,8 +2,22 @@
 
 import React from "react";
 import Image from "next/image";
-import { VideoData } from "@/utils/dummy_data";
 import * as s from "./ShortsBottomInfo.css";
+
+
+export interface VideoData {
+  id: string;
+  loc: string;
+  videoId: string;
+  thumbnailUrl: string;
+  profileImageUrl: string;
+  userName: string;
+  description: string;
+  tags: string[];
+  bookmarks: number;
+  comments: number;
+  likes?: number;
+}
 
 interface ShortsBottomInfoProps {
   video: VideoData;

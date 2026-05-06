@@ -1,6 +1,6 @@
 import React from "react";
 import * as s from "./Button.css";
-import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { ButtonSize, ButtonStatus } from "../../../constants/ButtonVariant";
 
 export interface ButtonProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {

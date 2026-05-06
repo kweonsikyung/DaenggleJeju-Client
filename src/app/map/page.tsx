@@ -29,6 +29,7 @@ import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { useKakaoMap } from "@/hooks/useKakaoMap";
 import { WelcomeOverlay } from "@/ui/molecules/WelcomeOverlay/WelcomeOverlay";
 import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
+import { useLocationStore } from "@/stores/locationStore";
 
 const LOCAL_STORAGE_KEY = "hasVisitedMap";
 
@@ -53,6 +54,7 @@ export default function MapPage() {
   const [showWelcomeOverlay, setShowWelcomeOverlay] = useState(false);
   const [showDanglePickTooltip, setShowDanglePickTooltip] = useState(true);
   const [showGpsToast, setShowGpsToast] = useState(false);
+  
 
   /** data fetching */
   const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
@@ -108,6 +110,7 @@ export default function MapPage() {
       setShowGpsToast(false);
     }, 3000);
   };
+  const { fetchLocation, latitude, longitude, isLoading: isLocationLoading, error: locationError } = useLocationStore();
 
   /** Scrap handler */
   const handleScrapToggle = async (_contentId: number) => {
@@ -319,7 +322,15 @@ export default function MapPage() {
       <NavBar activePage="near" />
 
       {/* WelcomeOverlay 컴포넌트 */}
-      {showWelcomeOverlay && <WelcomeOverlay />}
+      {showWelcomeOverlay && (
+        <WelcomeOverlay
+          onFetchLocation={fetchLocation}
+          latitude={latitude}
+          longitude={longitude}
+          isLoading={isLocationLoading}
+          error={locationError}
+        />
+      )}
 
       {/* bottomSheet */}
       <BottomSheet
