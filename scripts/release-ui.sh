@@ -71,6 +71,11 @@ cd ../..
 git add packages/daenggle-ui/package.json packages/daenggle-ui/CHANGELOG.md packages/daenggle-ui/README.md
 git commit -m "release: daenggle-ui@$NEW_VERSION"
 git push origin develop
+
+# 태그 추가
+git tag "daenggle-ui@$NEW_VERSION"
+git push origin "daenggle-ui@$NEW_VERSION"
+
 echo "✅ git 푸시 완료"
 
 echo "🎉 릴리즈 완료: daenggle-ui@$NEW_VERSION"
