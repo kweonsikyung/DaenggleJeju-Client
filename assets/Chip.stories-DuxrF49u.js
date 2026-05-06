@@ -1,0 +1,5 @@
+import{n as e}from"./chunk-BEldbCjX.js";import{s as t}from"./iframe-BF0Tcrf2.js";var n=e((()=>{})),r,i=e((()=>{n(),r=`_1v3ms050`}));function a({label:e,onClick:t,className:n}){return(0,o.jsx)(`button`,{type:`button`,className:[r,n].filter(Boolean).join(` `),onClick:t,children:e})}var o,s=e((()=>{o=t(),i(),a.__docgenInfo={description:``,methods:[],displayName:`Chip`,props:{label:{required:!0,tsType:{name:`string`},description:`텍스트`},onClick:{required:!1,tsType:{name:`signature`,type:`function`,raw:`() => void`,signature:{arguments:[],return:{name:`void`}}},description:`클릭 핸들러`},className:{required:!1,tsType:{name:`string`},description:``}}}})),c,l,u;e((()=>{s(),c={title:`Chip/Chip`,component:a,parameters:{layout:`centered`},tags:[`autodocs`],argTypes:{onClick:{action:`clicked`}}},l={args:{label:`댕글`}},l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`{
+  args: {
+    label: "댕글"
+  }
+}`,...l.parameters?.docs?.source}}},u=[`Default`]}))();export{l as Default,u as __namedExportsOrder,c as default};

@@ -1,0 +1,9 @@
+import{n as e}from"./chunk-BEldbCjX.js";import{s as t}from"./iframe-BF0Tcrf2.js";var n=e((()=>{})),r,i,a=e((()=>{n(),r=`_1kh0f650`,i=`_1kh0f651`}));function o({topics:e,onSelectTopic:t}){return(0,s.jsx)(`div`,{className:r,children:e.map(e=>(0,s.jsx)(`button`,{className:i,onClick:()=>t(e),children:e},e))})}var s,c=e((()=>{s=t(),a(),o.__docgenInfo={description:``,methods:[],displayName:`TopicSelector`,props:{topics:{required:!0,tsType:{name:`Array`,elements:[{name:`string`}],raw:`string[]`},description:`버튼으로 표시할 주제 목록 (문자열 배열)`},onSelectTopic:{required:!0,tsType:{name:`signature`,type:`function`,raw:`(topic: string) => void`,signature:{arguments:[{type:{name:`string`},name:`topic`}],return:{name:`void`}}},description:`특정 주제 버튼을 클릭했을 때 호출될 함수`}}}})),l,u,d,f,p;e((()=>{l=t(),c(),u={title:`Chat/TopicSelector`,component:o,tags:[`autodocs`],argTypes:{topics:{control:`object`,description:`버튼으로 표시할 주제 목록 (문자열 배열)`},onSelectTopic:{action:`onSelectTopic`,description:`주제 버튼 클릭 시 호출되는 함수`}},decorators:[e=>(0,l.jsx)(`div`,{style:{width:`500px`},children:(0,l.jsx)(e,{})})]},d={args:{topics:[`이동 스트레스 관리`,`진드기·벌레 예방`,`먹어도 되는 해산물, 과일 확인`,`탈수·피로 증상 체크`]}},f={args:{topics:[`자동차`,`배`,`비행기`,`버스`]}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
+  args: {
+    topics: ["이동 스트레스 관리", "진드기·벌레 예방", "먹어도 되는 해산물, 과일 확인", "탈수·피로 증상 체크"]
+  }
+}`,...d.parameters?.docs?.source}}},f.parameters={...f.parameters,docs:{...f.parameters?.docs,source:{originalSource:`{
+  args: {
+    topics: ["자동차", "배", "비행기", "버스"]
+  }
+}`,...f.parameters?.docs?.source}}},p=[`InitialTopics`,`SubTopics`]}))();export{d as InitialTopics,f as SubTopics,p as __namedExportsOrder,u as default};

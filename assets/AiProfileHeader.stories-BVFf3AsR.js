@@ -1,0 +1,7 @@
+import{n as e}from"./chunk-BEldbCjX.js";import{s as t}from"./iframe-BF0Tcrf2.js";import{n,t as r}from"./image-rzlooT8t.js";var i=e((()=>{})),a,o,s,c,l,u,d=e((()=>{i(),a=`mqoaoe0`,o=`mqoaoe1`,s=`mqoaoe2`,c=`mqoaoe3`,l=`mqoaoe4`,u=`mqoaoe5`}));function f({imageUrl:e,title:t,subtitle:r}){return(0,p.jsxs)(`div`,{className:a,children:[(0,p.jsx)(`div`,{className:o,children:(0,p.jsx)(n,{src:e,alt:t,width:40,height:40,className:s})}),(0,p.jsxs)(`div`,{className:c,children:[(0,p.jsx)(`h1`,{className:l,children:t}),(0,p.jsx)(`p`,{className:u,children:r})]})]})}var p,m=e((()=>{p=t(),r(),d(),f.__docgenInfo={description:``,methods:[],displayName:`AiProfileHeader`,props:{imageUrl:{required:!0,tsType:{name:`string`},description:`프로필 이미지 URL`},title:{required:!0,tsType:{name:`string`},description:`메인 타이틀 (예: "여행케어 AI")`},subtitle:{required:!0,tsType:{name:`string`},description:`서브 타이틀 (예: "빠르게 찾는 반려견 건강 정보")`}}}})),h,g,_;e((()=>{m(),h={title:`Chat/AiProfileHeader`,component:f,tags:[`autodocs`],argTypes:{imageUrl:{control:`text`,description:`프로필 이미지 URL`},title:{control:`text`,description:`메인 타이틀`},subtitle:{control:`text`,description:`서브 타이틀`}}},g={args:{imageUrl:`/assets/curation/avatar.svg`,title:`여행케어 AI`,subtitle:`빠르게 찾는 반려견 건강 정보`}},g.parameters={...g.parameters,docs:{...g.parameters?.docs,source:{originalSource:`{
+  args: {
+    imageUrl: "/assets/curation/avatar.svg",
+    title: "여행케어 AI",
+    subtitle: "빠르게 찾는 반려견 건강 정보"
+  }
+}`,...g.parameters?.docs?.source}}},_=[`Default`]}))();export{g as Default,_ as __namedExportsOrder,h as default};
