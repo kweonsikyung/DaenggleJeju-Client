@@ -13,6 +13,7 @@
     "build-storybook": "pnpm --filter web build-storybook",
     "build:ui": "pnpm --filter daenggle-ui build",
     "release:ui": "bash scripts/release-ui.sh",
+    "release:web": "bash scripts/release-web.sh",
     "chromatic": "npx chromatic --project-token=chpt_942a440a379d631",
     "check:ui": "pnpm --filter daenggle-ui exec npx publint",
     "size:ui": "pnpm --filter daenggle-ui exec npx size-limit",

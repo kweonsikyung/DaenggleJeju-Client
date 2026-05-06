@@ -46,6 +46,7 @@ echo "🔍 패키지 유효성 검사 중..."
 pnpm check:ui
 if [ $? -ne 0 ]; then
   echo "❌ 패키지 유효성 검사 실패"
+  sed -i '' "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$CURRENT_VERSION\"/" packages/daenggle-ui/package.json
   exit 1
 fi
 echo "✅ 패키지 유효성 검사 완료"
@@ -55,6 +56,8 @@ echo "📦 빌드 시작..."
 cd packages/daenggle-ui && pnpm build
 if [ $? -ne 0 ]; then
   echo "❌ 빌드 실패"
+  cd ../..
+  sed -i '' "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$CURRENT_VERSION\"/" packages/daenggle-ui/package.json
   exit 1
 fi
 cd ../..
