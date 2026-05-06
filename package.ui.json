@@ -1,6 +1,6 @@
 {
   "name": "daenggle-ui",
-  "version": "",
+  "version": "0.0.4",
   "description": "Daenggle UI components",
   "main": "./index.js",
   "module": "./index.mjs",
