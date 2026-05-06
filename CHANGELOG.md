@@ -1,8 +1,10 @@
 # Changelog
 
-## [0.0.1] - 2026-05-06
+## [0.1.0] - 2026-05-06
 
 ### Added
-- Initial release of daenggle-ui
-- Atoms: AvatarPicker, BottomSheet, Button, Location, LoginButton, AiProfileHeader, ChatInput, MessageBox, ThinkingBubble, TopicSelector, Chip, ChipKeyword, ChipMapList, DangleCard, DangleItem, DanglePlace, DanglePlay, DangleReview, DangleVideo, Dropdown, EmptyState, Fab, FilterChip, FilterChipExpand, Header, LoadingSpinner, Modal, NavBar, NoticeBox, Pagination, ProfileCard, ProgressCircle, RadioGroup, SearchField, SegmentedControl, SelectField, ShortsBottomInfo, Skeleton, Tabs, TextField, Tooltip, TopBar
-- Molecules: Carousel, FilterSection, Grid, MapFloatingButtons, SearchHeader, ShortsOverlay, WelcomeOverlay
+- Dockerfile 추가
+- daenggle-ui npm 패키지 분리 (packages/daenggle-ui)
+
+### Fixed
+- Next.js 15.4.6으로 다운그레이드 (vanilla-extract 호환성)

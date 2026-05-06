@@ -1,6 +1,6 @@
 {
   "name": "daengglejeju-client",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Daenggle Jeju Client Application",
   "private": true,
   "scripts": {

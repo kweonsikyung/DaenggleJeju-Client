@@ -35,7 +35,7 @@ sed -i '' "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" p
 echo "✅ package.json 버전 업데이트 완료"
 
 # CHANGELOG 업데이트 확인
-read -p "CHANGELOG.md 업데이트 했나요? (y/n): " CHANGELOG_CHECK
+read -p "packages/daenggle-ui/CHANGELOG.md 업데이트 했나요? (y/n): " CHANGELOG_CHECK
 if [ "$CHANGELOG_CHECK" != "y" ]; then
   echo "CHANGELOG.md를 먼저 업데이트해주세요."
   exit 1
@@ -68,7 +68,7 @@ fi
 cd ../..
 
 # git 커밋
-git add packages/daenggle-ui/package.json CHANGELOG.md
+git add packages/daenggle-ui/package.json packages/daenggle-ui/CHANGELOG.md packages/daenggle-ui/README.md
 git commit -m "release: daenggle-ui@$NEW_VERSION"
 git push origin develop
 echo "✅ git 푸시 완료"
