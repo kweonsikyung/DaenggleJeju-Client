@@ -59,6 +59,7 @@
     "semver": "^7.7.4",
     "storybook": "^10.1.11",
     "ts-jest": "^29.4.1",
+    "tsup": "^8.5.1",
     "typescript": "^5"
   }
 }
