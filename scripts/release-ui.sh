@@ -3,7 +3,7 @@
 echo "🚀 daenggle-ui 릴리즈 시작"
 
 # 현재 버전 확인
-CURRENT_VERSION=$(cat package.ui.json | grep '"version"' | head -1 | awk -F'"' '{print $4}')
+CURRENT_VERSION=$(cat packages/daenggle-ui/package.json | grep '"version"' | head -1 | awk -F'"' '{print $4}')
 echo "현재 버전: $CURRENT_VERSION"
 
 # 버전 타입 선택
@@ -30,9 +30,9 @@ NEW_VERSION=$(node -e "
 ")
 echo "새 버전: $NEW_VERSION"
 
-# package.ui.json 버전 업데이트
-sed -i '' "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" package.ui.json
-echo "✅ package.ui.json 버전 업데이트 완료"
+# package.json 버전 업데이트
+sed -i '' "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" packages/daenggle-ui/package.json
+echo "✅ package.json 버전 업데이트 완료"
 
 # CHANGELOG 업데이트 확인
 read -p "CHANGELOG.md 업데이트 했나요? (y/n): " CHANGELOG_CHECK
@@ -43,11 +43,12 @@ fi
 
 # 빌드
 echo "📦 빌드 시작..."
-pnpm run build:ui
+cd packages/daenggle-ui && pnpm build
 if [ $? -ne 0 ]; then
   echo "❌ 빌드 실패"
   exit 1
 fi
+cd ../..
 echo "✅ 빌드 완료"
 
 # 로컬 확인
@@ -59,16 +60,15 @@ fi
 
 # npm 배포
 echo "📤 npm 배포 중..."
-cd dist/ui && npm publish
+cd packages/daenggle-ui && npm publish
 if [ $? -ne 0 ]; then
   echo "❌ npm 배포 실패"
   exit 1
 fi
-echo "✅ npm 배포 완료: daenggle-ui@$NEW_VERSION"
+cd ../..
 
 # git 커밋
-cd ../..
-git add package.ui.json CHANGELOG.md
+git add packages/daenggle-ui/package.json CHANGELOG.md
 git commit -m "release: daenggle-ui@$NEW_VERSION"
 git push origin develop
 echo "✅ git 푸시 완료"

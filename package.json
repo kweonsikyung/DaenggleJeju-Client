@@ -10,7 +10,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:ui": "tsup && cp package.ui.json dist/ui/package.json && cp README.ui.md dist/ui/README.md",
+    "build:ui": "cd packages/daenggle-ui && pnpm build",
     "release:ui": "bash scripts/release-ui.sh"
   },
   "dependencies": {
