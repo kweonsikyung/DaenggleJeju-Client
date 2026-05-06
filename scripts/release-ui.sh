@@ -41,6 +41,15 @@ if [ "$CHANGELOG_CHECK" != "y" ]; then
   exit 1
 fi
 
+# 패키지 유효성 검사
+echo "🔍 패키지 유효성 검사 중..."
+pnpm check:ui
+if [ $? -ne 0 ]; then
+  echo "❌ 패키지 유효성 검사 실패"
+  exit 1
+fi
+echo "✅ 패키지 유효성 검사 완료"
+
 # 빌드
 echo "📦 빌드 시작..."
 cd packages/daenggle-ui && pnpm build
