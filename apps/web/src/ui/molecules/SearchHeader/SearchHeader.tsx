@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import * as s from "./SearchHeader.css";
-import SearchField from "@/ui/atoms/SearchField/SearchField";
+import { SearchField } from "@/ui/atoms/SearchField/SearchField";
 
 export interface SearchHeaderProps {
   /** back 아이콘 핸들러: 주면 자동으로 아이콘 노출 + 핸들러 등록 */
@@ -46,4 +46,3 @@ export function SearchHeader({
   );
 }
 
-export default SearchHeader;

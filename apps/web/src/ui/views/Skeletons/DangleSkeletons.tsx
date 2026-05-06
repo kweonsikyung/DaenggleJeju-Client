@@ -69,7 +69,7 @@ const SkeletonCarousel = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-export default function DangleRecommendSkeleton() {
+export function DangleRecommendSkeleton() {
   return (
     <div className={s.page}>
       <div

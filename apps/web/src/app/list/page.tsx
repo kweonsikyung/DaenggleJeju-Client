@@ -5,14 +5,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import * as s from "./style.css";
 
 //components
-import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
+import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
 import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
 import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import FilterSection from "@/ui/molecules/FilterSection/FilterSection";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
 import { DanglePlaceSkeleton } from "@/ui/views/Skeletons/DangleSkeletons";
 //hooks
 import { usePlaceList } from "@/hooks/api/usePlaces";

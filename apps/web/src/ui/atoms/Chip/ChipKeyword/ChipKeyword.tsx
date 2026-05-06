@@ -42,4 +42,3 @@ export function ChipKeyword({
   );
 }
 
-export default ChipKeyword;

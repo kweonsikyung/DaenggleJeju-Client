@@ -10,7 +10,7 @@ interface TopicSelectorProps {
   onSelectTopic: (topic: string) => void;
 }
 
-export default function TopicSelector({
+export function TopicSelector({
   topics,
   onSelectTopic,
 }: TopicSelectorProps) {

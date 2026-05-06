@@ -108,4 +108,3 @@ export function TopBar({
   );
 }
 
-export default TopBar;

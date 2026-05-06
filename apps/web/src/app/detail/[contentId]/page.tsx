@@ -6,12 +6,12 @@ import Image from "next/image";
 import * as s from "./style.css";
 
 // components
-import TopBar from "@/ui/atoms/TopBar/TopBar";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
-import Carousel from "@/ui/molecules/Carousel/Carousel";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
+import { Carousel } from "@/ui/molecules/Carousel/Carousel";
 import { Modal } from "@/ui/atoms/Modal/Modal";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 

@@ -143,4 +143,3 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 );
 
 SearchField.displayName = "SearchField";
-export default SearchField;

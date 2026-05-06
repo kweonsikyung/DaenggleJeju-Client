@@ -88,4 +88,3 @@ export function DangleVideo({
   );
 }
 
-export default DangleVideo;

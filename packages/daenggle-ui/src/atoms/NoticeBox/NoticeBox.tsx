@@ -17,7 +17,7 @@ interface NoticeBoxProps {
   variant?: "yellow" | "blue";
 }
 
-const NoticeBox = ({
+export const NoticeBox = ({
   shouldRender,
   animation,
   onClose,
@@ -62,4 +62,3 @@ const NoticeBox = ({
   );
 };
 
-export default NoticeBox;

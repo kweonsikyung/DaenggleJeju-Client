@@ -6,17 +6,17 @@ import * as s from "./style.css";
 import { mutate } from "swr";
 
 // components
-import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import ChipKeyword from "@/ui/atoms/Chip/ChipKeyword/ChipKeyword";
-import DangleVideo from "@/ui/atoms/Dangle/DangleVideo/DangleVideo";
+import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { ChipKeyword } from "@/ui/atoms/Chip/ChipKeyword/ChipKeyword";
+import { DangleVideo } from "@/ui/atoms/Dangle/DangleVideo/DangleVideo";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
-import Grid from "@/ui/molecules/Grid/Grid";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
+import { Grid } from "@/ui/molecules/Grid/Grid";
 import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import FilterSection from "@/ui/molecules/FilterSection/FilterSection";
+import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 

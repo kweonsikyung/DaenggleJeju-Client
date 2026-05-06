@@ -23,7 +23,7 @@ interface ShortsBottomInfoProps {
   video: VideoData;
 }
 
-export default function ShortsBottomInfo({ video }: ShortsBottomInfoProps) {
+export function ShortsBottomInfo({ video }: ShortsBottomInfoProps) {
   return (
     <div className={s.bottomInfo}>
       <div className={s.userInfo}>

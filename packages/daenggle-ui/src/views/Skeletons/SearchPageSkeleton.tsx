@@ -59,7 +59,7 @@ const NavBarSkeleton = () => (
   </nav>
 );
 
-export default function SearchPageSkeleton() {
+export function SearchPageSkeleton() {
   return (
     <div className={s.page}>
       <SearchHeaderSkeleton />

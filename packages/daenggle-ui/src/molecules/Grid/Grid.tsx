@@ -15,4 +15,3 @@ export function Grid({ children, className }: GridProps) {
   return <div className={combinedClassName}>{children}</div>;
 }
 
-export default Grid;

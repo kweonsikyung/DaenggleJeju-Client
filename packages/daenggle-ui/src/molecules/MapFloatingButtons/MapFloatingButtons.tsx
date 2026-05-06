@@ -55,4 +55,3 @@ export function MapFloatingButtons({
   );
 }
 
-export default MapFloatingButtons;

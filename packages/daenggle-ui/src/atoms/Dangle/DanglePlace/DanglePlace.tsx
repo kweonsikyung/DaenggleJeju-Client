@@ -187,4 +187,3 @@ export function DanglePlace({
   );
 }
 
-export default DanglePlace;

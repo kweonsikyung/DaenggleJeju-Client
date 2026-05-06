@@ -45,4 +45,3 @@ export function FilterSection({
   );
 }
 
-export default FilterSection;

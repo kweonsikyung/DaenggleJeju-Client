@@ -34,4 +34,3 @@ export function FilterChipExpand({
   );
 }
 
-export default FilterChipExpand;

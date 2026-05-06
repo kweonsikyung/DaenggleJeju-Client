@@ -6,17 +6,17 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 //components
-import TopBar from "@/ui/atoms/TopBar/TopBar";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import ProfileCard from "@/ui/atoms/ProfileCard/ProfileCard";
-import SegmentedControl from "@/ui/atoms/SegmentedControl/SegmentedControl";
-import Tabs from "@/ui/atoms/Tabs/Tabs";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { ProfileCard } from "@/ui/atoms/ProfileCard/ProfileCard";
+import { SegmentedControl } from "@/ui/atoms/SegmentedControl/SegmentedControl";
+import { Tabs } from "@/ui/atoms/Tabs/Tabs";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import Grid from "@/ui/molecules/Grid/Grid";
+import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import { Grid } from "@/ui/molecules/Grid/Grid";
 import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 
 //utils and hooks

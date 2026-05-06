@@ -8,11 +8,11 @@ import type { Swiper as SwiperCore } from "swiper";
 import "swiper/css";
 
 //components
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import TopBar from "@/ui/atoms/TopBar/TopBar";
-import ShortsOverlay from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
-import ShortsBottomInfo from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { ShortsOverlay } from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
+import { ShortsBottomInfo } from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
 import { Dropdown } from "@/ui/atoms/Dropdown/Dropdown";
 
 //hooks

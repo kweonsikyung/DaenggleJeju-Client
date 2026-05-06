@@ -39,4 +39,3 @@ export function NavBar({ activePage }: NavBarProps) {
   );
 }
 
-export default NavBar;

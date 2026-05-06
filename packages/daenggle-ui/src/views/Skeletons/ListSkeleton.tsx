@@ -3,7 +3,7 @@ import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import { DanglePlaceSkeleton } from "./DangleSkeletons";
 import * as s from "@/app/list/style.css";
 
-export default function ListSkeleton() {
+export function ListSkeleton() {
   return (
     <div className={s.page}>
       <div className={s.topContainer}>

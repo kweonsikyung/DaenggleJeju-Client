@@ -35,4 +35,3 @@ export const Tabs = ({ tabs, activeTab, onTabClick, className }: TabsProps) => {
   );
 };
 
-export default Tabs;

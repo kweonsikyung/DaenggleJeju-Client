@@ -5,13 +5,13 @@ import { useRouter } from "next/navigation";
 import * as s from "./style.css";
 
 //components
-import TopBar from "@/ui/atoms/TopBar/TopBar";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import AiProfileHeader from "@/ui/atoms/Chat/AiProfileHeader/AiProfileHeader";
-import MessageBox from "@/ui/atoms/Chat/MessageBox/MessageBox";
-import TopicSelector from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
-import NoticeBox from "@/ui/atoms/NoticeBox/NoticeBox";
-import ThinkingBubble from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { AiProfileHeader } from "@/ui/atoms/Chat/AiProfileHeader/AiProfileHeader";
+import { MessageBox } from "@/ui/atoms/Chat/MessageBox/MessageBox";
+import { TopicSelector } from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
+import { NoticeBox } from "@/ui/atoms/NoticeBox/NoticeBox";
+import { ThinkingBubble } from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
 import { ChatInput } from "@/ui/atoms/Chat/ChatInput/ChatInput";
 
 //hooks

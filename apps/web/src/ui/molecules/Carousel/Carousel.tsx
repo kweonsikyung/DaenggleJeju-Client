@@ -63,4 +63,3 @@ export function Carousel({
   );
 }
 
-export default Carousel;

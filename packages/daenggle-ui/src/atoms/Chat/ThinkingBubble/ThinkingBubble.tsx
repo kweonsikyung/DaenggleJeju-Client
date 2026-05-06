@@ -3,7 +3,7 @@
 import React from "react";
 import * as s from "./ThinkingBubble.css";
 
-export default function ThinkingBubble() {
+export function ThinkingBubble() {
   return (
     <div className={s.wrapper}>
       <div className={s.bubble}>

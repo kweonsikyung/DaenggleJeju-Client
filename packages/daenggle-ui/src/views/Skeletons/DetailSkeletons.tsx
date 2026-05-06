@@ -36,7 +36,7 @@ const SectionHeaderSkeleton = () => (
   </div>
 );
 
-export default function DetailSkeleton() {
+export function DetailSkeleton() {
   return (
     <div className={s.page}>
       <div

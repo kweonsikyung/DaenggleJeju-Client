@@ -6,15 +6,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 //components
-import TopBar from "@/ui/atoms/TopBar/TopBar";
-import Header from "@/ui/atoms/Header/Header";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { Header } from "@/ui/atoms/Header/Header";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
 import { DangleItem } from "@/ui/atoms/Dangle/DangleItem/DangleItem";
 import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
 import { DangleCard } from "@/ui/atoms/Dangle/DangleCard/DangleCard";
-import Carousel from "@/ui/molecules/Carousel/Carousel";
-import Grid from "@/ui/molecules/Grid/Grid";
-import EmptyState from "@/ui/atoms/EmptyState/EmptyState";
+import { Carousel } from "@/ui/molecules/Carousel/Carousel";
+import { Grid } from "@/ui/molecules/Grid/Grid";
+import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
 
 //hooks
 import {

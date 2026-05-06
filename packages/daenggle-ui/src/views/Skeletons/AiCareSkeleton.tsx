@@ -4,7 +4,7 @@ import * as s from "@/app/chat/style.css";
 
 const Spacer = ({ height }: { height: number }) => <div style={{ height }} />;
 
-export default function AiCareSkeleton() {
+export function AiCareSkeleton() {
   return (
     <div className={s.page}>
       <div

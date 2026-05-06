@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import ShortsBottomInfo from "./ShortsBottomInfo";
+import { ShortsBottomInfo } from "./ShortsBottomInfo";
 import { shortsData } from "@/utils/dummy_data";
 
 const meta = {

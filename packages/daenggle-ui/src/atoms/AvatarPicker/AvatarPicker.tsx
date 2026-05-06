@@ -116,4 +116,3 @@ export function AvatarPicker({
   );
 }
 
-export default AvatarPicker;

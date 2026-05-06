@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import AiProfileHeader from "./AiProfileHeader";
+import { AiProfileHeader } from "./AiProfileHeader";
 
 const meta: Meta<typeof AiProfileHeader> = {
   title: "Chat/AiProfileHeader",

@@ -46,4 +46,3 @@ export function SearchHeader({
   );
 }
 
-export default SearchHeader;

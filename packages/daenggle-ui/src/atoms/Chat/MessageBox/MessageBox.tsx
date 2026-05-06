@@ -9,7 +9,7 @@ interface MessageBoxProps {
   variant?: "ai" | "user";
 }
 
-export default function MessageBox({
+export function MessageBox({
   children,
   variant = "ai",
 }: MessageBoxProps) {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import TopBar from "@/ui/atoms/TopBar/TopBar";
+import { TopBar } from "@/ui/atoms/TopBar/TopBar";
 import * as s from "./style.css";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";

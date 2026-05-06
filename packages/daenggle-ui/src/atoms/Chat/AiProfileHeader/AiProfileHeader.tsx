@@ -13,7 +13,7 @@ interface AiProfileHeaderProps {
   subtitle: string;
 }
 
-export default function AiProfileHeader({
+export function AiProfileHeader({
   imageUrl,
   title,
   subtitle,

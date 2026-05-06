@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import * as s from "./style.css";
 import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
 import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import NavBar from "@/ui/atoms/NavBar/NavBar";
-import MapFloatingButtons from "@/ui/molecules/MapFloatingButtons/MapFloatingButtons";
-import FilterSection from "@/ui/molecules/FilterSection/FilterSection";
+import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { MapFloatingButtons } from "@/ui/molecules/MapFloatingButtons/MapFloatingButtons";
+import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
 import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 import {
@@ -18,8 +18,8 @@ import {
   FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
   FILTER_OPTION_ID_TO_API_PARAM,
 } from "./_util";
-import SearchHeader from "@/ui/molecules/SearchHeader/SearchHeader";
-import DanglePlace from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
+import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
 import { GetPlaceMapReq, PlaceItem } from "@/types/place";
