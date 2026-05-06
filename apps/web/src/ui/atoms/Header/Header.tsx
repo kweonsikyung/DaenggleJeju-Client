@@ -17,13 +17,7 @@ export interface HeaderProps {
   marginTop?: string | number;
 }
 
-export function Header({
-  title,
-  desc,
-  onArrowClick,
-  onReClick,
-  marginTop,
-}: HeaderProps) {
+export function Header({ title, desc, onArrowClick, onReClick, marginTop }: HeaderProps) {
   const hasRightIcon = onArrowClick || onReClick;
 
   return (
@@ -38,9 +32,7 @@ export function Header({
           >
             <Image
               src={
-                onArrowClick
-                  ? "/assets/icon24/chevron-right.svg"
-                  : "/assets/icon24/rotate-cw.svg"
+                onArrowClick ? "/assets/icon24/chevron-right.svg" : "/assets/icon24/rotate-cw.svg"
               }
               alt={onArrowClick ? "화살표 아이콘" : "새로고침 아이콘"}
               width={24}
@@ -53,4 +45,3 @@ export function Header({
     </div>
   );
 }
-

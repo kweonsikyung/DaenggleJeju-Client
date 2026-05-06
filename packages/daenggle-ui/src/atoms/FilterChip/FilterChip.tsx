@@ -15,18 +15,9 @@ export interface FilterChipProps {
   onClick?: () => void;
 }
 
-export function FilterChip({
-  text,
-  iconUrl,
-  selected = false,
-  onClick,
-}: FilterChipProps) {
+export function FilterChip({ text, iconUrl, selected = false, onClick }: FilterChipProps) {
   return (
-    <button
-      className={s.chip[selected ? "selected" : "default"]}
-      onClick={onClick}
-      role="button"
-    >
+    <button className={s.chip[selected ? "selected" : "default"]} onClick={onClick} role="button">
       {iconUrl && (
         <div className={s.icon[selected ? "selected" : "default"]}>
           <Image src={iconUrl} alt="" width={16} height={16} />

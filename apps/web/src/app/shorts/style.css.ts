@@ -57,8 +57,7 @@ export const topGradient = style({
   left: 0,
   right: 0,
   height: "200px",
-  background:
-    "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)",
+  background: "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%)",
   zIndex: 2,
   pointerEvents: "none",
 });

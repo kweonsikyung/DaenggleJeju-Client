@@ -12,11 +12,7 @@ interface Step3Props {
   setSelectedItems: (items: string[]) => void;
 }
 
-export default function Step3({
-  setIsValid,
-  selectedItems,
-  setSelectedItems,
-}: Step3Props) {
+export default function Step3({ setIsValid, selectedItems, setSelectedItems }: Step3Props) {
   /** click handler */
   const handleSelect = (value: string) => {
     if (selectedItems.includes(value)) {
@@ -35,9 +31,7 @@ export default function Step3({
     <div className={s.step3_container}>
       {STYLE_OPTIONS.map((label) => {
         const isSelected = selectedItems.includes(label);
-        const status = isSelected
-          ? ButtonStatus.SELECTED
-          : ButtonStatus.DEFAULT;
+        const status = isSelected ? ButtonStatus.SELECTED : ButtonStatus.DEFAULT;
 
         return (
           <Button

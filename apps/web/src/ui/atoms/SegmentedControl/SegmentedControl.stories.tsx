@@ -40,13 +40,7 @@ const mockOptionsLong: SegmentedControlOption[] = [
 export const Default: Story = {
   render: () => {
     const [active, setActive] = useState("saved");
-    return (
-      <SegmentedControl
-        options={mockOptions}
-        activeOption={active}
-        onSelect={setActive}
-      />
-    );
+    return <SegmentedControl options={mockOptions} activeOption={active} onSelect={setActive} />;
   },
 };
 
@@ -54,11 +48,7 @@ export const LongLabels: Story = {
   render: () => {
     const [active, setActive] = useState("option1");
     return (
-      <SegmentedControl
-        options={mockOptionsLong}
-        activeOption={active}
-        onSelect={setActive}
-      />
+      <SegmentedControl options={mockOptionsLong} activeOption={active} onSelect={setActive} />
     );
   },
   name: "3 options",

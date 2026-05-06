@@ -2,11 +2,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
 import { postPetProfile, getPetProfile } from "@/api/pet";
-import {
-  PostPetProfileReq,
-  PetProfileRes,
-  GetPetProfileReq,
-} from "@/types/pet";
+import { PostPetProfileReq, PetProfileRes, GetPetProfileReq } from "@/types/pet";
 
 /**
  * @hook usePetProfile
@@ -52,9 +48,7 @@ export function usePostPetProfile() {
  * @returns 반려견 프로필 목록 데이터, 로딩 상태, 에러 객체
  */
 export function usePetProfileList() {
-  const { data, error, isLoading } = useSWR<PetProfileRes[], ApiError>(
-    "/pets/profiles-list"
-  );
+  const { data, error, isLoading } = useSWR<PetProfileRes[], ApiError>("/pets/profiles-list");
 
   return {
     petProfileList: data,

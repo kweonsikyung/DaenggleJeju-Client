@@ -40,8 +40,7 @@ export default function Page() {
   const [activeMainTab, setActiveMainTab] = useState("saved");
   const [activeSubTab, setActiveSubTab] = useState("dangle");
 
-  const { petProfileList, isLoading: isPetProfileLoading } =
-    usePetProfileList();
+  const { petProfileList, isLoading: isPetProfileLoading } = usePetProfileList();
   const myPet = petProfileList?.at(-1);
 
   const scrapType = activeSubTab === "dangle" ? "daenggle" : "place";
@@ -92,8 +91,7 @@ export default function Page() {
     .filter(Boolean)
     .join(" · ");
 
-  const currentEmptyState =
-    emptyStateContent[activeMainTab as keyof typeof emptyStateContent];
+  const currentEmptyState = emptyStateContent[activeMainTab as keyof typeof emptyStateContent];
 
   return (
     <div className={s.page}>
@@ -129,11 +127,7 @@ export default function Page() {
 
         {activeMainTab === "saved" && (
           <>
-            <Tabs
-              tabs={subTabs}
-              activeTab={activeSubTab}
-              onTabClick={setActiveSubTab}
-            />
+            <Tabs tabs={subTabs} activeTab={activeSubTab} onTabClick={setActiveSubTab} />
             <div className={s.listContainer}>
               {isScrapsLoading ? (
                 <p>스크랩 목록을 불러오는 중입니다...</p>
@@ -157,9 +151,7 @@ export default function Page() {
                         name={item.channelTitle}
                         title={cleanTitle}
                         tags={tags}
-                        onClick={() =>
-                          router.push(`/shorts?contentId=${item.videoId}`)
-                        }
+                        onClick={() => router.push(`/shorts?contentId=${item.videoId}`)}
                       />
                     );
                   })}
@@ -170,9 +162,7 @@ export default function Page() {
                     <DanglePlace
                       key={item.contentId}
                       thumbnailUrl={item.thumbnail || ""}
-                      locationCategory={
-                        item.metaLine || item.contentType?.name || ""
-                      }
+                      locationCategory={item.metaLine || item.contentType?.name || ""}
                       name={item.title}
                       distance={item.distanceText}
                       tags={item.chips}
@@ -190,10 +180,7 @@ export default function Page() {
             {isFootprintsLoading ? (
               <p>발자국 목록을 불러오는 중입니다...</p>
             ) : footprintsError ? (
-              <EmptyState
-                title="오류 발생"
-                description="발자국 목록을 불러오지 못했습니다."
-              />
+              <EmptyState title="오류 발생" description="발자국 목록을 불러오지 못했습니다." />
             ) : !myFootprintsData || myFootprintsData.items.length === 0 ? (
               <EmptyState
                 imageUrl={currentEmptyState.imageUrl}
@@ -206,9 +193,7 @@ export default function Page() {
                   <DangleReview
                     isMine={true}
                     key={item.footprintId}
-                    locationCategory={
-                      item.metaLine || item.contentType?.name || ""
-                    }
+                    locationCategory={item.metaLine || item.contentType?.name || ""}
                     placeName={item.title}
                     rating={item.rating}
                     date={item.createdAtText}

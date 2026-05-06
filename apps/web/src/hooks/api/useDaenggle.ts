@@ -33,16 +33,13 @@ import {
  * @hook useDaenggleAccommodations
  * @description SWR 훅: 댕글 숙소 동영상 목록 조회
  */
-export function useDaenggleAccommodations(
-  params?: GetDaenggleAccommodationsReq
-) {
+export function useDaenggleAccommodations(params?: GetDaenggleAccommodationsReq) {
   const key = params ? ["/daenggle/accommodations", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaenggleVideoListResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaenggleAccommodationsReq]) =>
-    getDaenggleAccommodations(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaenggleVideoListResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaenggleAccommodationsReq]) =>
+      getDaenggleAccommodations(queryParams)
   );
 
   return {
@@ -60,11 +57,9 @@ export function useDaenggleAccommodations(
 export function useDaenggleTrending(params?: GetDaenggleTrendingReq) {
   const key = params ? ["/daenggle/trending", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaenggleVideoListResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaenggleTrendingReq]) =>
-    getDaenggleTrending(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaenggleVideoListResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaenggleTrendingReq]) => getDaenggleTrending(queryParams)
   );
 
   return {
@@ -82,11 +77,9 @@ export function useDaenggleTrending(params?: GetDaenggleTrendingReq) {
 export function useDaenggleRegions(params?: GetDaenggleRegionsReq) {
   const key = params ? ["/daenggle/regions", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaenggleVideoListResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaenggleRegionsReq]) =>
-    getDaenggleRegions(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaenggleVideoListResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaenggleRegionsReq]) => getDaenggleRegions(queryParams)
   );
 
   return {
@@ -104,11 +97,9 @@ export function useDaenggleRegions(params?: GetDaenggleRegionsReq) {
 export function useDaengglePreference(params?: GetDaengglePreferenceReq) {
   const key = params ? ["/daenggle/preference", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaenggleVideoListResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaengglePreferenceReq]) =>
-    getDaengglePreference(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaenggleVideoListResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaengglePreferenceReq]) => getDaengglePreference(queryParams)
   );
 
   return {
@@ -126,11 +117,9 @@ export function useDaengglePreference(params?: GetDaengglePreferenceReq) {
 export function useDaenggleSearch(params?: GetDaenggleSearchReq) {
   const key = params && params.q ? ["/daenggle/search", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaenggleVideoListResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaenggleSearchReq]) =>
-    getDaenggleSearch(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaenggleVideoListResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaenggleSearchReq]) => getDaenggleSearch(queryParams)
   );
 
   return {
@@ -146,16 +135,11 @@ export function useDaenggleSearch(params?: GetDaenggleSearchReq) {
  * @description SWR 훅: 댕글 콘셉트별 동영상 목록 조회
  */
 export function useDaenggleConcepts(params?: GetDaenggleConceptsReq) {
-  const key =
-    params && params.conceptKeys.length > 0
-      ? ["/daenggle/concepts", params]
-      : null;
+  const key = params && params.conceptKeys.length > 0 ? ["/daenggle/concepts", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    { shelves: DaenggleConceptShelf[] },
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaenggleConceptsReq]) =>
-    getDaenggleConcepts(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<{ shelves: DaenggleConceptShelf[] }, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaenggleConceptsReq]) => getDaenggleConcepts(queryParams)
   );
 
   return {
@@ -170,18 +154,13 @@ export function useDaenggleConcepts(params?: GetDaenggleConceptsReq) {
  * @hook useDaengglePlaceRecommendations
  * @description SWR 훅: 댕글 장소 기반 추천 동영상 목록 조회
  */
-export function useDaengglePlaceRecommendations(
-  params?: GetDaengglePlaceRecommendationsReq
-) {
-  const key = params
-    ? [`/daenggle/places/${params.contentId}/recommendations`, params]
-    : null;
+export function useDaengglePlaceRecommendations(params?: GetDaengglePlaceRecommendationsReq) {
+  const key = params ? [`/daenggle/places/${params.contentId}/recommendations`, params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaengglePlaceRecommendationsResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaengglePlaceRecommendationsReq]) =>
-    getDaengglePlaceRecommendations(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaengglePlaceRecommendationsResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaengglePlaceRecommendationsReq]) =>
+      getDaengglePlaceRecommendations(queryParams)
   );
 
   return {
@@ -199,10 +178,10 @@ export function useDaengglePlaceRecommendations(
 export function useDaengglePlacesAll() {
   const key = "/daenggle/places/all";
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaengglePlacesAllResult,
-    ApiError
-  >(key, getDaengglePlacesAll);
+  const { data, error, isLoading, mutate } = useSWR<DaengglePlacesAllResult, ApiError>(
+    key,
+    getDaengglePlacesAll
+  );
 
   return {
     daengglePlacesAllData: data,
@@ -219,11 +198,9 @@ export function useDaengglePlacesAll() {
 export function useDaengglePlacesMap(params?: GetDaengglePlacesMapReq) {
   const key = params ? ["/daenggle/places/map", params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    DaengglePlacesMapResult,
-    ApiError
-  >(key, ([, queryParams]: [string, GetDaengglePlacesMapReq]) =>
-    getDaengglePlacesMap(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<DaengglePlacesMapResult, ApiError>(
+    key,
+    ([, queryParams]: [string, GetDaengglePlacesMapReq]) => getDaengglePlacesMap(queryParams)
   );
 
   return {

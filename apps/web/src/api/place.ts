@@ -19,9 +19,7 @@ import { createQueryString } from "@/utils/createQueryString";
  * @param {GetPlaceListReq} params - Query Parameter 객체
  * @returns {Promise<GetPlaceListRes>} 장소 목록과 전체 개수를 포함한 응답
  */
-export async function getPlaceList(
-  params: GetPlaceListReq
-): Promise<GetPlaceListRes> {
+export async function getPlaceList(params: GetPlaceListReq): Promise<GetPlaceListRes> {
   const query = createQueryString(params);
   return await getRequest<GetPlaceListRes>(`/places/list?${query}`);
 }
@@ -32,9 +30,7 @@ export async function getPlaceList(
  * @param {GetPlaceMapReq} params - Query Parameter 객체
  * @returns {Promise<GetPlaceMapRes>} 장소 아이템 배열 응답
  */
-export async function getPlaceMap(
-  params: GetPlaceMapReq
-): Promise<GetPlaceMapRes> {
+export async function getPlaceMap(params: GetPlaceMapReq): Promise<GetPlaceMapRes> {
   const query = createQueryString(params);
   return await getRequest<GetPlaceMapRes>(`/places/map?${query}`);
 }
@@ -45,9 +41,7 @@ export async function getPlaceMap(
  * @param {GetPlaceSearchReq} params - Query Parameter 객체
  * @returns {Promise<GetPlaceSearchRes>} 검색된 장소 목록과 전체 개수를 포함한 응답
  */
-export async function getPlaceSearch(
-  params: GetPlaceSearchReq
-): Promise<GetPlaceSearchRes> {
+export async function getPlaceSearch(params: GetPlaceSearchReq): Promise<GetPlaceSearchRes> {
   const query = createQueryString(params);
   return await getRequest<GetPlaceSearchRes>(`/places/search?${query}`);
 }
@@ -58,15 +52,11 @@ export async function getPlaceSearch(
  * @param {GetPlaceDetailReq} params - Parameter 및 Query Parameter 객체
  * @returns {Promise<GetPlaceDetailRes>} 장소 단일 정보 응답
  */
-export async function getPlaceDetail(
-  params: GetPlaceDetailReq
-): Promise<GetPlaceDetailRes> {
+export async function getPlaceDetail(params: GetPlaceDetailReq): Promise<GetPlaceDetailRes> {
   const { contentId, ...restParams } = params;
   const query = createQueryString(restParams);
   const queryString = query ? `?${query}` : "";
-  return await getRequest<GetPlaceDetailRes>(
-    `/places/${contentId}${queryString}`
-  );
+  return await getRequest<GetPlaceDetailRes>(`/places/${contentId}${queryString}`);
 }
 
 /**
@@ -81,7 +71,5 @@ export async function getPlaceFullDetail(
   const { contentId, ...restParams } = params;
   const query = createQueryString(restParams);
   const queryString = query ? `?${query}` : "";
-  return await getRequest<GetPlaceFullDetailRes>(
-    `/places/${contentId}/full${queryString}`
-  );
+  return await getRequest<GetPlaceFullDetailRes>(`/places/${contentId}/full${queryString}`);
 }

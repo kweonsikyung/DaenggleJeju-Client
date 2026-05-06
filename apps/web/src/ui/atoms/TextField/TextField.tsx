@@ -1,8 +1,7 @@
 import React, { useId, useMemo, useState } from "react";
 import * as s from "./TextField.css";
 
-export interface TextFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
+export interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   /** 라벨 텍스트 */
   label?: string;
   /** placeholder */
@@ -57,14 +56,14 @@ export function TextField({
     const stateClass = hasError
       ? s.state.error
       : isDisabled
-      ? s.state.disabled
-      : focused
-      ? s.state.focused
-      : pressed
-      ? s.state.pressed
-      : filled
-      ? s.state.filled
-      : s.state.default;
+        ? s.state.disabled
+        : focused
+          ? s.state.focused
+          : pressed
+            ? s.state.pressed
+            : filled
+              ? s.state.filled
+              : s.state.default;
     return [s.root, stateClass, className].filter(Boolean).join(" ");
   }, [focused, pressed, filled, hasError, isDisabled, className]);
 
@@ -90,7 +89,7 @@ export function TextField({
     onFocus?.(e);
   };
 
-  const helper = hasError ? errorText ?? innerError : helperText;
+  const helper = hasError ? (errorText ?? innerError) : helperText;
 
   return (
     <div className={s.root}>

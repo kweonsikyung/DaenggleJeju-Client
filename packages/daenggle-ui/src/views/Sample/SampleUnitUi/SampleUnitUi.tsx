@@ -12,12 +12,12 @@ interface SampleUnitUiProps {
   onClick?: () => void;
 }
 
-/** 
+/**
  * SampleUnitUi component displays a unit with an image, title, and description.
  */
 export const SampleUnitUi = ({ imageUrl, title, description, onClick }: SampleUnitUiProps) => {
   return (
-    <div className={styles.card} onClick={onClick}  >
+    <div className={styles.card} onClick={onClick}>
       <img src={imageUrl} alt={title} className={styles.image} />
       <div className={styles.content}>
         <h3 className={styles.title}>{title}</h3>

@@ -1,3 +1,7 @@
 module.exports = {
-  'apps/web/**/*.{ts,tsx}': () => 'pnpm --filter web lint:fix',
+  'apps/web/**/*.{ts,tsx,js,jsx}': [
+    'prettier --write',
+    () => 'pnpm --filter web lint:fix',
+  ],
+  '*.{json,css,md}': ['prettier --write'],
 };

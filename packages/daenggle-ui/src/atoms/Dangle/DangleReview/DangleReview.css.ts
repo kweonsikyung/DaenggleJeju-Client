@@ -24,10 +24,7 @@ export const placeInfo = style({
   gap: "2px",
 });
 
-export const locationCategory = style([
-  TYPO.CAPTION2M,
-  { color: COLORS.NEUTRAL500 },
-]);
+export const locationCategory = style([TYPO.CAPTION2M, { color: COLORS.NEUTRAL500 }]);
 
 export const placeName = style([TYPO.BODY2B, { color: "#262626" }]);
 

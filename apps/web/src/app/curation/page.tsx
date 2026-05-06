@@ -45,8 +45,7 @@ export default function Curation() {
   const router = useRouter();
 
   /** API Mutations (SWR) */
-  const { createPetProfile, isCreating: isPetProfileSaving } =
-    usePostPetProfile();
+  const { createPetProfile, isCreating: isPetProfileSaving } = usePostPetProfile();
   const { savePreference, isSaving: isPreferenceSaving } = usePostPreference();
   const isSaving = isPetProfileSaving || isPreferenceSaving;
 
@@ -54,20 +53,15 @@ export default function Curation() {
   const handleNextStep = async () => {
     if (step < 3) {
       setStep((prev) => prev + 1);
-      const nextStepValid =
-        step + 1 === 2 ? selectedRegions.length > 0 : selectedStyles.length > 0;
+      const nextStepValid = step + 1 === 2 ? selectedRegions.length > 0 : selectedStyles.length > 0;
       setIsStepValid(nextStepValid);
       return;
     }
 
     // 3단계 완료 시 api call
     try {
-      const breedId = BREED_OPTIONS.find(
-        (b) => b.label === petProfileData.breed
-      )?.id;
-      const sizeCode = WEIGHT_OPTIONS.find(
-        (w) => w.label === petProfileData.weight
-      )?.code;
+      const breedId = BREED_OPTIONS.find((b) => b.label === petProfileData.breed)?.id;
+      const sizeCode = WEIGHT_OPTIONS.find((w) => w.label === petProfileData.weight)?.code;
 
       if (!breedId || !sizeCode) {
         throw new Error("반려견 프로필 정보가 올바르지 않습니다.");
@@ -95,10 +89,7 @@ export default function Curation() {
         styleCodes: styleCodes,
       };
 
-      await Promise.all([
-        createPetProfile(petProfilePayload),
-        savePreference(preferencePayload),
-      ]);
+      await Promise.all([createPetProfile(petProfilePayload), savePreference(preferencePayload)]);
 
       router.push("/map");
     } catch (error) {
@@ -151,14 +142,7 @@ export default function Curation() {
         backIconHandler={() => (step > 1 ? setStep(step - 1) : router.back())}
         rightIcons={[
           {
-            icon: (
-              <Image
-                alt="닫기"
-                height={24}
-                src="/assets/icon24/x_line.svg"
-                width={24}
-              />
-            ),
+            icon: <Image alt="닫기" height={24} src="/assets/icon24/x_line.svg" width={24} />,
             onClick: () => router.push("/map"),
           },
         ]}

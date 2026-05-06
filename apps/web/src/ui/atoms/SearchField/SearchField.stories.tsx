@@ -52,7 +52,7 @@ export const TEST: Story = {
     // 초기화 동작 테스트: 지우기 버튼 클릭
     const clearButton = canvas.getByRole("button");
     await userEvent.click(clearButton);
-    
+
     // 최종 결과 확인: 값이 비워졌는지 검증
     await expect(input).toHaveValue("");
     await expect(args.onClear).toHaveBeenCalled();
@@ -79,20 +79,19 @@ export const Filled: Story = {
   args: { placeholder: "제주 지역 또는 장소명 검색", defaultValue: "애월" },
 };
 
-
 // 5. 로딩 상태
 export const Loading: Story = {
-  args: { 
-    loading: true, 
-    defaultValue: "검색 중" 
+  args: {
+    loading: true,
+    defaultValue: "검색 중",
   },
 };
 
 // 6. 에러 및 유효성 검증
 export const Error: Story = {
-  args: { 
-    error: "존재하지 않는 지역입니다.", 
-    defaultValue: "서울" 
+  args: {
+    error: "존재하지 않는 지역입니다.",
+    defaultValue: "서울",
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -100,4 +99,3 @@ export const Error: Story = {
     await expect(errorMsg).toBeInTheDocument();
   },
 };
-

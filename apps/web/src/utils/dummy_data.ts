@@ -492,14 +492,7 @@ export const DANGLE_VIDEOS_DATA = [
   },
 ];
 
-export const KEYWORDS = [
-  "협재",
-  "풀빌라",
-  "애월 카페",
-  "해변",
-  "서귀포 맛집",
-  "애견카페",
-];
+export const KEYWORDS = ["협재", "풀빌라", "애월 카페", "해변", "서귀포 맛집", "애견카페"];
 
 export const SEARCH_RESULTS = {
   dangle: [
@@ -574,8 +567,7 @@ export const shortsData: { [key: string]: VideoData[] } = {
       thumbnailUrl: "https://i.ytimg.com/vi/RJE6M9P5N7Y/hqdefault.jpg",
       profileImageUrl: "/assets/dangle/dog.png",
       userName: "제주하이쩡",
-      description:
-        "제주도 애견동반 펜션 서귀포 숙소 제주 애견동반 숙소 야외 자쿠지 스테이모슬",
+      description: "제주도 애견동반 펜션 서귀포 숙소 제주 애견동반 숙소 야외 자쿠지 스테이모슬",
       tags: ["제주도", "애견동반", "자쿠지"],
       bookmarks: 7427,
       comments: 100,
@@ -588,8 +580,7 @@ export const shortsData: { [key: string]: VideoData[] } = {
       thumbnailUrl: "https://i.ytimg.com/vi/kJpSzlWDOHI/hqdefault.jpg",
       profileImageUrl: "/assets/curation/avatar.svg",
       userName: "제주 반려견동반숙소 [호텔핀코]",
-      description:
-        "제주도 반려견 동반 숙소 [호텔핀코] #잔디마당 #제주대형견숙소",
+      description: "제주도 반려견 동반 숙소 [호텔핀코] #잔디마당 #제주대형견숙소",
       tags: ["제주도", "대형견", "애견펜션", "잔디마당"],
       bookmarks: 6179,
       comments: 200,
@@ -602,8 +593,7 @@ export const shortsData: { [key: string]: VideoData[] } = {
       thumbnailUrl: "https://i.ytimg.com/vi/x5sBUxFiGVw/hqdefault.jpg",
       profileImageUrl: "/assets/dangle/dog.png",
       userName: "박쥬쥬",
-      description:
-        "작년 11월에 오픈한 신축 애견펜션🐶 #강아지 #애견 #애견동반펜션 #여행",
+      description: "작년 11월에 오픈한 신축 애견펜션🐶 #강아지 #애견 #애견동반펜션 #여행",
       tags: ["신축", "애견펜션", "여행"],
       bookmarks: 25324,
       comments: 300,

@@ -10,9 +10,7 @@ const ANIMATION_DURATION = 400;
  */
 export const useNotice = (initialState: boolean = true) => {
   const [shouldRender, setShouldRender] = useState(initialState);
-  const [animation, setAnimation] = useState<"in" | "out" | "idle">(
-    initialState ? "in" : "idle"
-  );
+  const [animation, setAnimation] = useState<"in" | "out" | "idle">(initialState ? "in" : "idle");
 
   const hideNotice = useCallback(() => {
     setAnimation("out");

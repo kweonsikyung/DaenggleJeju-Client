@@ -1,9 +1,5 @@
 import { getRequest, postRequest } from "./common";
-import {
-  PostPetProfileReq,
-  PetProfileRes,
-  GetPetProfileReq,
-} from "@/types/pet";
+import { PostPetProfileReq, PetProfileRes, GetPetProfileReq } from "@/types/pet";
 
 /**
  * @function postPetProfile
@@ -11,13 +7,8 @@ import {
  * @param {PostPetProfileReq} payload - 요청 Body 객체
  * @returns {Promise<PetProfileRes>} 생성된 반려견 프로필 정보
  */
-export async function postPetProfile(
-  payload: PostPetProfileReq
-): Promise<PetProfileRes> {
-  return await postRequest<PetProfileRes, PostPetProfileReq>(
-    "/pets/profiles",
-    payload
-  );
+export async function postPetProfile(payload: PostPetProfileReq): Promise<PetProfileRes> {
+  return await postRequest<PetProfileRes, PostPetProfileReq>("/pets/profiles", payload);
 }
 
 /**
@@ -26,9 +17,7 @@ export async function postPetProfile(
  * @param {GetPetProfileReq} params - Path Parameter 객체
  * @returns {Promise<PetProfileRes>} 반려견 프로필 정보
  */
-export async function getPetProfile(
-  params: GetPetProfileReq
-): Promise<PetProfileRes> {
+export async function getPetProfile(params: GetPetProfileReq): Promise<PetProfileRes> {
   const { petId } = params;
   return await getRequest<PetProfileRes>(`/pets/profiles/${petId}`);
 }

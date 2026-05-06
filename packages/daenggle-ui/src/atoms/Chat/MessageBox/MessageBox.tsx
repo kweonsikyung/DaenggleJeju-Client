@@ -9,10 +9,7 @@ interface MessageBoxProps {
   variant?: "ai" | "user";
 }
 
-export function MessageBox({
-  children,
-  variant = "ai",
-}: MessageBoxProps) {
+export function MessageBox({ children, variant = "ai" }: MessageBoxProps) {
   const messageClass = variant === "user" ? s.userMessageBox : s.aiMessageBox;
 
   return (

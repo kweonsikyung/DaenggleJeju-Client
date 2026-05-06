@@ -100,19 +100,9 @@ export function AvatarPicker({
       />
 
       {/* 카메라 버튼 */}
-      <div
-        className={s.cameraBtn}
-        onClick={openPicker}
-        aria-label="아바타 변경"
-      >
-        <Image
-          src={"/assets/curation/camera.svg"}
-          alt=""
-          width={28}
-          height={28}
-        />
+      <div className={s.cameraBtn} onClick={openPicker} aria-label="아바타 변경">
+        <Image src={"/assets/curation/camera.svg"} alt="" width={28} height={28} />
       </div>
     </div>
   );
 }
-

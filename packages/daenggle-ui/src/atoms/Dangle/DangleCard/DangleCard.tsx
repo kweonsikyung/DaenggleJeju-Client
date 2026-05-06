@@ -17,23 +17,11 @@ export interface DangleCardProps {
   onClick?: () => void;
 }
 
-export function DangleCard({
-  imageUrl,
-  views = 0,
-  title,
-  hashtag,
-  onClick,
-}: DangleCardProps) {
+export function DangleCard({ imageUrl, views = 0, title, hashtag, onClick }: DangleCardProps) {
   return (
     <button className={s.root} onClick={onClick}>
       <div className={s.imageWrapper}>
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={280}
-          height={377}
-          className={s.image}
-        />
+        <Image src={imageUrl} alt={title} width={280} height={377} className={s.image} />
         <div className={s.overlay}>
           {views > 0 && (
             <div className={s.views}>

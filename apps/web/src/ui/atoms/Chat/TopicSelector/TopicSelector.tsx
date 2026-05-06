@@ -10,18 +10,11 @@ interface TopicSelectorProps {
   onSelectTopic: (topic: string) => void;
 }
 
-export function TopicSelector({
-  topics,
-  onSelectTopic,
-}: TopicSelectorProps) {
+export function TopicSelector({ topics, onSelectTopic }: TopicSelectorProps) {
   return (
     <div className={s.container}>
       {topics.map((topic) => (
-        <button
-          key={topic}
-          className={s.topicButton}
-          onClick={() => onSelectTopic(topic)}
-        >
+        <button key={topic} className={s.topicButton} onClick={() => onSelectTopic(topic)}>
           {topic}
         </button>
       ))}

@@ -29,9 +29,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
       <div className={s.container}>
         <input
           className={s.input}
-          placeholder={
-            disabled ? "AI가 답변 중입니다" : "궁금한 내용을 질문해보세요"
-          }
+          placeholder={disabled ? "AI가 답변 중입니다" : "궁금한 내용을 질문해보세요"}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -43,12 +41,7 @@ export function ChatInput({ onSend, disabled }: ChatInputProps) {
           disabled={disabled || !value.trim()}
           aria-label="전송"
         >
-          <Image
-            src="/assets/icon24/send.svg"
-            alt="전송"
-            width={24}
-            height={24}
-          />
+          <Image src="/assets/icon24/send.svg" alt="전송" width={24} height={24} />
         </button>
       </div>
     </div>

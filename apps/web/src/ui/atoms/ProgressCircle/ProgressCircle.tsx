@@ -23,21 +23,9 @@ export function ProgressCircle({
   const offset = circumference - progress * circumference;
 
   return (
-    <svg
-      className={`${s.circleBase} ${className}`}
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-    >
+    <svg className={`${s.circleBase} ${className}`} width={size} height={size} viewBox="0 0 24 24">
       {/* 회색 배경 링 */}
-      <circle
-        cx="12"
-        cy="12"
-        r={radius}
-        stroke="#E0E0E0"
-        strokeWidth="3"
-        fill="none"
-      />
+      <circle cx="12" cy="12" r={radius} stroke="#E0E0E0" strokeWidth="3" fill="none" />
       {/* 진행 링 */}
       <circle
         className={`${s.progressRing} ${active ? s.active : ""}`}

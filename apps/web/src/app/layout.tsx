@@ -80,10 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ko"
-      className={`${pretendard.variable} ${laundryGothic.variable}`}
-    >
+    <html lang="ko" className={`${pretendard.variable} ${laundryGothic.variable}`}>
       <body>
         {process.env.NEXT_PUBLIC_KAKAOMAP_API_KEY ? (
           <Script

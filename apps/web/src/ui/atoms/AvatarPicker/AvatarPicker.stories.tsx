@@ -22,8 +22,6 @@ export const Uncontrolled: Story = {
 export const Controlled: Story = {
   render: (args) => {
     const [src, setSrc] = useState<string | null>(null);
-    return (
-      <AvatarPicker {...args} value={src} onChange={(_, url) => setSrc(url)} />
-    );
+    return <AvatarPicker {...args} value={src} onChange={(_, url) => setSrc(url)} />;
   },
 };

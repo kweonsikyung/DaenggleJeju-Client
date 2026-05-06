@@ -14,19 +14,11 @@ type BottomSheetProps = {
   children: ReactNode;
 };
 
-export function BottomSheet({
-  open,
-  onOpenChange,
-  title,
-  children,
-}: BottomSheetProps) {
+export function BottomSheet({ open, onOpenChange, title, children }: BottomSheetProps) {
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} shouldScaleBackground>
       <Drawer.Portal>
-        <Drawer.Overlay
-          className={s.overlay}
-          onClick={() => onOpenChange(false)}
-        />
+        <Drawer.Overlay className={s.overlay} onClick={() => onOpenChange(false)} />
         <Drawer.Content className={s.content}>
           <div className={s.handle} />
 
@@ -39,12 +31,7 @@ export function BottomSheet({
               className={s.close}
               onClick={() => onOpenChange(false)}
             >
-              <Image
-                src="/assets/icon24/x_line.svg"
-                alt="뒤로가기"
-                width={24}
-                height={24}
-              />
+              <Image src="/assets/icon24/x_line.svg" alt="뒤로가기" width={24} height={24} />
             </button>
           </div>
 

@@ -10,12 +10,10 @@ import { PostCareReq, PostCareRes } from "@/types/care";
  * @returns 질문 전송을 실행하는 trigger 함수, 실행 중 로딩 상태, 에러 객체
  */
 export function usePostCareQuestion() {
-  const { trigger, isMutating, error } = useSWRMutation<
-    PostCareRes,
-    ApiError,
-    string,
-    PostCareReq
-  >("/care/ask", (url, { arg }) => postCareQuestion(arg));
+  const { trigger, isMutating, error } = useSWRMutation<PostCareRes, ApiError, string, PostCareReq>(
+    "/care/ask",
+    (url, { arg }) => postCareQuestion(arg)
+  );
 
   return {
     askQuestion: trigger,

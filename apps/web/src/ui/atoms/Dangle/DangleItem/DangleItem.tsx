@@ -15,27 +15,11 @@ export interface DangleItemProps {
   onClick: () => void;
 }
 
-export function DangleItem({
-  state,
-  imageUrl,
-  text,
-  onClick,
-}: DangleItemProps) {
+export function DangleItem({ state, imageUrl, text, onClick }: DangleItemProps) {
   return (
-    <button
-      type="button"
-      className={s.root}
-      onClick={onClick}
-      aria-label={`${text} 아이템`}
-    >
+    <button type="button" className={s.root} onClick={onClick} aria-label={`${text} 아이템`}>
       <div className={s.imageContainer[state]}>
-        <Image
-          src={imageUrl}
-          alt={text}
-          width={70}
-          height={70}
-          className={s.image}
-        />
+        <Image src={imageUrl} alt={text} width={70} height={70} className={s.image} />
       </div>
       <span className={s.text}>{text}</span>
     </button>

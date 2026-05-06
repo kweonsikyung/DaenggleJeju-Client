@@ -47,12 +47,8 @@ export function Carousel({
           <div
             className={s.embla__slide}
             style={{
-              ...(itemHeight
-                ? { height: `${itemHeight}px` }
-                : { height: "auto" }),
-              ...(itemWidth
-                ? { flex: `0 0 ${itemWidth}px` }
-                : { flex: "0 0 auto" }),
+              ...(itemHeight ? { height: `${itemHeight}px` } : { height: "auto" }),
+              ...(itemWidth ? { flex: `0 0 ${itemWidth}px` } : { flex: "0 0 auto" }),
             }}
           >
             {child}
@@ -62,4 +58,3 @@ export function Carousel({
     </div>
   );
 }
-

@@ -1,11 +1,7 @@
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
-import {
-  postFootprint,
-  getMyFootprints,
-  getPlaceFootprints,
-} from "@/api/footprint";
+import { postFootprint, getMyFootprints, getPlaceFootprints } from "@/api/footprint";
 import {
   PostFootprintReq,
   PostFootprintRes,
@@ -46,11 +42,9 @@ export function usePostFootprint() {
  */
 export function useMyFootprints(params?: GetMyFootprintsReq) {
   const key = params ? ["/footprints/my", params] : null;
-  const { data, error, isLoading, mutate } = useSWR<
-    GetMyFootprintsRes,
-    ApiError
-  >(key, ([, queryParams]: [string, GetMyFootprintsReq]) =>
-    getMyFootprints(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<GetMyFootprintsRes, ApiError>(
+    key,
+    ([, queryParams]: [string, GetMyFootprintsReq]) => getMyFootprints(queryParams)
   );
 
   return {
@@ -68,15 +62,11 @@ export function useMyFootprints(params?: GetMyFootprintsReq) {
  * @returns 장소별 발자국 목록 데이터, 로딩 상태, 에러 객체, 수동 갱신 함수
  */
 export function usePlaceFootprints(params?: GetPlaceFootprintsReq) {
-  const key = params?.contentId
-    ? [`/footprints/places/${params.contentId}`, params]
-    : null;
+  const key = params?.contentId ? [`/footprints/places/${params.contentId}`, params] : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    GetPlaceFootprintsRes,
-    ApiError
-  >(key, ([, queryParams]: [string, GetPlaceFootprintsReq]) =>
-    getPlaceFootprints(queryParams)
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceFootprintsRes, ApiError>(
+    key,
+    ([, queryParams]: [string, GetPlaceFootprintsReq]) => getPlaceFootprints(queryParams)
   );
 
   return {

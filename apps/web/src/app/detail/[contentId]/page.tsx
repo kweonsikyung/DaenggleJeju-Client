@@ -66,11 +66,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
       }
     }
 
-    if (
-      typeof url === "string" &&
-      url !== "사진 없음" &&
-      /^https?:\/\//i.test(url)
-    ) {
+    if (typeof url === "string" && url !== "사진 없음" && /^https?:\/\//i.test(url)) {
       return url;
     }
     return "/assets/jeju.png";
@@ -97,15 +93,13 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     }
   };
 
-  const {
-    daengglePlaceRecommendationsData: recommendationsData,
-    error: recsError,
-  } = useDaengglePlaceRecommendations({
-    contentId: String(contentId),
-    sort: "rank",
-    limit: 10,
-    offset: 0,
-  });
+  const { daengglePlaceRecommendationsData: recommendationsData, error: recsError } =
+    useDaengglePlaceRecommendations({
+      contentId: String(contentId),
+      sort: "rank",
+      limit: 10,
+      offset: 0,
+    });
 
   const {
     placeFootprintsData,
@@ -135,11 +129,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
       "동반 조건은 달라질 수 있어, 방문 전 장소에 문의",
     ];
 
-    if (
-      !data?.petPolicy?.notes ||
-      data.petPolicy.notes.length < 2 ||
-      !data.petPolicy.notes[1]
-    ) {
+    if (!data?.petPolicy?.notes || data.petPolicy.notes.length < 2 || !data.petPolicy.notes[1]) {
       return defaultNotes;
     }
 
@@ -219,10 +209,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
       <div className={s.container}>
         {error && (
-          <EmptyState
-            title="데이터 로드 실패"
-            description="서버와 통신 중 문제가 발생했습니다."
-          />
+          <EmptyState title="데이터 로드 실패" description="서버와 통신 중 문제가 발생했습니다." />
         )}
         {data && (
           <>
@@ -272,9 +259,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   {data.chips1.map((tag, index) => (
                     <React.Fragment key={`${tag}-${index}`}>
                       <span className={s.tagItem}>{tag}</span>
-                      {index < data.chips1.length - 1 && (
-                        <div className={s.tagDivider} />
-                      )}
+                      {index < data.chips1.length - 1 && <div className={s.tagDivider} />}
                     </React.Fragment>
                   ))}
                 </div>
@@ -291,34 +276,19 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   <span className={s.infoText}>{data.address}</span>
                   <span
                     className={s.infoLink}
-                    onClick={() =>
-                      copyToClipboard(data?.address, "주소가 복사되었습니다.")
-                    }
+                    onClick={() => copyToClipboard(data?.address, "주소가 복사되었습니다.")}
                   >
                     복사
                   </span>
                 </li>
                 <li className={s.infoItem}>
-                  <Image
-                    alt="time"
-                    width={16}
-                    height={16}
-                    src="/assets/icon12/clock_filled.svg"
-                  />
+                  <Image alt="time" width={16} height={16} src="/assets/icon12/clock_filled.svg" />
                   <span className={s.infoText}>{data.openHours}</span>
                 </li>
                 <li className={s.infoItem}>
-                  <Image
-                    alt="phone"
-                    width={16}
-                    height={16}
-                    src="/assets/icon12/phone.svg"
-                  />
+                  <Image alt="phone" width={16} height={16} src="/assets/icon12/phone.svg" />
                   <span className={s.infoText}>{data.tel}</span>
-                  <span
-                    className={s.infoLink}
-                    onClick={() => callPhoneNumber(data?.tel)}
-                  >
+                  <span className={s.infoLink} onClick={() => callPhoneNumber(data?.tel)}>
                     전화하기
                   </span>
                   {data.homepage && (
@@ -338,10 +308,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
             <section className={s.section}>
               <div className={s.sectionHeader}>
                 <h2 className={s.sectionTitle}>애견 동반 주의 사항</h2>
-                <span
-                  className={s.sectionActionText}
-                  onClick={openInfoUpdateModal}
-                >
+                <span className={s.sectionActionText} onClick={openInfoUpdateModal}>
                   정보 수정 요청
                 </span>
               </div>
@@ -363,9 +330,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
 
         <section className={s.section}>
           <div className={s.sectionHeader}>
-            <h2 className={s.sectionTitle}>
-              연관 댕글 영상 ({recommendationsData?.total || 0})
-            </h2>
+            <h2 className={s.sectionTitle}>연관 댕글 영상 ({recommendationsData?.total || 0})</h2>
           </div>
 
           {recsError && (
@@ -382,9 +347,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   key={item.video_id}
                   type="small"
                   imageUrl={`https://i.ytimg.com/vi/${item.video_id}/hqdefault.jpg`}
-                  onClick={() =>
-                    router.push(`/shorts?contentId=${item.video_id}`)
-                  }
+                  onClick={() => router.push(`/shorts?contentId=${item.video_id}`)}
                 />
               ))}
             </Carousel>
@@ -401,13 +364,9 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
               onClick={() => {
                 if (data?.title) {
                   const placeName = encodeURIComponent(data.title);
-                  router.push(
-                    `/review?contentId=${contentId}&placeName=${placeName}`
-                  );
+                  router.push(`/review?contentId=${contentId}&placeName=${placeName}`);
                 } else {
-                  alert(
-                    "장소 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요."
-                  );
+                  alert("장소 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
                 }
               }}
             >
@@ -433,9 +392,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                     />
                   ))}
                 </div>
-                <span>
-                  {isFootprintsLoading ? "..." : reviewStats.average.toFixed(1)}
-                </span>
+                <span>{isFootprintsLoading ? "..." : reviewStats.average.toFixed(1)}</span>
               </div>
               <p className={s.reviewCount}>{reviewStats.total}개의 평가</p>
             </div>
@@ -467,8 +424,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                   />
                 ))
               : !isFootprintsLoading &&
-                (!placeFootprintsData ||
-                  placeFootprintsData.items.length === 0) && (
+                (!placeFootprintsData || placeFootprintsData.items.length === 0) && (
                   <EmptyState
                     title="첫 발자국을 남겨주세요"
                     description="이 장소에 대한 첫 번째 리뷰를 작성해보세요."
@@ -478,11 +434,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
         </section>
       </div>
 
-      <Modal
-        isOpen={isInfoUpdateModalOpen}
-        onClose={closeInfoUpdateModal}
-        title="정보 수정 요청"
-      >
+      <Modal isOpen={isInfoUpdateModalOpen} onClose={closeInfoUpdateModal} title="정보 수정 요청">
         <div className={s.formContainer}>
           <p className={s.formDescription}>
             제공된 정보는 많은 반려인에게 도움이 됩니다. 감사합니다☺️
@@ -498,11 +450,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
               maxLength={MAX_LENGTH + 1}
             />
             <div className={s.charCountWrapper}>
-              {isError && (
-                <span className={s.errorText}>
-                  {MAX_LENGTH}자 이하로 입력해주세요.
-                </span>
-              )}
+              {isError && <span className={s.errorText}>{MAX_LENGTH}자 이하로 입력해주세요.</span>}
               <span className={s.charCount}>
                 {textLength}/{MAX_LENGTH}
               </span>
@@ -510,11 +458,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
           </div>
           <Button
             size={ButtonSize.MEDIUM}
-            status={
-              isButtonActive && !isError
-                ? ButtonStatus.PRIMARY
-                : ButtonStatus.DISABLED
-            }
+            status={isButtonActive && !isError ? ButtonStatus.PRIMARY : ButtonStatus.DISABLED}
             text="요청하기"
             onClick={handleInfoUpdateRequest}
             disabled={!isButtonActive || isError}
@@ -535,19 +479,14 @@ export default function DetailPage() {
   /** router */
   const router = useRouter();
   const params = useParams();
-  const contentId = params.contentId
-    ? parseInt(params.contentId as string)
-    : null;
+  const contentId = params.contentId ? parseInt(params.contentId as string) : null;
 
   if (contentId === null) {
     return (
       <div className={s.page}>
         <TopBar backIconHandler={() => router.back()} />
         <div className={s.container}>
-          <EmptyState
-            title="페이지 준비 중"
-            description="정보를 불러오고 있습니다"
-          />
+          <EmptyState title="페이지 준비 중" description="정보를 불러오고 있습니다" />
         </div>
         <NavBar activePage="near" />
       </div>

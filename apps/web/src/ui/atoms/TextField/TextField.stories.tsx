@@ -34,8 +34,7 @@ export const Error: Story = {
   args: {
     label: "error input",
     defaultValue: "bad email",
-    validator: (v) =>
-      v.includes("@") ? undefined : "올바른 이메일 형식이 아닙니다.",
+    validator: (v) => (v.includes("@") ? undefined : "올바른 이메일 형식이 아닙니다."),
     helperText: "올바른 이메일을 입력해주세요.",
   },
 };

@@ -7,11 +7,7 @@ import Image from "next/image";
 import { Button } from "../../atoms/Buttons/Button/Button";
 import { ButtonSize, ButtonStatus } from "../../constants/ButtonVariant";
 
-const STEPS = [
-  "반려동물 정보 분석 중",
-  "여행 취향 분석 중",
-  "위치 정보 확인 중(선택)",
-];
+const STEPS = ["반려동물 정보 분석 중", "여행 취향 분석 중", "위치 정보 확인 중(선택)"];
 
 interface WelcomeOverlayProps {
   onFetchLocation: () => Promise<void>;
@@ -29,9 +25,7 @@ export function WelcomeOverlay({
   error,
 }: WelcomeOverlayProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [completed, setCompleted] = useState<boolean[]>(
-    new Array(STEPS.length).fill(false)
-  );
+  const [completed, setCompleted] = useState<boolean[]>(new Array(STEPS.length).fill(false));
   const [isVisible, setIsVisible] = useState(true);
   const [isReadyToAnimate, setIsReadyToAnimate] = useState(false);
 
@@ -75,22 +69,13 @@ export function WelcomeOverlay({
 
   const isButtonEnabled = currentStep === STEPS.length && !isLoading;
   const buttonText =
-    isLoading && currentStep === STEPS.length
-      ? "위치 찾는 중..."
-      : "댕글제주 탐색하기";
-  const buttonStatus = isButtonEnabled
-    ? ButtonStatus.PRIMARY
-    : ButtonStatus.DISABLED;
+    isLoading && currentStep === STEPS.length ? "위치 찾는 중..." : "댕글제주 탐색하기";
+  const buttonStatus = isButtonEnabled ? ButtonStatus.PRIMARY : ButtonStatus.DISABLED;
 
   return (
     <div className={s.overlay}>
       <div className={s.modalCard}>
-        <Image
-          src="/assets/footprint.png"
-          alt="댕글제주"
-          width={150}
-          height={150}
-        />
+        <Image src="/assets/footprint.png" alt="댕글제주" width={150} height={150} />
         <h2 className={s.title}>🎉 환영합니다</h2>
         <p className={s.subtitle}>댕댕이와 함께할 여행을 준비하고 있어요</p>
 
@@ -99,8 +84,7 @@ export function WelcomeOverlay({
             <li
               key={i}
               className={`${s.listItem} ${
-                (completed[i] || (i === currentStep && isLoading)) &&
-                isReadyToAnimate
+                (completed[i] || (i === currentStep && isLoading)) && isReadyToAnimate
                   ? s.active
                   : ""
               }`}
@@ -109,15 +93,7 @@ export function WelcomeOverlay({
                 <ProgressCircle
                   size={18}
                   color="#00A63E"
-                  progress={
-                    isReadyToAnimate
-                      ? completed[i]
-                        ? 1
-                        : i === currentStep
-                        ? 0.7
-                        : 0
-                      : 0
-                  }
+                  progress={isReadyToAnimate ? (completed[i] ? 1 : i === currentStep ? 0.7 : 0) : 0}
                   active={isReadyToAnimate && i === currentStep}
                 />
               </div>

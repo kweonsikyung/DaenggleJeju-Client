@@ -66,9 +66,7 @@ export const GridSelectable: Story = {
     const [selected, setSelected] = useState<number[]>([1]);
 
     const toggle = (id: number) =>
-      setSelected((prev) =>
-        prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]
-      );
+      setSelected((prev) => (prev.includes(id) ? prev.filter((v) => v !== id) : [...prev, id]));
 
     return (
       <div

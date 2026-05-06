@@ -2,12 +2,7 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
 import { postScrap } from "@/api/scrap";
-import {
-  GetScrapListReq,
-  GetScrapListRes,
-  PostScrapReq,
-  PostScrapRes,
-} from "@/types/scrap";
+import { GetScrapListReq, GetScrapListRes, PostScrapReq, PostScrapRes } from "@/types/scrap";
 
 /**
  * @hook useScrapList
@@ -25,9 +20,7 @@ export function useScrapList(params?: GetScrapListReq) {
       }).toString()}`
     : null; // params가 없으면 key를 null로 설정
 
-  const { data, error, isLoading, mutate } = useSWR<GetScrapListRes, ApiError>(
-    key
-  );
+  const { data, error, isLoading, mutate } = useSWR<GetScrapListRes, ApiError>(key);
 
   return {
     scrapData: data,

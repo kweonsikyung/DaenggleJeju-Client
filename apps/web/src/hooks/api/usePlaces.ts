@@ -33,10 +33,7 @@ export function usePlaceList(params?: GetPlaceListReq) {
     return getPlaceList(p);
   };
 
-  const { data, error, isLoading, mutate } = useSWR<GetPlaceListRes, ApiError>(
-    key,
-    fetcher
-  );
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceListRes, ApiError>(key, fetcher);
 
   return { data, error, isLoading, mutate };
 }
@@ -47,9 +44,8 @@ export function usePlaceList(params?: GetPlaceListReq) {
  */
 export function usePlaceMap(params: GetPlaceMapReq) {
   const key = params.bbox ? ["/places/map", JSON.stringify(params)] : null;
-  const { data, error, isLoading, mutate } = useSWR<GetPlaceMapRes, ApiError>(
-    key,
-    () => getPlaceMap(params)
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceMapRes, ApiError>(key, () =>
+    getPlaceMap(params)
   );
   return { data, error, isLoading, mutate };
 }
@@ -61,14 +57,9 @@ export function usePlaceMap(params: GetPlaceMapReq) {
 export function usePlaceSearch(params?: GetPlaceSearchReq | null) {
   const key = params?.q ? ["/places/search", JSON.stringify(params)] : null;
 
-  const fetcher = params
-    ? () => getPlaceSearch(params as GetPlaceSearchReq)
-    : null;
+  const fetcher = params ? () => getPlaceSearch(params as GetPlaceSearchReq) : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    GetPlaceSearchRes,
-    ApiError
-  >(key, fetcher);
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceSearchRes, ApiError>(key, fetcher);
 
   return { data, error, isLoading, mutate };
 }
@@ -78,13 +69,10 @@ export function usePlaceSearch(params?: GetPlaceSearchReq | null) {
  * @description 장소 단일 정보를 조회하는 SWR 훅
  */
 export function usePlaceDetail(params: GetPlaceDetailReq) {
-  const key = params.contentId
-    ? ["/places", params.contentId, JSON.stringify(params)]
-    : null;
-  const { data, error, isLoading, mutate } = useSWR<
-    GetPlaceDetailRes,
-    ApiError
-  >(key, () => getPlaceDetail(params));
+  const key = params.contentId ? ["/places", params.contentId, JSON.stringify(params)] : null;
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceDetailRes, ApiError>(key, () =>
+    getPlaceDetail(params)
+  );
   return { data, error, isLoading, mutate };
 }
 
@@ -95,9 +83,8 @@ export function usePlaceDetail(params: GetPlaceDetailReq) {
 export function usePlaceFullDetail(params: GetPlaceFullDetailReq) {
   const key = params.contentId ? `/places/${params.contentId}/full` : null;
 
-  const { data, error, isLoading, mutate } = useSWR<
-    GetPlaceFullDetailRes,
-    ApiError
-  >(key, () => getPlaceFullDetail(params));
+  const { data, error, isLoading, mutate } = useSWR<GetPlaceFullDetailRes, ApiError>(key, () =>
+    getPlaceFullDetail(params)
+  );
   return { data, error, isLoading, mutate };
 }

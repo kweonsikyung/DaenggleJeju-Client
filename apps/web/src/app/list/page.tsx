@@ -40,18 +40,14 @@ export default function ListClientPage() {
   /** state */
   const [activeFilter, setActiveFilter] = useState(initialFilter);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<
-    Record<string, string[]>
-  >({});
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [apiParams, setApiParams] = useState<GetPlaceListReq>({});
 
   const { data: placeData, isLoading } = usePlaceList(apiParams);
 
   /** variables */
   const listData = placeData?.items || [];
-  const isAnyFilterSelected = Object.values(selectedFilters).some(
-    (arr) => arr.length > 0
-  );
+  const isAnyFilterSelected = Object.values(selectedFilters).some((arr) => arr.length > 0);
 
   /** filter handler */
   const handleFilterSelect = (group: string, id: string) => {
@@ -95,8 +91,7 @@ export default function ListClientPage() {
               id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
             ]
         );
-        (newApiParams as unknown as Record<string, unknown>)[paramKey] =
-          paramValues;
+        (newApiParams as unknown as Record<string, unknown>)[paramKey] = paramValues;
       }
     }
     setApiParams(newApiParams);
@@ -166,10 +161,7 @@ export default function ListClientPage() {
             </div>
           ))
         ) : (
-          <EmptyState
-            title="결과 없음"
-            description="선택된 필터에 해당하는 장소가 없습니다."
-          />
+          <EmptyState title="결과 없음" description="선택된 필터에 해당하는 장소가 없습니다." />
         )}
       </div>
 
@@ -177,11 +169,7 @@ export default function ListClientPage() {
       <NavBar activePage="near" />
 
       {/* bottomSheet */}
-      <BottomSheet
-        open={isBottomSheetOpen}
-        onOpenChange={setIsBottomSheetOpen}
-        title="필터"
-      >
+      <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen} title="필터">
         <div className={s.bottomSheetContent}>
           {OPTION_DATA.map((data) => (
             <FilterSection
@@ -190,9 +178,7 @@ export default function ListClientPage() {
               chips={data.chips}
               multiSelect={data.multiSelect}
               selectedChips={selectedFilters[data.group] || []}
-              onChipClick={(chipId: string) =>
-                handleFilterSelect(data.group, chipId)
-              }
+              onChipClick={(chipId: string) => handleFilterSelect(data.group, chipId)}
             />
           ))}
         </div>
@@ -205,9 +191,7 @@ export default function ListClientPage() {
           />
           <Button
             size={ButtonSize.MEDIUM}
-            status={
-              isAnyFilterSelected ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED
-            }
+            status={isAnyFilterSelected ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED}
             text="적용"
             onClick={handleApplyFilters}
             disabled={!isAnyFilterSelected}

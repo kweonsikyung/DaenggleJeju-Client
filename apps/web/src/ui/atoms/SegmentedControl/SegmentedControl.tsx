@@ -29,9 +29,7 @@ export const SegmentedControl = ({
   const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
-    const activeIndex = options.findIndex(
-      (option) => option.id === activeOption
-    );
+    const activeIndex = options.findIndex((option) => option.id === activeOption);
     const activeOptionElement = optionRefs.current[activeIndex];
 
     if (activeOptionElement) {
@@ -41,11 +39,7 @@ export const SegmentedControl = ({
         width: `${clientWidth}px`,
       });
     }
-  }, [
-    activeOption,
-    options,
-    typeof window !== "undefined" ? window.innerWidth : 0,
-  ]);
+  }, [activeOption, options, typeof window !== "undefined" ? window.innerWidth : 0]);
 
   return (
     <div ref={containerRef} className={`${s.container} ${className}`}>
@@ -65,4 +59,3 @@ export const SegmentedControl = ({
     </div>
   );
 };
-

@@ -13,21 +13,11 @@ interface AiProfileHeaderProps {
   subtitle: string;
 }
 
-export function AiProfileHeader({
-  imageUrl,
-  title,
-  subtitle,
-}: AiProfileHeaderProps) {
+export function AiProfileHeader({ imageUrl, title, subtitle }: AiProfileHeaderProps) {
   return (
     <div className={s.container}>
       <div className={s.imageWrapper}>
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={40}
-          height={40}
-          className={s.profileImage}
-        />
+        <Image src={imageUrl} alt={title} width={40} height={40} className={s.profileImage} />
       </div>
       <div className={s.textContainer}>
         <h1 className={s.title}>{title}</h1>

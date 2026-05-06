@@ -27,13 +27,7 @@ export const ProfileCard = ({
   return (
     <div className={`${s.container} ${className}`}>
       <div className={s.profileInfo}>
-        <Image
-          src={imageUrl}
-          alt={name}
-          width={48}
-          height={48}
-          className={s.avatar}
-        />
+        <Image src={imageUrl} alt={name} width={48} height={48} className={s.avatar} />
         <div className={s.textInfo}>
           <div className={s.nameLine}>
             <span className={s.name}>{name}</span>
@@ -43,14 +37,8 @@ export const ProfileCard = ({
         </div>
       </div>
       <button className={s.editButton} onClick={onEditClick}>
-        <Image
-          src="/assets/icon16/pencil_line.svg"
-          alt="수정"
-          width={16}
-          height={16}
-        />
+        <Image src="/assets/icon16/pencil_line.svg" alt="수정" width={16} height={16} />
       </button>
     </div>
   );
 };
-

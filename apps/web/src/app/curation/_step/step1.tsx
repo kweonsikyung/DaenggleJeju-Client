@@ -21,24 +21,17 @@ interface Step1Props {
   setAvatarFile: (file: File | null) => void;
 }
 
-export default function Step1({
-  setIsValid,
-  formData,
-  setFormData,
-  setAvatarFile,
-}: Step1Props) {
+export default function Step1({ setIsValid, formData, setFormData, setAvatarFile }: Step1Props) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [activeSheet, setActiveSheet] = useState<"breed" | "weight" | null>(
-    null
-  );
+  const [activeSheet, setActiveSheet] = useState<"breed" | "weight" | null>(null);
 
   /** dynamic variable */
   const { title: sheetTitle, options: sheetOptions } =
     activeSheet === "breed"
       ? { title: "견종 선택", options: BREED_OPTIONS.map((b) => b.label) }
       : activeSheet === "weight"
-      ? { title: "몸무게 선택", options: WEIGHT_OPTIONS.map((w) => w.label) }
-      : { title: "", options: [] };
+        ? { title: "몸무게 선택", options: WEIGHT_OPTIONS.map((w) => w.label) }
+        : { title: "", options: [] };
 
   /** click handler */
   const handleSelect = (field: "breed" | "weight", value: string) => {
@@ -75,9 +68,7 @@ export default function Step1({
           label="이름"
           placeholder="반려견 이름 최대 6자"
           value={formData.name}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, name: e.target.value }))
-          }
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
         />
         <SelectField
           label="견종"

@@ -31,9 +31,9 @@ export const state = styleVariants({
     boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL200}`,
   },
   filled: {},
-  error: { 
+  error: {
     boxShadow: `inset 0 0 0 1.5px #E5484D`,
-    background: "#FFF5F5"
+    background: "#FFF5F5",
   },
   disabled: {
     background: COLORS.NEUTRAL50,

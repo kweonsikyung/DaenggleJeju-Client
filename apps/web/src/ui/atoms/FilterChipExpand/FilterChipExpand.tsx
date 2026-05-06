@@ -21,11 +21,7 @@ export function FilterChipExpand({
   onClick,
 }: FilterChipExpandProps) {
   return (
-    <button
-      className={s.root[selected ? "selected" : "default"]}
-      onClick={onClick}
-      role="button"
-    >
+    <button className={s.root[selected ? "selected" : "default"]} onClick={onClick} role="button">
       <div className={s.textWrapper}>
         <span className={s.title}>{title}</span>
         {caption && <span className={s.caption}>{caption}</span>}
@@ -33,4 +29,3 @@ export function FilterChipExpand({
     </button>
   );
 }
-

@@ -7,11 +7,6 @@ import { PostPreferenceReq, PostPreferenceRes } from "@/types/preference";
  * @param {PostPreferenceReq} payload - 요청 Body 객체
  * @returns {Promise<PostPreferenceRes>} 저장된 여행 스타일 정보
  */
-export async function postPreference(
-  payload: PostPreferenceReq
-): Promise<PostPreferenceRes> {
-  return await postRequest<PostPreferenceRes, PostPreferenceReq>(
-    "/members/preference",
-    payload
-  );
+export async function postPreference(payload: PostPreferenceReq): Promise<PostPreferenceRes> {
+  return await postRequest<PostPreferenceRes, PostPreferenceReq>("/members/preference", payload);
 }

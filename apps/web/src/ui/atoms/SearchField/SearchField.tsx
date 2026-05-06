@@ -4,8 +4,10 @@ import React, { useId, useMemo, useState, forwardRef } from "react";
 import Image from "next/image";
 import * as s from "./SearchField.css";
 
-export interface SearchFieldProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
+export interface SearchFieldProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "size" | "type"
+> {
   /** placeholder */
   placeholder?: string;
   /** 컨트롤드 값 */
@@ -59,16 +61,16 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
       const stateKey = isDisabled
         ? "disabled"
         : error
-        ? "error"
-        : isTyping
-        ? "typing"
-        : focused
-        ? "focused"
-        : pressed
-        ? "pressed"
-        : filled
-        ? "filled"
-        : "default";
+          ? "error"
+          : isTyping
+            ? "typing"
+            : focused
+              ? "focused"
+              : pressed
+                ? "pressed"
+                : filled
+                  ? "filled"
+                  : "default";
       return s.state[stateKey];
     }, [focused, pressed, filled, isDisabled, isTyping, error]);
 
@@ -97,10 +99,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
 
     return (
       <div className={[s.wrapper, className].filter(Boolean).join(" ")}>
-        <div
-          className={[s.field, stateClass].join(" ")}
-          aria-disabled={isDisabled || undefined}
-        >
+        <div className={[s.field, stateClass].join(" ")} aria-disabled={isDisabled || undefined}>
           <Image
             src={loading ? "/assets/icon16/loading.svg" : "/assets/icon16/search_line.svg"}
             alt="검색"
@@ -109,7 +108,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
             className={[s.icon, loading && s.rotate].filter(Boolean).join(" ")}
           />
           <input
-            ref={ref} 
+            ref={ref}
             id={inputId}
             className={s.input}
             type="text"
@@ -127,12 +126,7 @@ export const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
           />
           {filled && !disabled && !loading && (
             <button className={s.clearButton} onClick={handleClear} type="button">
-              <Image
-                src="/assets/icon16/x-circle.svg"
-                alt="지우기"
-                width={16}
-                height={16}
-              />
+              <Image src="/assets/icon16/x-circle.svg" alt="지우기" width={16} height={16} />
             </button>
           )}
         </div>

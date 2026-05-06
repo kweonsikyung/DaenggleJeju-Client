@@ -22,13 +22,7 @@ export function EmptyState({
     <div className={s.root}>
       {imageUrl && (
         <div className={s.imageWrapper}>
-          <Image
-            src={imageUrl}
-            alt="empty"
-            width={160}
-            height={160}
-            className={s.image}
-          />
+          <Image src={imageUrl} alt="empty" width={160} height={160} className={s.image} />
         </div>
       )}
       <h3 className={s.title}>{title}</h3>
@@ -36,4 +30,3 @@ export function EmptyState({
     </div>
   );
 }
-

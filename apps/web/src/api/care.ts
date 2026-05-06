@@ -7,9 +7,7 @@ import { PostCareReq, PostCareRes } from "@/types/care";
  * @param {PostCareReq} payload - 요청 Body 객체 (질문 내용)
  * @returns {Promise<PostCareRes>} AI의 답변
  */
-export async function postCareQuestion(
-  payload: PostCareReq
-): Promise<PostCareRes> {
+export async function postCareQuestion(payload: PostCareReq): Promise<PostCareRes> {
   return await postRequest<PostCareRes, PostCareReq>("/care/ask", payload, {
     timeout: 30000,
   });

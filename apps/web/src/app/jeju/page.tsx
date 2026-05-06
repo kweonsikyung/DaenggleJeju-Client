@@ -92,53 +92,37 @@ function JejuPageContent() {
           ]}
         />
         <div className={s.detail_container}>
-          <NoticeBox
-            shouldRender={shouldRender}
-            animation={animation}
-            onClose={hideNotice}
-          >
-            제공된 정보는 실제 운영 상황과 다를 수 있으므로, 예약 및 탑승 전
-            반드시 해당 업체의 최신 규정과 조건을 확인해 주시기 바랍니다.
+          <NoticeBox shouldRender={shouldRender} animation={animation} onClose={hideNotice}>
+            제공된 정보는 실제 운영 상황과 다를 수 있으므로, 예약 및 탑승 전 반드시 해당 업체의 최신
+            규정과 조건을 확인해 주시기 바랍니다.
           </NoticeBox>
 
-          <Image
-            src={currentOption.url}
-            alt={currentOption.title}
-            width={190}
-            height={190}
-          />
+          <Image src={currentOption.url} alt={currentOption.title} width={190} height={190} />
           <div className={s.detailHeader}>
             <h1 className={s.detailTitle}>{currentOption.title}</h1>
             <p className={s.detailDesc}>{currentOption.desc}</p>
           </div>
 
           <div className={s.detailImageWrapper}>
-            {Array.from({ length: imageCount }, (_, i) => i + 1).map(
-              (num, index) => (
-                <div key={num} className={s.detailImageContainer}>
-                  {!imagesLoaded[index] && (
-                    <div className={s.spinnerContainer}>
-                      <ProgressCircle
-                        size={40}
-                        active
-                        className={s.spinner}
-                        color="#a5fbc5ff"
-                      />
-                    </div>
-                  )}
-                  <Image
-                    src={`/assets/jeju/${type}/${num}.png`}
-                    alt={`${currentOption.title} 상세 이미지 ${num}`}
-                    width={340}
-                    height={440}
-                    sizes="100vw"
-                    className={s.detailImage}
-                    onLoad={() => handleImageLoad(index)}
-                    style={{ opacity: imagesLoaded[index] ? 1 : 0 }}
-                  />
-                </div>
-              )
-            )}
+            {Array.from({ length: imageCount }, (_, i) => i + 1).map((num, index) => (
+              <div key={num} className={s.detailImageContainer}>
+                {!imagesLoaded[index] && (
+                  <div className={s.spinnerContainer}>
+                    <ProgressCircle size={40} active className={s.spinner} color="#a5fbc5ff" />
+                  </div>
+                )}
+                <Image
+                  src={`/assets/jeju/${type}/${num}.png`}
+                  alt={`${currentOption.title} 상세 이미지 ${num}`}
+                  width={340}
+                  height={440}
+                  sizes="100vw"
+                  className={s.detailImage}
+                  onLoad={() => handleImageLoad(index)}
+                  style={{ opacity: imagesLoaded[index] ? 1 : 0 }}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </>

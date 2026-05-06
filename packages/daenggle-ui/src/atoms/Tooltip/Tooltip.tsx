@@ -19,24 +19,14 @@ export interface TooltipProps {
   position?: TooltipPosition;
 }
 
-export function Tooltip({
-  title,
-  text,
-  onClose,
-  isVisible,
-  position = "top",
-}: TooltipProps) {
+export function Tooltip({ title, text, onClose, isVisible, position = "top" }: TooltipProps) {
   if (!isVisible) return null;
 
   return (
     <div className={`${s.tooltipWrapper} ${s.positionVariants[position]}`}>
       <div className={s.headerContainer}>
         <span className={s.tooltipTitle}>{title}</span>
-        <button
-          className={s.closeButton}
-          onClick={onClose}
-          aria-label="툴팁 닫기"
-        >
+        <button className={s.closeButton} onClick={onClose} aria-label="툴팁 닫기">
           <Image src="/assets/icon12/x.svg" alt="닫기" width={16} height={16} />
         </button>
       </div>

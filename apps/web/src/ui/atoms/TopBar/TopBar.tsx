@@ -41,12 +41,7 @@ export function TopBar({
 }: TopBarProps) {
   return (
     <header
-      className={[
-        s.root,
-        sticky && s.sticky,
-        transparent && s.transparent,
-        className,
-      ]
+      className={[s.root, sticky && s.sticky, transparent && s.transparent, className]
         .filter(Boolean)
         .join(" ")}
       role="banner"
@@ -56,18 +51,11 @@ export function TopBar({
         {backIconHandler ? (
           <button
             type="button"
-            className={[s.iconButton, whiteIcon && s.whiteIcon]
-              .filter(Boolean)
-              .join(" ")}
+            className={[s.iconButton, whiteIcon && s.whiteIcon].filter(Boolean).join(" ")}
             onClick={backIconHandler}
             aria-label="뒤로가기"
           >
-            <Image
-              src="/assets/icon24/arrow-left_line.svg"
-              alt="뒤로가기"
-              width={24}
-              height={24}
-            />
+            <Image src="/assets/icon24/arrow-left_line.svg" alt="뒤로가기" width={24} height={24} />
           </button>
         ) : null}
       </div>
@@ -75,12 +63,7 @@ export function TopBar({
       {/* Center */}
       <div className={s.center} aria-live="polite">
         {isShowLogo ? (
-          <Image
-            src="/assets/logo/logo-top.svg"
-            alt="댕글 로고"
-            width={72.56}
-            height={24}
-          />
+          <Image src="/assets/logo/logo-top.svg" alt="댕글 로고" width={72.56} height={24} />
         ) : title ? (
           <div className={s.title} title={title}>
             {title}
@@ -94,9 +77,7 @@ export function TopBar({
           <button
             key={idx}
             type="button"
-            className={[s.iconButton, whiteIcon && s.whiteIcon]
-              .filter(Boolean)
-              .join(" ")}
+            className={[s.iconButton, whiteIcon && s.whiteIcon].filter(Boolean).join(" ")}
             onClick={onClick}
             aria-label={`action-${idx + 1}`}
           >
@@ -107,4 +88,3 @@ export function TopBar({
     </header>
   );
 }
-

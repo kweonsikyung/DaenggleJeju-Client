@@ -73,9 +73,7 @@ function ShortsPageContent() {
 
   const contentId = searchParams.get("contentId") as string | null;
   const contextId = searchParams.get("contextId") as DaenggleContextId | null;
-  const conceptKey = searchParams.get(
-    "conceptKey"
-  ) as DaenggleConceptKey | null;
+  const conceptKey = searchParams.get("conceptKey") as DaenggleConceptKey | null;
   const listType = searchParams.get("listType");
   const startIndex = parseInt(searchParams.get("startIndex") || "0", 10);
 
@@ -94,9 +92,7 @@ function ShortsPageContent() {
     daenggleRegionsData,
     isLoading: regionsLoading,
     error: regionsError,
-  } = useDaenggleRegions(
-    contextId ? { contextId, sort: "rank", limit: 20, offset: 0 } : undefined
-  );
+  } = useDaenggleRegions(contextId ? { contextId, sort: "rank", limit: 20, offset: 0 } : undefined);
 
   const {
     daenggleConceptsData,
@@ -111,9 +107,7 @@ function ShortsPageContent() {
     isLoading: accomLoading,
     error: accomError,
   } = useDaenggleAccommodations(
-    listType === "accommodations"
-      ? { sort: "rank", limit: 10, offset: 0 }
-      : undefined
+    listType === "accommodations" ? { sort: "rank", limit: 10, offset: 0 } : undefined
   );
 
   const {
@@ -121,9 +115,7 @@ function ShortsPageContent() {
     isLoading: trendingLoading,
     error: trendingError,
   } = useDaenggleTrending(
-    listType === "trending"
-      ? { sort: "views", days: 90, limit: 10, offset: 0 }
-      : undefined
+    listType === "trending" ? { sort: "views", days: 90, limit: 10, offset: 0 } : undefined
   );
 
   /** utils */
@@ -147,19 +139,12 @@ function ShortsPageContent() {
   } else if (contextId && daenggleRegionsData?.items) {
     formattedVideos = daenggleRegionsData.items.map(formatApiVideoToLocal);
   } else if (conceptKey && daenggleConceptsData?.shelves) {
-    const shelf = daenggleConceptsData.shelves.find(
-      (s) => s.key === conceptKey
-    );
+    const shelf = daenggleConceptsData.shelves.find((s) => s.key === conceptKey);
     if (shelf?.items) {
       formattedVideos = shelf.items.map(formatApiVideoToLocal);
     }
-  } else if (
-    listType === "accommodations" &&
-    daenggleAccommodationsData?.items
-  ) {
-    formattedVideos = daenggleAccommodationsData.items.map(
-      formatApiVideoToLocal
-    );
+  } else if (listType === "accommodations" && daenggleAccommodationsData?.items) {
+    formattedVideos = daenggleAccommodationsData.items.map(formatApiVideoToLocal);
   } else if (listType === "trending" && daenggleTrendingData?.items) {
     formattedVideos = daenggleTrendingData.items.map(formatApiVideoToLocal);
   }
@@ -223,8 +208,7 @@ function ShortsPageContent() {
 
   /** loading */
   const isLoading =
-    !contentId &&
-    (regionsLoading || conceptsLoading || accomLoading || trendingLoading);
+    !contentId && (regionsLoading || conceptsLoading || accomLoading || trendingLoading);
   const anyError = regionsError || conceptsError || accomError || trendingError;
   const currentVideo = formattedVideos[activeSlideIndex] || formattedVideos[0];
 
@@ -288,14 +272,7 @@ function ShortsPageContent() {
         backIconHandler={() => router.back()}
         rightIcons={[
           {
-            icon: (
-              <Image
-                alt="검색"
-                height={24}
-                src="/assets/icon16/search_line.svg"
-                width={24}
-              />
-            ),
+            icon: <Image alt="검색" height={24} src="/assets/icon16/search_line.svg" width={24} />,
             onClick: () => router.push("/search"),
           },
         ]}
@@ -339,19 +316,13 @@ function ShortsPageContent() {
               >
                 <Image
                   src={
-                    isFirstVideoSaved
-                      ? "/assets/video/save-active.svg"
-                      : "/assets/video/save.svg"
+                    isFirstVideoSaved ? "/assets/video/save-active.svg" : "/assets/video/save.svg"
                   }
                   alt="Save"
                   width={40}
                   height={40}
                 />
-                <span>
-                  {formatNumber(
-                    firstVideo.bookmarks + (isFirstVideoSaved ? 1 : 0)
-                  )}
-                </span>
+                <span>{formatNumber(firstVideo.bookmarks + (isFirstVideoSaved ? 1 : 0))}</span>
               </button>
               <button
                 className={s.actionButton}
@@ -359,19 +330,13 @@ function ShortsPageContent() {
               >
                 <Image
                   src={
-                    isFirstVideoLiked
-                      ? "/assets/video/heart-active.svg"
-                      : "/assets/video/heart.svg"
+                    isFirstVideoLiked ? "/assets/video/heart-active.svg" : "/assets/video/heart.svg"
                   }
                   alt="Like"
                   width={40}
                   height={40}
                 />
-                <span>
-                  {formatNumber(
-                    (firstVideo.likes ?? 0) + (isFirstVideoLiked ? 1 : 0)
-                  )}
-                </span>
+                <span>{formatNumber((firstVideo.likes ?? 0) + (isFirstVideoLiked ? 1 : 0))}</span>
               </button>
             </div>
             <div className={s.bottom}>
@@ -405,20 +370,11 @@ function ShortsPageContent() {
           initialSlide={startIndex}
         >
           {formattedVideos.map((video, index) => {
-            const isCurrentVideoSaved =
-              videoStates[video.videoId]?.saved ?? false;
-            const isCurrentVideoLiked =
-              videoStates[video.videoId]?.liked ?? false;
+            const isCurrentVideoSaved = videoStates[video.videoId]?.saved ?? false;
+            const isCurrentVideoLiked = videoStates[video.videoId]?.liked ?? false;
             return (
-              <SwiperSlide
-                key={video.videoId}
-                className={s.swiperSlide}
-                onClick={handleTogglePlay}
-              >
-                <div
-                  id={`player-${video.videoId}`}
-                  className={s.playerBackground}
-                />
+              <SwiperSlide key={video.videoId} className={s.swiperSlide} onClick={handleTogglePlay}>
+                <div id={`player-${video.videoId}`} className={s.playerBackground} />
 
                 {index === activeSlideIndex && (
                   <>
@@ -431,9 +387,7 @@ function ShortsPageContent() {
                           <div className={s.sideActions}>
                             <button
                               className={s.actionButton}
-                              onClick={(e) =>
-                                handleToggleSave(e, video.videoId)
-                              }
+                              onClick={(e) => handleToggleSave(e, video.videoId)}
                             >
                               <Image
                                 src={
@@ -446,17 +400,12 @@ function ShortsPageContent() {
                                 height={40}
                               />
                               <span>
-                                {formatNumber(
-                                  video.bookmarks +
-                                    (isCurrentVideoSaved ? 1 : 0)
-                                )}
+                                {formatNumber(video.bookmarks + (isCurrentVideoSaved ? 1 : 0))}
                               </span>
                             </button>
                             <button
                               className={s.actionButton}
-                              onClick={(e) =>
-                                handleToggleLike(e, video.videoId)
-                              }
+                              onClick={(e) => handleToggleLike(e, video.videoId)}
                             >
                               <Image
                                 src={
@@ -469,10 +418,7 @@ function ShortsPageContent() {
                                 height={40}
                               />
                               <span>
-                                {formatNumber(
-                                  (video.likes ?? 0) +
-                                    (isCurrentVideoLiked ? 1 : 0)
-                                )}
+                                {formatNumber((video.likes ?? 0) + (isCurrentVideoLiked ? 1 : 0))}
                               </span>
                             </button>
                           </div>

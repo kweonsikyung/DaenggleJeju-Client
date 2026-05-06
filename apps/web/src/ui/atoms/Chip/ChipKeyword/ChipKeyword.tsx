@@ -15,30 +15,15 @@ export interface ChipKeywordProps {
   onClick?: () => void;
 }
 
-export function ChipKeyword({
-  text,
-  selected = false,
-  onClose,
-  onClick,
-}: ChipKeywordProps) {
+export function ChipKeyword({ text, selected = false, onClose, onClick }: ChipKeywordProps) {
   return (
-    <div
-      className={s.chip[selected ? "selected" : "default"]}
-      onClick={onClick}
-      role="button"
-    >
+    <div className={s.chip[selected ? "selected" : "default"]} onClick={onClick} role="button">
       <span>{text}</span>
       {selected && (
         <button className={s.closeButton} onClick={onClose} aria-label="닫기">
-          <Image
-            src="/assets/icon16/x_line.svg"
-            alt="닫기"
-            width={16}
-            height={16}
-          />
+          <Image src="/assets/icon16/x_line.svg" alt="닫기" width={16} height={16} />
         </button>
       )}
     </div>
   );
 }
-

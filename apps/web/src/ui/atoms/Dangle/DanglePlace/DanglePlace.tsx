@@ -88,10 +88,7 @@ export function DanglePlace({
   };
 
   return (
-    <div
-      className={s.root[isExpanded ? "isExpanded" : "default"]}
-      onClick={onClick}
-    >
+    <div className={s.root[isExpanded ? "isExpanded" : "default"]} onClick={onClick}>
       <div className={s.headerContainer}>
         <div className={s.thumbnailWrapper}>
           <Image
@@ -108,28 +105,20 @@ export function DanglePlace({
           <h3 className={s.name}>{name}</h3>
           <div className={s.stats}>
             {distance && <span className={s.statValue}>{distance}km</span>}
-            {distance &&
-              (typeof playCount === "number" ||
-                typeof bookmarkCount === "number") && (
-                <div className={s.statItem}>·</div>
-              )}
+            {distance && (typeof playCount === "number" || typeof bookmarkCount === "number") && (
+              <div className={s.statItem}>·</div>
+            )}
 
             {typeof playCount === "number" && (
               <div className={s.statItem}>
-                <Image
-                  alt="재생 수"
-                  width={12}
-                  height={12}
-                  src="/assets/icon12/play_filled.svg"
-                />
+                <Image alt="재생 수" width={12} height={12} src="/assets/icon12/play_filled.svg" />
                 <span className={s.statValue}>{playCount}</span>
               </div>
             )}
 
-            {typeof playCount === "number" &&
-              typeof bookmarkCount === "number" && (
-                <div className={s.statItem}>·</div>
-              )}
+            {typeof playCount === "number" && typeof bookmarkCount === "number" && (
+              <div className={s.statItem}>·</div>
+            )}
 
             {typeof bookmarkCount === "number" && (
               <div className={s.statItem}>
@@ -186,4 +175,3 @@ export function DanglePlace({
     </div>
   );
 }
-

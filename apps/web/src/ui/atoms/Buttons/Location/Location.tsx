@@ -1,8 +1,7 @@
 import React from "react";
 import * as s from "./Location.css";
 
-export interface LocationProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
+export interface LocationProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
   /** 상단 굵은 타이틀 */
   title: string;
   /** 하단 보조 설명(선택) */
@@ -47,4 +46,3 @@ export function Location({
     </button>
   );
 }
-

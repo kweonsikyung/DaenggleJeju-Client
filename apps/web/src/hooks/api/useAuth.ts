@@ -39,11 +39,7 @@ export function useUser() {
 export function useDevLogin() {
   const { mutateUser } = useUser();
 
-  const { trigger, isMutating, error } = useSWRMutation<
-    PostDevLoginRes,
-    ApiError,
-    string
-  >(
+  const { trigger, isMutating, error } = useSWRMutation<PostDevLoginRes, ApiError, string>(
     "/auth/dev-login", // Mutation Key
     () => postDevLogin(),
     {

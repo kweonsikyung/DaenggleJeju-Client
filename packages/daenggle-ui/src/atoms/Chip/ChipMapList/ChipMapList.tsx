@@ -13,20 +13,11 @@ export interface ChipMapListProps {
   onLocationListClick: () => void;
 }
 
-export function ChipMapList({
-  text,
-  cnt,
-  onLocationListClick,
-}: ChipMapListProps) {
+export function ChipMapList({ text, cnt, onLocationListClick }: ChipMapListProps) {
   return (
     <button className={s.locationListButton} onClick={onLocationListClick}>
       <span>
-        <Image
-          src="/assets/icon12/bullet-list_line-white.svg"
-          alt="목록"
-          width={12}
-          height={12}
-        />
+        <Image src="/assets/icon12/bullet-list_line-white.svg" alt="목록" width={12} height={12} />
       </span>
       <div>
         <span className={s.locationListText}>{text}</span>

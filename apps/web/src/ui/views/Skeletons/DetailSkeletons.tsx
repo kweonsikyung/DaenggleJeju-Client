@@ -58,30 +58,14 @@ export function DetailSkeleton() {
             <Skeleton width={80} height={80} style={{ borderRadius: "8px" }} />
             <div className={s.placeDetails} style={{ flex: 1 }}>
               <Skeleton width="60%" height="28px" />
-              <Skeleton
-                width="40%"
-                height="16px"
-                style={{ marginTop: "8px" }}
-              />
-              <Skeleton
-                width="70%"
-                height="24px"
-                style={{ marginTop: "10px" }}
-              />
+              <Skeleton width="40%" height="16px" style={{ marginTop: "8px" }} />
+              <Skeleton width="70%" height="24px" style={{ marginTop: "10px" }} />
             </div>
           </div>
           <div className={s.tagGroup}>
             <Skeleton width="50px" height="20px" />
-            <Skeleton
-              width="70px"
-              height="20px"
-              style={{ marginLeft: "8px" }}
-            />
-            <Skeleton
-              width="50px"
-              height="20px"
-              style={{ marginLeft: "8px" }}
-            />
+            <Skeleton width="70px" height="20px" style={{ marginLeft: "8px" }} />
+            <Skeleton width="50px" height="20px" style={{ marginLeft: "8px" }} />
           </div>
           <ul className={s.infoList} style={{ gap: "12px" }}>
             <li>
@@ -100,11 +84,7 @@ export function DetailSkeleton() {
           <SectionHeaderSkeleton />
           <div className={s.attentionBox} style={{ padding: "16px" }}>
             <Skeleton width="50%" height="20px" />
-            <Skeleton
-              width="100%"
-              height="14px"
-              style={{ marginTop: "12px" }}
-            />
+            <Skeleton width="100%" height="14px" style={{ marginTop: "12px" }} />
             <Skeleton width="90%" height="14px" style={{ marginTop: "8px" }} />
           </div>
         </section>
@@ -117,11 +97,7 @@ export function DetailSkeleton() {
         <section className={s.section}>
           <SectionHeaderSkeleton />
           <div style={{ padding: "0 16px" }}>
-            <Skeleton
-              width="30%"
-              height="30px"
-              style={{ marginBottom: "10px" }}
-            />
+            <Skeleton width="30%" height="30px" style={{ marginBottom: "10px" }} />
             <Skeleton
               width="100%"
               height="80px"

@@ -18,12 +18,7 @@ import { entryOptions, conditionChips, welcomeOptions } from "./_util";
 
 // hooks
 import { usePostFootprint } from "@/hooks/api/useFootprints";
-import {
-  PostFootprintReq,
-  ConditionType,
-  WelcomeScore,
-  EntryStatus,
-} from "@/types/footprint";
+import { PostFootprintReq, ConditionType, WelcomeScore, EntryStatus } from "@/types/footprint";
 
 interface PawRatingProps {
   rating: number;
@@ -86,17 +81,11 @@ function LeaveFootprintPage() {
   // API 명세에 따른 유효성 검사
   const isEntryDetailValid =
     entryStatus !== "detail" ||
-    (entryStatus === "detail" &&
-      entryDetailText.length >= 5 &&
-      entryDetailText.length <= 20);
+    (entryStatus === "detail" && entryDetailText.length >= 5 && entryDetailText.length <= 20);
   const isBodyValid = bodyText.length >= 5 && bodyText.length <= 500;
 
   const isFormValid =
-    !!welcomeStatus &&
-    rating > 0 &&
-    isBodyValid &&
-    isEntryDetailValid &&
-    !!contentId;
+    !!welcomeStatus && rating > 0 && isBodyValid && isEntryDetailValid && !!contentId;
 
   // 제출 핸들러
   const handleSubmit = async () => {
@@ -105,11 +94,7 @@ function LeaveFootprintPage() {
       return;
     }
 
-    if (
-      entryStatus !== "allow" &&
-      entryStatus !== "deny" &&
-      entryStatus !== "detail"
-    ) {
+    if (entryStatus !== "allow" && entryStatus !== "deny" && entryStatus !== "detail") {
       console.error("Invalid entryStatus:", entryStatus);
       return; // 비정상 상태
     }
@@ -143,16 +128,9 @@ function LeaveFootprintPage() {
       {isSubmitted ? (
         <>
           <div className={s.successContainer}>
-            <Image
-              src="/assets/footprint.png"
-              alt="발자국 인증 완료"
-              width={160}
-              height={160}
-            />
+            <Image src="/assets/footprint.png" alt="발자국 인증 완료" width={160} height={160} />
             <h2 className={s.successTitle}>발자국 인증 완료</h2>
-            <p className={s.successDescription}>
-              소중한 기록을 함께 나눠주셔서 고마워요!
-            </p>
+            <p className={s.successDescription}>소중한 기록을 함께 나눠주셔서 고마워요!</p>
           </div>
           <div className={s.successFooter}>
             <Button
@@ -224,9 +202,7 @@ function LeaveFootprintPage() {
                     ...opt,
                     value: String(opt.value),
                   }))}
-                  selectedValue={
-                    welcomeStatus !== null ? String(welcomeStatus) : null
-                  }
+                  selectedValue={welcomeStatus !== null ? String(welcomeStatus) : null}
                   onSelect={(value) => setWelcomeStatus(parseInt(value, 10))}
                 />
               </div>

@@ -5,11 +5,7 @@ import * as s from "@/app/dangle/style.css";
 export function DanglePlaceSkeleton() {
   return (
     <div style={{ display: "flex", gap: "12px", width: "100%" }}>
-      <Skeleton
-        width={100}
-        height={100}
-        style={{ borderRadius: "8px", flexShrink: 0 }}
-      />
+      <Skeleton width={100} height={100} style={{ borderRadius: "8px", flexShrink: 0 }} />
 
       <div
         style={{
@@ -27,16 +23,8 @@ export function DanglePlaceSkeleton() {
         <div>
           <Skeleton width="40%" height="14px" />
           <div style={{ display: "flex", gap: "6px", marginTop: "10px" }}>
-            <Skeleton
-              width="50px"
-              height="22px"
-              style={{ borderRadius: "4px" }}
-            />
-            <Skeleton
-              width="50px"
-              height="22px"
-              style={{ borderRadius: "4px" }}
-            />
+            <Skeleton width="50px" height="22px" style={{ borderRadius: "4px" }} />
+            <Skeleton width="50px" height="22px" style={{ borderRadius: "4px" }} />
           </div>
         </div>
       </div>
@@ -90,11 +78,7 @@ export function DangleRecommendSkeleton() {
         <SkeletonCarousel>
           {[1, 2, 3, 4, 5].map((n) => (
             <div key={n} style={{ textAlign: "center", flexShrink: 0 }}>
-              <Skeleton
-                width={84}
-                height={84}
-                style={{ borderRadius: "50%" }}
-              />
+              <Skeleton width={84} height={84} style={{ borderRadius: "50%" }} />
             </div>
           ))}
         </SkeletonCarousel>
@@ -115,11 +99,7 @@ export function DangleRecommendSkeleton() {
         <SkeletonCarousel>
           {[1, 2, 3].map((n) => (
             <div key={n} style={{ flexShrink: 0 }}>
-              <Skeleton
-                width={150}
-                height={225}
-                style={{ borderRadius: "8px" }}
-              />
+              <Skeleton width={150} height={225} style={{ borderRadius: "8px" }} />
               <div
                 style={{
                   display: "flex",
@@ -128,11 +108,7 @@ export function DangleRecommendSkeleton() {
                   gap: "8px",
                 }}
               >
-                <Skeleton
-                  width={22}
-                  height={22}
-                  style={{ borderRadius: "50%" }}
-                />
+                <Skeleton width={22} height={22} style={{ borderRadius: "50%" }} />
                 <Skeleton width="100px" height="1em" />
               </div>
             </div>
@@ -150,26 +126,10 @@ export function DangleRecommendSkeleton() {
         >
           {[1, 2, 3, 4].map((n) => (
             <div key={n}>
-              <Skeleton
-                width="100%"
-                height={242}
-                style={{ borderRadius: "8px" }}
-              />
-              <Skeleton
-                width="80%"
-                height="18px"
-                style={{ marginTop: "8px" }}
-              />
-              <Skeleton
-                width="60%"
-                height="14px"
-                style={{ marginTop: "4px" }}
-              />
-              <Skeleton
-                width="100%"
-                height="20px"
-                style={{ marginTop: "8px" }}
-              />
+              <Skeleton width="100%" height={242} style={{ borderRadius: "8px" }} />
+              <Skeleton width="80%" height="18px" style={{ marginTop: "8px" }} />
+              <Skeleton width="60%" height="14px" style={{ marginTop: "4px" }} />
+              <Skeleton width="100%" height="20px" style={{ marginTop: "8px" }} />
             </div>
           ))}
         </div>

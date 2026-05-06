@@ -19,13 +19,12 @@ export const useLocationStore = create<LocationState>((set) => ({
   fetchLocation: async () => {
     set({ isLoading: true, error: null });
     try {
-      const position: GeolocationPosition = await new Promise(
-        (resolve, reject) =>
-          navigator.geolocation.getCurrentPosition(resolve, reject, {
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0,
-          })
+      const position: GeolocationPosition = await new Promise((resolve, reject) =>
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        })
       );
 
       set({

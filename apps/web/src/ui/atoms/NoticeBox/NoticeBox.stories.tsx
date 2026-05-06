@@ -56,7 +56,6 @@ export const Yellow: Story = {
 export const Blue: Story = {
   args: {
     variant: "blue",
-    children:
-      "파란색 테마의 알림입니다. 중요한 공지사항을 전달할 때 사용할 수 있습니다.",
+    children: "파란색 테마의 알림입니다. 중요한 공지사항을 전달할 때 사용할 수 있습니다.",
   },
 };

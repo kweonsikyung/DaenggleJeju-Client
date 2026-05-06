@@ -54,22 +54,12 @@ export function DangleVideo({
         )}
         <div className={s.stats}>
           <div className={s.statItem}>
-            <Image
-              src="/assets/icon12/eye-outlined.svg"
-              alt="조회수"
-              width={12}
-              height={12}
-            />
+            <Image src="/assets/icon12/eye-outlined.svg" alt="조회수" width={12} height={12} />
             <span className={s.statValue}>{views.toLocaleString()}</span>
           </div>
           <span className={s.divider}>·</span>
           <div className={s.statItem}>
-            <Image
-              alt="댓글"
-              width={12}
-              height={12}
-              src="/assets/icon12/bookmark_filled.svg"
-            />
+            <Image alt="댓글" width={12} height={12} src="/assets/icon12/bookmark_filled.svg" />
             <span className={s.statValue}>{comments.toLocaleString()}</span>
           </div>
           <span className={s.divider}>·</span>
@@ -77,14 +67,8 @@ export function DangleVideo({
         </div>
       </div>
       <div className={s.playButtonWrapper}>
-        <Image
-          src="/assets/icon32/play-btn.svg"
-          alt="재생"
-          width={32}
-          height={32}
-        />
+        <Image src="/assets/icon32/play-btn.svg" alt="재생" width={32} height={32} />
       </div>
     </div>
   );
 }
-

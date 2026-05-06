@@ -70,8 +70,7 @@ export interface GetDaenggleAccommodationsReq {
   offset: number;
 }
 /** 숙소 댕글 영상 조회 Response */
-export type GetDaenggleAccommodationsRes =
-  DaenggleApiRes<DaenggleVideoListResult>;
+export type GetDaenggleAccommodationsRes = DaenggleApiRes<DaenggleVideoListResult>;
 
 /**
  * 트렌딩 댕글 영상 조회 Request
@@ -214,8 +213,7 @@ export interface DaengglePlaceRecommendationsResult {
   hasMore: boolean;
 }
 /** 장소별 댕글 영상 추천 Response */
-export type GetDaengglePlaceRecommendationsRes =
-  DaenggleApiRes<DaengglePlaceRecommendationsResult>;
+export type GetDaengglePlaceRecommendationsRes = DaenggleApiRes<DaengglePlaceRecommendationsResult>;
 
 /**
  * 장소 연관 댕글 영상 리스트 조회 Request

@@ -36,12 +36,7 @@ const SearchHeaderSkeleton = () => (
 const FilterChipsSkeleton = () => (
   <div className={s.filterChipsContainer}>
     {[...Array(6)].map((_, n) => (
-      <Skeleton
-        key={n}
-        width={60}
-        height={30}
-        style={{ borderRadius: "17px", flexShrink: 0 }}
-      />
+      <Skeleton key={n} width={60} height={30} style={{ borderRadius: "17px", flexShrink: 0 }} />
     ))}
   </div>
 );
@@ -49,12 +44,7 @@ const FilterChipsSkeleton = () => (
 const NavBarSkeleton = () => (
   <nav className={navS.root}>
     {[...Array(5)].map((_, n) => (
-      <Skeleton
-        key={n}
-        width={40}
-        height={40}
-        style={{ borderRadius: "8px" }}
-      />
+      <Skeleton key={n} width={40} height={40} style={{ borderRadius: "8px" }} />
     ))}
   </nav>
 );

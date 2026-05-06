@@ -34,4 +34,3 @@ export const Tabs = ({ tabs, activeTab, onTabClick, className }: TabsProps) => {
     </div>
   );
 };
-

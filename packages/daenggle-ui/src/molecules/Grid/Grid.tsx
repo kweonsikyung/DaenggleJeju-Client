@@ -14,4 +14,3 @@ export function Grid({ children, className }: GridProps) {
   const combinedClassName = [s.root, className].filter(Boolean).join(" ");
   return <div className={combinedClassName}>{children}</div>;
 }
-

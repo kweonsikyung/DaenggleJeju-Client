@@ -18,9 +18,7 @@ export default function Splash() {
 
   /** useEffect */
   useEffect(() => {
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const stayDuration = reduce ? 600 : 1400; // 스플래시 유지 시간
     const transitionDuration = reduce ? 300 : 600; // 전환 애니메이션 시간
 

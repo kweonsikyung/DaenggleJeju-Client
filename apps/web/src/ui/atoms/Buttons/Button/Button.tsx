@@ -2,8 +2,7 @@ import React from "react";
 import * as s from "./Button.css";
 import { ButtonSize, ButtonStatus } from "../../../constants/ButtonVariant";
 
-export interface ButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
+export interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
   /** button size */
   size: ButtonSize;
   /** visual status */
@@ -12,30 +11,21 @@ export interface ButtonProps
   text: string;
 }
 
-const STATUS_KEY: Record<
-  ButtonStatus,
-  "active" | "disabled" | "default" | "selected" | "primary"
-> = {
-  [ButtonStatus.ACTIVE]: "active",
-  [ButtonStatus.DISABLED]: "disabled",
-  [ButtonStatus.DEFAULT]: "default",
-  [ButtonStatus.SELECTED]: "selected",
-  [ButtonStatus.PRIMARY]: "primary",
-};
+const STATUS_KEY: Record<ButtonStatus, "active" | "disabled" | "default" | "selected" | "primary"> =
+  {
+    [ButtonStatus.ACTIVE]: "active",
+    [ButtonStatus.DISABLED]: "disabled",
+    [ButtonStatus.DEFAULT]: "default",
+    [ButtonStatus.SELECTED]: "selected",
+    [ButtonStatus.PRIMARY]: "primary",
+  };
 
 const SIZE_KEY: Record<ButtonSize, "medium" | "large"> = {
   [ButtonSize.MEDIUM]: "medium",
   [ButtonSize.LARGE]: "large",
 };
 
-export function Button({
-  size,
-  status,
-  text,
-  className,
-  disabled,
-  ...rest
-}: ButtonProps) {
+export function Button({ size, status, text, className, disabled, ...rest }: ButtonProps) {
   const sizeKey = SIZE_KEY[size];
   const statusKey = STATUS_KEY[status];
 

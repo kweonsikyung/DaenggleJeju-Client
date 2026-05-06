@@ -92,10 +92,7 @@ export default function Page() {
   }, [chatHistory, isAiThinking, typedAnswer]);
 
   /** event handlers */
-  const handleOptionSelect = (
-    optionText: string,
-    isSubTopic: boolean = false
-  ) => {
+  const handleOptionSelect = (optionText: string, isSubTopic: boolean = false) => {
     setChatHistory((prev) => [
       ...prev.map((msg) => ({ ...msg, options: undefined })),
       {
@@ -131,10 +128,7 @@ export default function Page() {
           aiResponse = {
             id: `ai-${Date.now()}`,
             sender: "ai",
-            content:
-              conversation.answers[
-                optionText as keyof typeof conversation.answers
-              ],
+            content: conversation.answers[optionText as keyof typeof conversation.answers],
             // 최종 답변 후에는 다시 초기 토픽을 보여줌
             options: initialTopics.map((topic) => ({ text: topic })),
           };
@@ -155,10 +149,7 @@ export default function Page() {
     // 대화 기록을 역순으로 탐색하여 가장 최근의 메인 토픽을 찾음
     for (let i = chatHistory.length - 1; i >= 0; i--) {
       const message = chatHistory[i];
-      if (
-        message.sender === "user" &&
-        initialTopics.includes(message.content as Topic)
-      ) {
+      if (message.sender === "user" && initialTopics.includes(message.content as Topic)) {
         return message.content as Topic;
       }
     }
@@ -199,10 +190,9 @@ export default function Page() {
             onClose={hideNotice}
             variant="blue"
           >
-            본 챗봇은 자동화된 정보 제공 시스템으로, 간혹 부정확하거나 불완전한
-            내용이 포함될 수 있습니다. 제공되는 정보에 대해 본 서비스를 통해
-            책임을 지지 않으며, 최종 판단은 사용자가 직접 확인 후 진행해 주시기
-            바랍니다.
+            본 챗봇은 자동화된 정보 제공 시스템으로, 간혹 부정확하거나 불완전한 내용이 포함될 수
+            있습니다. 제공되는 정보에 대해 본 서비스를 통해 책임을 지지 않으며, 최종 판단은 사용자가
+            직접 확인 후 진행해 주시기 바랍니다.
           </NoticeBox>
         </div>
 

@@ -55,10 +55,7 @@ export const useKakaoMap = ({
             center: new window.kakao.maps.LatLng(33.36, 126.57),
             level: 8,
           };
-          const newMap = new window.kakao.maps.Map(
-            mapContainerRef.current,
-            options
-          );
+          const newMap = new window.kakao.maps.Map(mapContainerRef.current, options);
           setMap(newMap);
         }
       });
@@ -123,8 +120,7 @@ export const useKakaoMap = ({
       if (!Array.isArray(data) || data.length === 0) return;
 
       data.forEach((item) => {
-        const imageUrl =
-          markerImages[item.contentType.id.toString()] || markerImages.dangle;
+        const imageUrl = markerImages[item.contentType.id.toString()] || markerImages.dangle;
         if (!imageUrl) return;
 
         const markerPosition = new window.kakao.maps.LatLng(item.lat, item.lng);
@@ -143,12 +139,8 @@ export const useKakaoMap = ({
           yAnchor: 1.7,
         });
 
-        window.kakao.maps.event.addListener(marker, "mouseover", () =>
-          customOverlay.setMap(map)
-        );
-        window.kakao.maps.event.addListener(marker, "mouseout", () =>
-          customOverlay.setMap(null)
-        );
+        window.kakao.maps.event.addListener(marker, "mouseover", () => customOverlay.setMap(map));
+        window.kakao.maps.event.addListener(marker, "mouseout", () => customOverlay.setMap(null));
         window.kakao.maps.event.addListener(marker, "click", () => {
           onPlaceSelect(item);
           map.panTo(markerPosition);
@@ -159,10 +151,7 @@ export const useKakaoMap = ({
       });
 
       if (data.length > 0) {
-        const firstItemPosition = new window.kakao.maps.LatLng(
-          data[0].lat,
-          data[0].lng
-        );
+        const firstItemPosition = new window.kakao.maps.LatLng(data[0].lat, data[0].lng);
         map.setCenter(firstItemPosition);
         map.setLevel(8);
       }
@@ -173,10 +162,7 @@ export const useKakaoMap = ({
 
       data.forEach((item) => {
         const imageUrl = markerImages.dangle;
-        const markerPosition = new window.kakao.maps.LatLng(
-          item.mapy,
-          item.mapx
-        );
+        const markerPosition = new window.kakao.maps.LatLng(item.mapy, item.mapx);
         const markerImage = new window.kakao.maps.MarkerImage(
           imageUrl,
           new window.kakao.maps.Size(40, 40)
@@ -193,12 +179,8 @@ export const useKakaoMap = ({
           yAnchor: 1.7,
         });
 
-        window.kakao.maps.event.addListener(marker, "mouseover", () =>
-          customOverlay.setMap(map)
-        );
-        window.kakao.maps.event.addListener(marker, "mouseout", () =>
-          customOverlay.setMap(null)
-        );
+        window.kakao.maps.event.addListener(marker, "mouseover", () => customOverlay.setMap(map));
+        window.kakao.maps.event.addListener(marker, "mouseout", () => customOverlay.setMap(null));
         window.kakao.maps.event.addListener(marker, "click", () => {
           onDangleClick(item.video_id);
         });
@@ -208,10 +190,7 @@ export const useKakaoMap = ({
       });
 
       if (data.length > 0) {
-        const firstItemPosition = new window.kakao.maps.LatLng(
-          data[0].mapy,
-          data[0].mapx
-        );
+        const firstItemPosition = new window.kakao.maps.LatLng(data[0].mapy, data[0].mapx);
         map.setCenter(firstItemPosition);
         map.setLevel(8);
       }
@@ -225,15 +204,7 @@ export const useKakaoMap = ({
     } else if (places) {
       loadMarkers(places);
     }
-  }, [
-    map,
-    places,
-    daengglePlaces,
-    activeFilter,
-    onPlaceSelect,
-    onDangleClick,
-    markerImages,
-  ]);
+  }, [map, places, daengglePlaces, activeFilter, onPlaceSelect, onDangleClick, markerImages]);
 
   // 4. Expose Map Utilities
   const centerToJeju = useCallback(() => {

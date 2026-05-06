@@ -34,15 +34,10 @@ export function SearchHeader({
           <Image src={iconSrc} alt="뒤로가기" width={24} height={24} />
         </button>
       )}
-      <div
-        className={
-          s.searchFieldWrapper[backIconHandler ? "withBackButton" : "fullWidth"]
-        }
-      >
+      <div className={s.searchFieldWrapper[backIconHandler ? "withBackButton" : "fullWidth"]}>
         <SearchField {...searchFieldProps} readOnly={!!onClick} />
         {onClick && <div className={s.clickOverlay} onClick={onClick} />}
       </div>
     </div>
   );
 }
-

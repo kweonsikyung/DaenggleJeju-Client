@@ -36,8 +36,8 @@ export function SelectField({
     const stateClass = isDisabled
       ? s.fieldState.disabled
       : hasValue
-      ? s.fieldState.filled
-      : s.fieldState.default;
+        ? s.fieldState.filled
+        : s.fieldState.default;
     return [s.fieldBase, stateClass, className].filter(Boolean).join(" ");
   }, [hasValue, isDisabled, className]);
 
@@ -59,12 +59,7 @@ export function SelectField({
         <span className={hasValue ? s.valueText : s.placeholderText}>
           {hasValue ? value : placeholder}
         </span>
-        <Image
-          src="/assets/icon24/chevron-down.svg"
-          alt="선택"
-          width={24}
-          height={24}
-        />
+        <Image src="/assets/icon24/chevron-down.svg" alt="선택" width={24} height={24} />
       </button>
     </div>
   );

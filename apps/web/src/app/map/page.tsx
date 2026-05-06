@@ -45,31 +45,26 @@ export default function MapPage() {
   const [activeFilter, setActiveFilter] = useState("dangle");
   const [selectedPlace, setSelectedPlace] = useState<PlaceItem | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [selectedFilters, setSelectedFilters] = useState<
-    Record<string, string[]>
-  >({});
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   const [apiParams, setApiParams] = useState<GetPlaceMapReq>({
     bbox: JEJU_BBOX,
   });
   const [showWelcomeOverlay, setShowWelcomeOverlay] = useState(false);
   const [showDanglePickTooltip, setShowDanglePickTooltip] = useState(true);
   const [showGpsToast, setShowGpsToast] = useState(false);
-  
 
   /** data fetching */
   const { data: placeData, isLoading: isPlaceLoading } = usePlaceMap(
     activeFilter !== "dangle" ? apiParams : { bbox: "" }
   );
-  const { daengglePlacesMapData, isLoading: isDaenggleLoading } =
-    useDaengglePlacesMap(activeFilter === "dangle" ? {} : undefined);
+  const { daengglePlacesMapData, isLoading: isDaenggleLoading } = useDaengglePlacesMap(
+    activeFilter === "dangle" ? {} : undefined
+  );
 
   const isLoading = isPlaceLoading || isDaenggleLoading;
 
   const places = useMemo(() => placeData?.items || [], [placeData]);
-  const daenggleData = useMemo(
-    () => daengglePlacesMapData,
-    [daengglePlacesMapData]
-  );
+  const daenggleData = useMemo(() => daengglePlacesMapData, [daengglePlacesMapData]);
 
   const { postScrap, isPosting } = usePostScrap();
 
@@ -110,7 +105,13 @@ export default function MapPage() {
       setShowGpsToast(false);
     }, 3000);
   };
-  const { fetchLocation, latitude, longitude, isLoading: isLocationLoading, error: locationError } = useLocationStore();
+  const {
+    fetchLocation,
+    latitude,
+    longitude,
+    isLoading: isLocationLoading,
+    error: locationError,
+  } = useLocationStore();
 
   /** Scrap handler */
   const handleScrapToggle = async (_contentId: number) => {
@@ -123,9 +124,7 @@ export default function MapPage() {
         if (!prevPlace) return null;
 
         const newIsScrapped = !prevPlace.isScrapped;
-        const newScrapCount = newIsScrapped
-          ? prevPlace.scrapCount + 1
-          : prevPlace.scrapCount - 1;
+        const newScrapCount = newIsScrapped ? prevPlace.scrapCount + 1 : prevPlace.scrapCount - 1;
 
         return {
           ...prevPlace,
@@ -142,17 +141,13 @@ export default function MapPage() {
   };
 
   /** filter state helpers */
-  const isAnyFilterSelected = Object.values(selectedFilters).some(
-    (arr) => arr.length > 0
-  );
+  const isAnyFilterSelected = Object.values(selectedFilters).some((arr) => arr.length > 0);
 
   /** filter handlers */
   const handleFilterSelect = (group: string, id: string) => {
     setSelectedFilters((prev) => {
       const existing = prev[group] || [];
-      const multiSelect = OPTION_DATA.find(
-        (d) => d.group === group
-      )?.multiSelect;
+      const multiSelect = OPTION_DATA.find((d) => d.group === group)?.multiSelect;
 
       if (multiSelect) {
         return {
@@ -187,8 +182,7 @@ export default function MapPage() {
                 id as keyof (typeof FILTER_OPTION_ID_TO_API_PARAM)[typeof paramKey]
               ]
           );
-          (newParams as unknown as Record<string, unknown>)[paramKey] =
-            paramValues;
+          (newParams as unknown as Record<string, unknown>)[paramKey] = paramValues;
         }
       }
       return newParams;
@@ -228,19 +222,14 @@ export default function MapPage() {
     setSelectedPlace(null);
   }, [activeFilter]);
 
-  const totalCount =
-    activeFilter === "dangle"
-      ? daenggleData?.length || 0
-      : placeData?.total || 0;
+  const totalCount = activeFilter === "dangle" ? daenggleData?.length || 0 : placeData?.total || 0;
 
   return (
     <div className={s.page}>
       {isLoading && <LoadingSpinner />}
 
       {showGpsToast && (
-        <div className={s.gpsToast}>
-          현재 위치는 제주 밖이에요. 제주로 안내해드릴게요.
-        </div>
+        <div className={s.gpsToast}>현재 위치는 제주 밖이에요. 제주로 안내해드릴게요.</div>
       )}
 
       {/* top */}
@@ -278,19 +267,14 @@ export default function MapPage() {
             thumbnailUrl={selectedPlace.thumbnail}
             locationCategory={
               selectedPlace.metaLine
-                ? `${selectedPlace.metaLine} · ${
-                    selectedPlace.contentType?.name ?? ""
-                  }`
-                : selectedPlace.contentType?.name ?? ""
+                ? `${selectedPlace.metaLine} · ${selectedPlace.contentType?.name ?? ""}`
+                : (selectedPlace.contentType?.name ?? "")
             }
             name={selectedPlace.title}
             distance={selectedPlace.distanceText}
             playCount={selectedPlace.daenggleCount}
             bookmarkCount={selectedPlace.scrapCount}
-            tags={[
-              ...(selectedPlace.chips1 || []),
-              ...(selectedPlace.chips2 || []),
-            ]}
+            tags={[...(selectedPlace.chips1 || []), ...(selectedPlace.chips2 || [])]}
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
             onBookmarkClick={() => handleScrapToggle(selectedPlace.contentId)}
             isBookmarked={selectedPlace.isScrapped}
@@ -333,11 +317,7 @@ export default function MapPage() {
       )}
 
       {/* bottomSheet */}
-      <BottomSheet
-        open={isBottomSheetOpen}
-        onOpenChange={setIsBottomSheetOpen}
-        title="필터"
-      >
+      <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen} title="필터">
         <div className={s.bottomSheetContent}>
           {OPTION_DATA.map((data) => (
             <FilterSection
@@ -346,9 +326,7 @@ export default function MapPage() {
               chips={data.chips}
               multiSelect={data.multiSelect}
               selectedChips={selectedFilters[data.group] || []}
-              onChipClick={(chipId: string) =>
-                handleFilterSelect(data.group, chipId)
-              }
+              onChipClick={(chipId: string) => handleFilterSelect(data.group, chipId)}
             />
           ))}
         </div>
@@ -361,9 +339,7 @@ export default function MapPage() {
           />
           <Button
             size={ButtonSize.MEDIUM}
-            status={
-              isAnyFilterSelected ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED
-            }
+            status={isAnyFilterSelected ? ButtonStatus.ACTIVE : ButtonStatus.DISABLED}
             text="적용"
             onClick={handleApplyFilters}
             disabled={!isAnyFilterSelected}

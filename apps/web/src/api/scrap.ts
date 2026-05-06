@@ -1,10 +1,5 @@
 import { getRequest, postRequest } from "@/api/common";
-import {
-  GetScrapListReq,
-  GetScrapListRes,
-  PostScrapReq,
-  PostScrapRes,
-} from "@/types/scrap";
+import { GetScrapListReq, GetScrapListRes, PostScrapReq, PostScrapRes } from "@/types/scrap";
 
 /**
  * @function getScrapList
@@ -12,9 +7,7 @@ import {
  * @param {GetScrapListReq} params - Query Parameter 객체
  * @returns {Promise<GetScrapListRes>} 스크랩 목록과 전체 개수를 포함한 응답
  */
-export async function getScrapList(
-  params: GetScrapListReq
-): Promise<GetScrapListRes> {
+export async function getScrapList(params: GetScrapListReq): Promise<GetScrapListRes> {
   const query = new URLSearchParams({
     type: params.type,
     ...(params.limit && { limit: String(params.limit) }),

@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import * as s from "./ShortsBottomInfo.css";
 
-
 export interface VideoData {
   id: string;
   loc: string;
@@ -38,12 +37,7 @@ export function ShortsBottomInfo({ video }: ShortsBottomInfoProps) {
       </div>
       <div className={s.locInfo}>
         <div className={s.location}>
-          <Image
-            alt="location"
-            width={12}
-            height={12}
-            src="/assets/icon12/map_filled.svg"
-          />
+          <Image alt="location" width={12} height={12} src="/assets/icon12/map_filled.svg" />
           {video.loc}
         </div>
         <p className={s.description}>{video.description}</p>

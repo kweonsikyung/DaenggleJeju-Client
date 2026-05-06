@@ -142,10 +142,7 @@ export const infoItem = style({
 });
 
 export const infoText = style([TYPO.LABEL2M, { color: COLORS.NEUTRAL700 }]);
-export const infoLink = style([
-  TYPO.BODY2M,
-  { color: "#2B7FFF", textDecoration: "underline" },
-]);
+export const infoLink = style([TYPO.BODY2M, { color: "#2B7FFF", textDecoration: "underline" }]);
 
 /* --- Attention Notes Section --- */
 export const attentionBox = style({

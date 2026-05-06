@@ -32,10 +32,7 @@ export const Default: Story = {
 
     return (
       <>
-        <div
-          style={{ fontSize: 20, fontWeight: 700 }}
-          onClick={() => setOpen(true)}
-        >
+        <div style={{ fontSize: 20, fontWeight: 700 }} onClick={() => setOpen(true)}>
           열기
         </div>
         <BottomSheet {...args} open={open} onOpenChange={setOpen}>

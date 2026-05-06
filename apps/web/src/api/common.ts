@@ -48,12 +48,7 @@ export class ApiError extends Error {
   readonly status?: number;
   readonly errors?: unknown;
 
-  constructor(
-    message: string,
-    status?: number,
-    code?: string,
-    errors?: unknown
-  ) {
+  constructor(message: string, status?: number, code?: string, errors?: unknown) {
     super(message);
     this.name = "ApiError";
     this.status = status;
@@ -94,15 +89,9 @@ function extractApiErrorMessage(data: unknown): string {
  * @description 공통 GET 요청 함수
  * @returns {Promise<T>} API 응답 객체
  */
-export async function getRequest<T>(
-  endpoint: string,
-  config?: AxiosRequestConfig
-): Promise<T> {
+export async function getRequest<T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {
   try {
-    const response: AxiosResponse<ApiResponse<T>> = await api.get(
-      endpoint,
-      config
-    );
+    const response: AxiosResponse<ApiResponse<T>> = await api.get(endpoint, config);
     const data = response.data;
 
     if (String(data.code).startsWith("2")) {
@@ -116,12 +105,7 @@ export async function getRequest<T>(
       const status = error.response?.status;
 
       if (isApiErrorPayload(responseData)) {
-        throw new ApiError(
-          responseData.message,
-          status,
-          responseData.code,
-          responseData.errors
-        );
+        throw new ApiError(responseData.message, status, responseData.code, responseData.errors);
       } else {
         const message = extractApiErrorMessage(responseData);
         throw new ApiError(message, status);
@@ -142,11 +126,7 @@ export async function postRequest<T, B = unknown>(
   config?: AxiosRequestConfig
 ): Promise<T> {
   try {
-    const response: AxiosResponse<ApiResponse<T>> = await api.post(
-      endpoint,
-      body,
-      config
-    );
+    const response: AxiosResponse<ApiResponse<T>> = await api.post(endpoint, body, config);
     const data = response.data;
 
     if (String(data.code).startsWith("2")) {
@@ -160,12 +140,7 @@ export async function postRequest<T, B = unknown>(
       const status = error.response?.status;
 
       if (isApiErrorPayload(responseData)) {
-        throw new ApiError(
-          responseData.message,
-          status,
-          responseData.code,
-          responseData.errors
-        );
+        throw new ApiError(responseData.message, status, responseData.code, responseData.errors);
       } else {
         const message = extractApiErrorMessage(responseData);
         throw new ApiError(message, status);

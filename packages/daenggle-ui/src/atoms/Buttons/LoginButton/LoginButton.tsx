@@ -2,24 +2,19 @@ import Image from "next/image";
 import * as s from "./LoginButton.css";
 import { LoginType } from "../../../types/LoginType";
 
-export interface LoginButtonProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
+export interface LoginButtonProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "type"
+> {
   provider: LoginType;
   title: string;
 }
 
-export function LoginButton({
-  provider,
-  title,
-  className,
-  ...rest
-}: LoginButtonProps) {
+export function LoginButton({ provider, title, className, ...rest }: LoginButtonProps) {
   return (
     <button
       type="button"
-      className={[s.root, s.kind[provider], className]
-        .filter(Boolean)
-        .join(" ")}
+      className={[s.root, s.kind[provider], className].filter(Boolean).join(" ")}
       aria-label={title}
       {...rest}
     >

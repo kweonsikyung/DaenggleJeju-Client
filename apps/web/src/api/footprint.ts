@@ -15,13 +15,8 @@ import {
  * @param {PostFootprintReq} payload - 요청 Body 객체
  * @returns {Promise<PostFootprintRes>} 생성된 발자국 정보
  */
-export async function postFootprint(
-  payload: PostFootprintReq
-): Promise<PostFootprintRes> {
-  return await postRequest<PostFootprintRes, PostFootprintReq>(
-    "/footprints",
-    payload
-  );
+export async function postFootprint(payload: PostFootprintReq): Promise<PostFootprintRes> {
+  return await postRequest<PostFootprintRes, PostFootprintReq>("/footprints", payload);
 }
 
 /**
@@ -30,9 +25,7 @@ export async function postFootprint(
  * @param {GetMyFootprintsReq} params - Query Parameter 객체
  * @returns {Promise<GetMyFootprintsRes>} 나의 발자국 목록
  */
-export async function getMyFootprints(
-  params: GetMyFootprintsReq
-): Promise<GetMyFootprintsRes> {
+export async function getMyFootprints(params: GetMyFootprintsReq): Promise<GetMyFootprintsRes> {
   const query = createQueryString(params);
   return await getRequest<GetMyFootprintsRes>(`/footprints/my?${query}`);
 }
@@ -48,7 +41,5 @@ export async function getPlaceFootprints(
 ): Promise<GetPlaceFootprintsRes> {
   const { contentId, ...restParams } = params;
   const query = createQueryString(restParams);
-  return await getRequest<GetPlaceFootprintsRes>(
-    `/footprints/places/${contentId}?${query}`
-  );
+  return await getRequest<GetPlaceFootprintsRes>(`/footprints/places/${contentId}?${query}`);
 }

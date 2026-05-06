@@ -17,10 +17,7 @@ import { Grid } from "@/ui/molecules/Grid/Grid";
 import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
 
 //hooks
-import {
-  useDaenggleAccommodations,
-  useDaenggleTrending,
-} from "@/hooks/api/useDaenggle";
+import { useDaenggleAccommodations, useDaenggleTrending } from "@/hooks/api/useDaenggle";
 import { useVisitedRegions } from "@/hooks/useVisitedRegions";
 
 //utils
@@ -73,14 +70,7 @@ export default function Page() {
         isShowLogo
         rightIcons={[
           {
-            icon: (
-              <Image
-                alt="검색"
-                height={24}
-                width={24}
-                src="/assets/icon24/search.svg"
-              />
-            ),
+            icon: <Image alt="검색" height={24} width={24} src="/assets/icon24/search.svg" />,
             onClick: () => router.replace("/search"),
           },
         ]}
@@ -126,9 +116,7 @@ export default function Page() {
               title={banner.dummy.title}
               hashtag={banner.dummy.tag}
               onClick={() => {
-                router.push(
-                  `/shorts?conceptKey=${banner.conceptKey}&startIndex=0`
-                );
+                router.push(`/shorts?conceptKey=${banner.conceptKey}&startIndex=0`);
               }}
             />
           ))}
@@ -145,10 +133,7 @@ export default function Page() {
 
         {isAccomLoading && (
           <div style={{ padding: "0 16px" }}>
-            <EmptyState
-              title="숙소 로딩 실패"
-              description="다시 시도해주세요."
-            />
+            <EmptyState title="숙소 로딩 실패" description="다시 시도해주세요." />
           </div>
         )}
         {accomError && (
@@ -166,9 +151,7 @@ export default function Page() {
                 profileImageUrl={getRandomAvatar()}
                 name={item.authorName}
                 onClick={() => {
-                  router.push(
-                    `/shorts?listType=accommodations&startIndex=${index}`
-                  );
+                  router.push(`/shorts?listType=accommodations&startIndex=${index}`);
                 }}
               />
             ))}
@@ -183,10 +166,7 @@ export default function Page() {
         />
         {isTrendingLoading && (
           <div style={{ padding: "0 16px" }}>
-            <EmptyState
-              title="트랜딩 로딩 실패"
-              description="다시 시도해주세요."
-            />
+            <EmptyState title="트랜딩 로딩 실패" description="다시 시도해주세요." />
           </div>
         )}
         {trendingError && (
@@ -206,9 +186,7 @@ export default function Page() {
                   location={item.placeTitle}
                   address="제주 전체"
                   onClick={() => {
-                    router.push(
-                      `/shorts?listType=trending&startIndex=${index}`
-                    );
+                    router.push(`/shorts?listType=trending&startIndex=${index}`);
                   }}
                 />
               );

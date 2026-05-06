@@ -17,20 +17,14 @@ export function NavBar({ activePage }: NavBarProps) {
   return (
     <nav className={s.root}>
       {NAV_ITEMS.map((item) => (
-        <button
-          key={item.id}
-          className={s.navItem}
-          onClick={() => router.push(item.path)}
-        >
+        <button key={item.id} className={s.navItem} onClick={() => router.push(item.path)}>
           <Image
             src={activePage === item.id ? item.iconFill : item.iconLine}
             alt={item.text}
             width={24}
             height={24}
           />
-          <span
-            className={activePage === item.id ? s.navTextSelected : s.navText}
-          >
+          <span className={activePage === item.id ? s.navTextSelected : s.navText}>
             {item.text}
           </span>
         </button>
@@ -38,4 +32,3 @@ export function NavBar({ activePage }: NavBarProps) {
     </nav>
   );
 }
-

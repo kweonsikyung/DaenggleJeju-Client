@@ -13,12 +13,7 @@ interface SkeletonProps {
  * @param width - CSS width 값 (기본값: 100%)
  * @param height - CSS height 값 (기본값: 1em)
  */
-export function Skeleton({
-  width = "100%",
-  height = "1em",
-  className,
-  style,
-}: SkeletonProps) {
+export function Skeleton({ width = "100%", height = "1em", className, style }: SkeletonProps) {
   return (
     <span
       className={`${s.skeleton} ${className || ""}`}

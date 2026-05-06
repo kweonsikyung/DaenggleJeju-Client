@@ -18,8 +18,6 @@ export default function AuthCallbackPage() {
     })();
   }, [mutateUser, router]);
   return (
-    <div className="flex h-screen items-center justify-center text-gray-600">
-      로그인 처리 중
-    </div>
+    <div className="flex h-screen items-center justify-center text-gray-600">로그인 처리 중</div>
   );
 }

@@ -20,12 +20,6 @@ export const Default: Story = {
   },
   render: (args) => {
     const [page, setPage] = useState(args.currentPage);
-    return (
-      <Pagination
-        {...args}
-        currentPage={page}
-        onPageChange={setPage}
-      />
-    );
+    return <Pagination {...args} currentPage={page} onPageChange={setPage} />;
   },
 };

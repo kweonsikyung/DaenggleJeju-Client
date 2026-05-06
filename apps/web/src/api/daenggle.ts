@@ -28,9 +28,7 @@ export async function getDaenggleAccommodations(
   params: GetDaenggleAccommodationsReq
 ): Promise<DaenggleVideoListResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaenggleVideoListResult>(
-    `/daenggle/accommodations?${queryParams}`
-  );
+  return await getRequest<DaenggleVideoListResult>(`/daenggle/accommodations?${queryParams}`);
 }
 
 /**
@@ -56,9 +54,7 @@ export async function getDaenggleRegions(
   params: GetDaenggleRegionsReq
 ): Promise<DaenggleVideoListResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaenggleVideoListResult>(
-    `/daenggle/regions?${queryParams}`
-  );
+  return await getRequest<DaenggleVideoListResult>(`/daenggle/regions?${queryParams}`);
 }
 
 /**
@@ -92,9 +88,7 @@ export async function getDaenggleSearch(
   params: GetDaenggleSearchReq
 ): Promise<DaenggleVideoListResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaenggleVideoListResult>(
-    `/daenggle/search?${queryParams}`
-  );
+  return await getRequest<DaenggleVideoListResult>(`/daenggle/search?${queryParams}`);
 }
 
 /**
@@ -159,9 +153,7 @@ export async function getDaengglePlacesAll(
   params: GetDaengglePlacesAllReq
 ): Promise<DaengglePlacesAllResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaengglePlacesAllResult>(
-    `/daenggle/places/all?${queryParams}`
-  );
+  return await getRequest<DaengglePlacesAllResult>(`/daenggle/places/all?${queryParams}`);
 }
 
 /**
@@ -174,7 +166,5 @@ export async function getDaengglePlacesMap(
   params: GetDaengglePlacesMapReq
 ): Promise<DaengglePlacesMapResult> {
   const queryParams = createBaseSearchParams(params).toString();
-  return await getRequest<DaengglePlacesMapResult>(
-    `/daenggle/places/map?${queryParams}`
-  );
+  return await getRequest<DaengglePlacesMapResult>(`/daenggle/places/map?${queryParams}`);
 }

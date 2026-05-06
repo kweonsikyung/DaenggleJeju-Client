@@ -39,10 +39,7 @@ export function Dropdown({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -52,8 +49,7 @@ export function Dropdown({
     };
   }, []);
 
-  const selectedLabel =
-    options.find((opt) => opt.value === selectedValue)?.label || placeholder;
+  const selectedLabel = options.find((opt) => opt.value === selectedValue)?.label || placeholder;
 
   return (
     <div className={s.container} ref={dropdownRef}>

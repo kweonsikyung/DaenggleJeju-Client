@@ -45,9 +45,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const InteractiveFilterSection = (
-  args: React.ComponentProps<typeof FilterSection>
-) => {
+const InteractiveFilterSection = (args: React.ComponentProps<typeof FilterSection>) => {
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
 
   const handleChipClick = (chipId: string) => {
@@ -65,13 +63,7 @@ const InteractiveFilterSection = (
     args.onChipClick?.(chipId);
   };
 
-  return (
-    <FilterSection
-      {...args}
-      selectedChips={selectedChips}
-      onChipClick={handleChipClick}
-    />
-  );
+  return <FilterSection {...args} selectedChips={selectedChips} onChipClick={handleChipClick} />;
 };
 
 export const Default: Story = {
