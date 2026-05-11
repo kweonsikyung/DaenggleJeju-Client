@@ -66,9 +66,7 @@ export function TopBar({
             onClick={backIconHandler}
             aria-label="뒤로가기"
           >
-            {backIconSrc && (
-              <Image src={backIconSrc} alt="뒤로가기" width={24} height={24} />
-            )}
+            {backIconSrc && <Image src={backIconSrc} alt="뒤로가기" width={24} height={24} />}
           </button>
         ) : null}
       </div>

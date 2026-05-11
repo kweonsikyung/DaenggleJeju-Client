@@ -1,7 +1,6 @@
-import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { ApiError } from "@/api/common";
 import { postCareQuestion } from "@/api/care";
+import { ApiError } from "@/api/common";
 import { PostCareReq, PostCareRes } from "@/types/care";
 
 /**

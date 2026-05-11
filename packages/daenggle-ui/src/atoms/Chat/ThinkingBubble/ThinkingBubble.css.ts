@@ -1,4 +1,4 @@
-import { style, keyframes } from "@vanilla-extract/css";
+import { keyframes, style } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 
 const bounce = keyframes({

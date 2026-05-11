@@ -1,5 +1,5 @@
-import { TYPO } from "@/styles/typography.css";
 import { style } from "@vanilla-extract/css";
+import { TYPO } from "@/styles/typography.css";
 
 export const root = style({
   width: "280px",

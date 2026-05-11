@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { SWRProvider } from "@/components/providers/SWRProvider";
-import localFont from "next/font/local";
 
 const pretendard = localFont({
   src: [

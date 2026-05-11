@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import * as s from "./DanglePlace.css";
 
 export interface DanglePlaceIcons {
@@ -127,9 +127,7 @@ export function DanglePlace({
 
             {typeof playCount === "number" && (
               <div className={s.statItem}>
-                {icons.play && (
-                  <Image alt="재생 수" width={12} height={12} src={icons.play} />
-                )}
+                {icons.play && <Image alt="재생 수" width={12} height={12} src={icons.play} />}
                 <span className={s.statValue}>{playCount}</span>
               </div>
             )}

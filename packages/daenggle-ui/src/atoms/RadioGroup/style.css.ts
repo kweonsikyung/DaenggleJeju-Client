@@ -1,6 +1,6 @@
-import { style, globalStyle } from "@vanilla-extract/css";
-import { TYPO } from "@/styles/typography.css";
+import { globalStyle, style } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
+import { TYPO } from "@/styles/typography.css";
 
 export const fieldset = style({
   border: "none",

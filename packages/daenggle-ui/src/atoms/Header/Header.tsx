@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import * as s from "./Header.css";
 import Image from "next/image";
+import * as s from "./Header.css";
 
 export interface HeaderProps {
   /** 제목 */

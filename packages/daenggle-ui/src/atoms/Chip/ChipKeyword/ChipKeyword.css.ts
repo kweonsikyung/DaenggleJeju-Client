@@ -1,6 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { TYPO } from "@/styles/typography.css";
 import { COLORS } from "@/styles/colors.css";
+import { TYPO } from "@/styles/typography.css";
 
 const baseChip = style({
   ...TYPO.LABEL1M,

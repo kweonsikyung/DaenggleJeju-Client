@@ -1,29 +1,27 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
-import * as s from "./style.css";
-
 //components
 import {
-  TopBar,
-  NavBar,
   AiProfileHeader,
+  ChatInput,
   MessageBox,
-  TopicSelector,
+  NavBar,
   NoticeBox,
   ThinkingBubble,
-  ChatInput,
+  TopBar,
+  TopicSelector,
 } from "daenggle-ui";
-
+import { useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
+import { NAV_ITEMS } from "@/constants/navData";
+import { usePostCareQuestion } from "@/hooks/api/useCare";
+import { useNotice } from "@/hooks/useNotice";
 //hooks
 import { useTypingEffect } from "@/hooks/useTypingEffect";
-import { useNotice } from "@/hooks/useNotice";
-import { usePostCareQuestion } from "@/hooks/api/useCare";
 
 //utils
-import { travelCareData, Topic } from "./_util";
-import { NAV_ITEMS } from "@/constants/navData";
+import { Topic, travelCareData } from "./_util";
+import * as s from "./style.css";
 
 /** type */
 const initialTopics = Object.keys(travelCareData) as Topic[];
@@ -92,7 +90,7 @@ export default function Page() {
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatHistory, isAiThinking, typedAnswer]);
+  }, []);
 
   /** event handlers */
   const handleOptionSelect = (optionText: string, isSubTopic: boolean = false) => {
@@ -172,7 +170,7 @@ export default function Page() {
     try {
       const response = await askQuestion({ question });
       setTypingContent(response.message.markdown);
-    } catch (error) {
+    } catch (_error) {
       setTypingContent(
         "죄송해요, 답변을 생성하는 데 문제가 발생했어요. 잠시 후 다시 시도해 주세요."
       );

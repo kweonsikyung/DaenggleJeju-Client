@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import * as s from "./ShortsBottomInfo.css";
 
@@ -39,9 +38,7 @@ export function ShortsBottomInfo({ video, locationIconSrc }: ShortsBottomInfoPro
       </div>
       <div className={s.locInfo}>
         <div className={s.location}>
-          {locationIconSrc && (
-            <Image alt="location" width={12} height={12} src={locationIconSrc} />
-          )}
+          {locationIconSrc && <Image alt="location" width={12} height={12} src={locationIconSrc} />}
           {video.loc}
         </div>
         <p className={s.description}>{video.description}</p>

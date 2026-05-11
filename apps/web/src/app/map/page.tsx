@@ -1,36 +1,37 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import * as s from "./style.css";
 import {
   BottomSheet,
-  FilterChip,
-  NavBar,
-  MapFloatingButtons,
-  FilterSection,
   Button,
+  DanglePlace,
+  FilterChip,
+  FilterSection,
+  LoadingSpinner,
+  MapFloatingButtons,
+  NavBar,
+  SearchHeader,
+  WelcomeOverlay,
 } from "daenggle-ui";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-import {
-  MARKER_IMAGES,
-  FILTER_CHIPS,
-  OPTION_DATA,
-  JEJU_BBOX,
-  FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
-  FILTER_OPTION_ID_TO_API_PARAM,
-} from "./_util";
-import { SearchHeader, DanglePlace } from "daenggle-ui";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { mutate } from "swr";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
-import { GetPlaceMapReq, PlaceItem } from "@/types/place";
-import { normalizeChips } from "@/utils/normalizeChips";
-import { mutate } from "swr";
-import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { useKakaoMap } from "@/hooks/useKakaoMap";
-import { WelcomeOverlay, LoadingSpinner } from "daenggle-ui";
 import { useLocationStore } from "@/stores/locationStore";
-import { NAV_ITEMS } from "@/constants/navData";
+import { GetPlaceMapReq, PlaceItem } from "@/types/place";
+import {
+  FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
+  FILTER_CHIPS,
+  FILTER_OPTION_ID_TO_API_PARAM,
+  JEJU_BBOX,
+  MARKER_IMAGES,
+  OPTION_DATA,
+} from "./_util";
+import * as s from "./style.css";
 
 const LOCAL_STORAGE_KEY = "hasVisitedMap";
 
@@ -135,8 +136,7 @@ export default function MapPage() {
       });
 
       mutate(["/places/map", apiParams]);
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };

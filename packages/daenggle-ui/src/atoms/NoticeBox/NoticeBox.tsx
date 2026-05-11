@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 import * as s from "./NoticeBox.css";
-import Image from "next/image";
 
 interface NoticeBoxProps {
   /** NoticeBox를 렌더링할지 여부 */

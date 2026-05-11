@@ -1,33 +1,29 @@
 "use client";
 
-import React from "react";
-import * as s from "./style.css";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 //components
 import {
-  TopBar,
-  Header,
-  NavBar,
+  Carousel,
+  DangleCard,
   DangleItem,
   DanglePlay,
-  DangleCard,
-  Carousel,
-  Grid,
   EmptyState,
+  Grid,
+  Header,
+  NavBar,
+  TopBar,
 } from "daenggle-ui";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { NAV_ITEMS } from "@/constants/navData";
 
 //hooks
 import { useDaenggleAccommodations, useDaenggleTrending } from "@/hooks/api/useDaenggle";
 import { useVisitedRegions } from "@/hooks/useVisitedRegions";
-
-//utils
-import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
 import { JEJU_DATA } from "@/utils/dummy_data";
-import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { NAV_ITEMS } from "@/constants/navData";
+//utils
+import { conceptBanners, getThumbnailUrl, regionContextMap } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 댕글추천 페이지

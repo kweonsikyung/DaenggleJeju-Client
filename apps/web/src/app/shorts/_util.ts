@@ -1,9 +1,10 @@
-import { DaenggleVideoItem } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
+
 interface DropdownOption {
   value: string;
   label: string;
 }
+
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 export const JEJU_REGIONS: DropdownOption[] = [
@@ -36,7 +37,7 @@ export function formatApiVideoToLocal(video: ApiVideoFormat): VideoData {
   // API마다 다른 키 이름 보정
   const videoId = video.video_id || video.videoId;
   const author = video.authorName || video.channelTitle;
-  const thumb = video.thumbUrl || null;
+  const _thumb = video.thumbUrl || null;
   const caption = video.caption || video.title;
 
   return {

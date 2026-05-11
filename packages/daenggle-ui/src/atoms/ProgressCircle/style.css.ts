@@ -1,4 +1,4 @@
-import { style, keyframes } from "@vanilla-extract/css";
+import { keyframes, style } from "@vanilla-extract/css";
 
 const fillAnim = keyframes({
   "0%": { strokeDashoffset: 63 },

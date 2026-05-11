@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import * as s from "./Grid.css";
 
 export interface GridProps {

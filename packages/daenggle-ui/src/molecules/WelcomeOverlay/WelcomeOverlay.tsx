@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import * as s from "./style.css";
-import { ProgressCircle } from "../../atoms/ProgressCircle/ProgressCircle";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Button } from "../../atoms/Buttons/Button/Button";
+import { ProgressCircle } from "../../atoms/ProgressCircle/ProgressCircle";
 import { ButtonSize, ButtonStatus } from "../../constants/ButtonVariant";
+import * as s from "./style.css";
 
 interface WelcomeOverlayProps {
   onFetchLocation: () => Promise<void>;

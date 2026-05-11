@@ -1,14 +1,14 @@
 "use client";
 
-import React, { Suspense, useState, useEffect, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { NavBar, NoticeBox, ProgressCircle, TopBar } from "daenggle-ui";
 import Image from "next/image";
-import { TopBar, NavBar, NoticeBox, ProgressCircle } from "daenggle-ui";
-import * as s from "./style.css";
-import { jejuOptions } from "./_util";
-import { useWebShare } from "@/hooks/useWebShare";
-import { useNotice } from "@/hooks/useNotice";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { NAV_ITEMS } from "@/constants/navData";
+import { useNotice } from "@/hooks/useNotice";
+import { useWebShare } from "@/hooks/useWebShare";
+import { jejuOptions } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 제주 이동 방법 메인 & 상세 페이지

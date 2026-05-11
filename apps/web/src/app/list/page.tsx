@@ -1,34 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import * as s from "./style.css";
-
 //components
 import {
-  SearchHeader,
-  NavBar,
-  FilterChip,
   BottomSheet,
   Button,
   DanglePlace,
-  FilterSection,
   EmptyState,
+  FilterChip,
+  FilterSection,
+  NavBar,
+  SearchHeader,
 } from "daenggle-ui";
-import { DanglePlaceSkeleton } from "@/ui/views/Skeletons/DangleSkeletons";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { NAV_ITEMS } from "@/constants/navData";
 //hooks
 import { usePlaceList } from "@/hooks/api/usePlaces";
-
+import { GetPlaceListReq } from "@/types/place";
+import { DanglePlaceSkeleton } from "@/ui/views/Skeletons/DangleSkeletons";
 //utils
 import {
-  FILTER_CHIPS,
-  OPTION_DATA,
   FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
+  FILTER_CHIPS,
   FILTER_OPTION_ID_TO_API_PARAM,
+  OPTION_DATA,
 } from "../map/_util";
-import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
-import { GetPlaceListReq } from "@/types/place";
-import { NAV_ITEMS } from "@/constants/navData";
+import * as s from "./style.css";
 
 /**
  * 내근처(리스트) 페이지
@@ -109,7 +107,7 @@ export default function ListClientPage() {
       const { contentTypeId, ...rest } = apiParams;
       setApiParams({ ...rest, all: true });
     }
-  }, [activeFilter]);
+  }, [activeFilter, apiParams]);
 
   return (
     <div className={s.page}>

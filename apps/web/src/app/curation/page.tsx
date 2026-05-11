@@ -1,25 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
-import { TopBar, Button } from "daenggle-ui";
-import * as s from "./style.css";
+import { Button, TopBar } from "daenggle-ui";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { usePostPetProfile } from "@/hooks/api/usePetProfile";
+import { usePostPreference } from "@/hooks/api/usePreference";
+import { RegionContextId, StyleCode } from "@/types/preference";
 import Step1 from "./_step/step1";
 import Step2 from "./_step/step2";
 import Step3 from "./_step/step3";
 import {
+  BREED_OPTIONS,
   currentStepTitle,
+  JEJU_OVERALL_ID,
   REGION_ID_TO_CODE_MAP,
   STYLE_LABEL_TO_CODE_MAP,
-  BREED_OPTIONS,
   WEIGHT_OPTIONS,
-  JEJU_OVERALL_ID,
 } from "./_util";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { RegionContextId, StyleCode } from "@/types/preference";
-import { usePostPreference } from "@/hooks/api/usePreference";
-import { usePostPetProfile } from "@/hooks/api/usePetProfile";
+import * as s from "./style.css";
 
 /**
  * curation 질문 페이지
@@ -31,7 +31,7 @@ export default function Curation() {
   const [isStepValid, setIsStepValid] = useState<boolean>(false);
 
   //step 1,2,3 form data
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [_avatarFile, setAvatarFile] = useState<File | null>(null);
   const [petProfileData, setPetProfileData] = useState({
     name: "",
     breed: "",
@@ -91,8 +91,7 @@ export default function Curation() {
       await Promise.all([createPetProfile(petProfilePayload), savePreference(preferencePayload)]);
 
       router.push("/map");
-    } catch (error) {
-      console.error("프로필 및 취향 저장 실패:", error);
+    } catch (_error) {
       alert("프로필 및 취향 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };

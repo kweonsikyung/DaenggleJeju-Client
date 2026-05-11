@@ -1,5 +1,5 @@
-import { RegionContextId, StyleCode } from "@/types/preference";
 import { PetSizeCode } from "@/types/pet";
+import { RegionContextId, StyleCode } from "@/types/preference";
 
 /**
  * 현재 단계에 따른 제목 매핑 객체

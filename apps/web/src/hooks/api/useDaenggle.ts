@@ -2,31 +2,30 @@ import useSWR from "swr";
 import { ApiError } from "@/api/common";
 import {
   getDaenggleAccommodations,
-  getDaenggleTrending,
-  getDaenggleRegions,
-  getDaengglePreference,
-  getDaenggleSearch,
   getDaenggleConcepts,
   getDaengglePlaceRecommendations,
   getDaengglePlacesAll,
   getDaengglePlacesMap,
+  getDaengglePreference,
+  getDaenggleRegions,
+  getDaenggleSearch,
+  getDaenggleTrending,
 } from "@/api/daenggle";
 import {
-  GetDaenggleAccommodationsReq,
-  GetDaenggleTrendingReq,
-  GetDaenggleRegionsReq,
-  GetDaengglePreferenceReq,
-  GetDaenggleSearchReq,
-  GetDaenggleConceptsReq,
-  GetDaengglePlaceRecommendationsReq,
-  GetDaengglePlacesAllReq,
-  GetDaengglePlacesMapReq,
-  // Result Types
-  DaenggleVideoListResult,
   DaenggleConceptShelf,
   DaengglePlaceRecommendationsResult,
   DaengglePlacesAllResult,
   DaengglePlacesMapResult,
+  // Result Types
+  DaenggleVideoListResult,
+  GetDaenggleAccommodationsReq,
+  GetDaenggleConceptsReq,
+  GetDaengglePlaceRecommendationsReq,
+  GetDaengglePlacesMapReq,
+  GetDaengglePreferenceReq,
+  GetDaenggleRegionsReq,
+  GetDaenggleSearchReq,
+  GetDaenggleTrendingReq,
 } from "@/types/daenggle";
 
 /**

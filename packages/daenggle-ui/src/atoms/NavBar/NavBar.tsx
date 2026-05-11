@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import * as s from "./NavBar.css";
 
@@ -29,9 +28,7 @@ export function NavBar({ activeId, items, onNavigate }: NavBarProps) {
             width={24}
             height={24}
           />
-          <span className={activeId === item.id ? s.navTextSelected : s.navText}>
-            {item.text}
-          </span>
+          <span className={activeId === item.id ? s.navTextSelected : s.navText}>{item.text}</span>
         </button>
       ))}
     </nav>

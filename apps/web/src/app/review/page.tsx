@@ -1,20 +1,17 @@
 "use client";
 
-import React, { useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
-import * as s from "./style.css";
-
 // components
-import { TopBar, RadioGroup, TextField, FilterSection, Button } from "daenggle-ui";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-
-// utils & data
-import { entryOptions, conditionChips, welcomeOptions } from "./_util";
-
+import { Button, FilterSection, RadioGroup, TextField, TopBar } from "daenggle-ui";
+import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 // hooks
 import { usePostFootprint } from "@/hooks/api/useFootprints";
-import { PostFootprintReq, ConditionType, WelcomeScore, EntryStatus } from "@/types/footprint";
+import { ConditionType, PostFootprintReq, WelcomeScore } from "@/types/footprint";
+// utils & data
+import { conditionChips, entryOptions, welcomeOptions } from "./_util";
+import * as s from "./style.css";
 
 interface PawRatingProps {
   rating: number;
@@ -91,7 +88,6 @@ function LeaveFootprintPage() {
     }
 
     if (entryStatus !== "allow" && entryStatus !== "deny" && entryStatus !== "detail") {
-      console.error("Invalid entryStatus:", entryStatus);
       return; // 비정상 상태
     }
 
@@ -109,8 +105,7 @@ function LeaveFootprintPage() {
     try {
       await createFootprint(payload);
       setIsSubmitted(true);
-    } catch (error) {
-      console.error("Failed to post footprint:", error);
+    } catch (_error) {
       alert("리뷰 등록에 실패했습니다. 다시 시도해주세요.");
     }
   };

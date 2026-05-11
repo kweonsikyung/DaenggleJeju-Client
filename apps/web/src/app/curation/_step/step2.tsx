@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { Location } from "daenggle-ui";
-import * as s from "../style.css";
+import { useEffect } from "react";
 import {
-  LOCATION_OPTION,
-  JEJU_OVERALL_ID,
   ALL_REGION_IDS,
   ALL_SPECIFIC_REGION_IDS,
+  JEJU_OVERALL_ID,
+  LOCATION_OPTION,
 } from "../_util";
+import * as s from "../style.css";
 
 interface Step2Props {
   setIsValid: (isValid: boolean) => void;

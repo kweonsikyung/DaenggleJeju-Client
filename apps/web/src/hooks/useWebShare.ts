@@ -20,7 +20,6 @@ export const useWebShare = () => {
     const shareUrl = url || window.location.href;
 
     if (typeof navigator === "undefined") {
-      console.error("navigator 객체를 찾을 수 없습니다.");
       return;
     }
 
@@ -32,10 +31,8 @@ export const useWebShare = () => {
           text,
           url: shareUrl,
         });
-        console.log("콘텐츠 공유에 성공했습니다.");
       } catch (error) {
         if (error instanceof Error && error.name !== "AbortError") {
-          console.error("콘텐츠 공유에 실패했습니다:", error);
         }
       }
     } else {
@@ -43,8 +40,7 @@ export const useWebShare = () => {
       try {
         await navigator.clipboard.writeText(shareUrl);
         alert("링크가 클립보드에 복사되었습니다.");
-      } catch (error) {
-        console.error("클립보드 복사에 실패했습니다:", error);
+      } catch (_error) {
         alert("링크 복사에 실패했습니다.");
       }
     }

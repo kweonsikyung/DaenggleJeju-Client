@@ -1,4 +1,4 @@
-import { style, styleVariants, keyframes } from "@vanilla-extract/css";
+import { keyframes, style, styleVariants } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 import { TYPO } from "@/styles/typography.css";
 

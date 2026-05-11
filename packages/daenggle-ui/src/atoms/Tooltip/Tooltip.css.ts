@@ -1,6 +1,6 @@
+import { globalStyle, style, styleVariants } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 import { TYPO } from "@/styles/typography.css";
-import { style, styleVariants, globalStyle } from "@vanilla-extract/css";
 
 const arrowSize = 8;
 const gap = 10;

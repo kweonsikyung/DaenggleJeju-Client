@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import * as s from "../style.css";
-import { TextField, SelectField, BottomSheet, AvatarPicker } from "daenggle-ui";
+import { AvatarPicker, BottomSheet, SelectField, TextField } from "daenggle-ui";
+import { useEffect, useState } from "react";
 import { BREED_OPTIONS, WEIGHT_OPTIONS } from "../_util";
+import * as s from "../style.css";
 
 interface Step1Props {
   setIsValid: (isValid: boolean) => void;

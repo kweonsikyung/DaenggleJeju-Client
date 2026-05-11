@@ -1,5 +1,5 @@
-import { getRequest, postRequest } from "./common";
 import { GetMeRes, PostDevLoginRes } from "@/types/auth";
+import { getRequest, postRequest } from "./common";
 
 /**
  * @function getMe

@@ -1,45 +1,41 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import * as s from "./style.css";
-import { mutate } from "swr";
-
 // components
 import {
-  SearchHeader,
-  NavBar,
-  ChipKeyword,
-  DangleVideo,
-  DanglePlay,
-  DanglePlace,
-  FilterChip,
-  EmptyState,
-  Grid,
   BottomSheet,
-  FilterSection,
   Button,
+  ChipKeyword,
+  DanglePlace,
+  DanglePlay,
+  DangleVideo,
+  EmptyState,
+  FilterChip,
+  FilterSection,
+  Grid,
+  NavBar,
+  SearchHeader,
 } from "daenggle-ui";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
+import { mutate } from "swr";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlacesAll, useDaenggleSearch } from "@/hooks/api/useDaenggle";
 // hooks
-import { usePlaceSearch, usePlaceList } from "@/hooks/api/usePlaces";
-import { useDaenggleSearch, useDaengglePlacesAll } from "@/hooks/api/useDaenggle";
+import { usePlaceList, usePlaceSearch } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
-
+import type { GetPlaceListReq, GetPlaceSearchReq } from "@/types/place";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
+import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
+import { getThumbnailUrl } from "../dangle/_util";
 // utils and types
 import {
   FILTER_CHIPS,
-  OPTION_DATA,
   FILTER_OPTION_ID_TO_API_PARAM,
   getContentTypeIdByChipId,
+  OPTION_DATA,
 } from "../map/_util";
-import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
-import type { GetDaenggleSearchReq } from "@/types/daenggle";
-import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
-import { getThumbnailUrl } from "../dangle/_util";
-import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { NAV_ITEMS } from "@/constants/navData";
+import * as s from "./style.css";
 
 /**
  * 검색 페이지
@@ -150,8 +146,7 @@ function SearchPageContent() {
       } else {
         mutate(["/places/search", placeSearchReq]);
       }
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };

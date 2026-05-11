@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import * as s from "./FilterChipExpand.css";
 
 export interface FilterChipExpandProps {

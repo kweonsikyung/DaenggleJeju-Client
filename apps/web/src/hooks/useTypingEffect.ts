@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * 텍스트를 타이핑하는 것처럼 보여주는 효과를 위한 커스텀 훅

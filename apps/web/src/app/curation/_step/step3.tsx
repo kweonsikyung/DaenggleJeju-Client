@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
-import * as s from "../style.css";
 import { Button } from "daenggle-ui";
-import { STYLE_OPTIONS } from "../_util";
+import { useEffect } from "react";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { STYLE_OPTIONS } from "../_util";
+import * as s from "../style.css";
 
 interface Step3Props {
   setIsValid: (isValid: boolean) => void;

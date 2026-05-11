@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import * as s from "./DangleVideo.css";
 
@@ -63,16 +62,12 @@ export function DangleVideo({
         )}
         <div className={s.stats}>
           <div className={s.statItem}>
-            {viewIconSrc && (
-              <Image src={viewIconSrc} alt="조회수" width={12} height={12} />
-            )}
+            {viewIconSrc && <Image src={viewIconSrc} alt="조회수" width={12} height={12} />}
             <span className={s.statValue}>{views.toLocaleString()}</span>
           </div>
           <span className={s.divider}>·</span>
           <div className={s.statItem}>
-            {commentIconSrc && (
-              <Image alt="댓글" width={12} height={12} src={commentIconSrc} />
-            )}
+            {commentIconSrc && <Image alt="댓글" width={12} height={12} src={commentIconSrc} />}
             <span className={s.statValue}>{comments.toLocaleString()}</span>
           </div>
           {timeAgo && (

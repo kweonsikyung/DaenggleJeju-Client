@@ -1,9 +1,9 @@
+import { usePathname } from "next/navigation";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { ApiError } from "@/api/common";
 import { postDevLogin, postDevLogout } from "@/api/auth";
+import { ApiError } from "@/api/common";
 import { GetMeRes, PostDevLoginRes } from "@/types/auth";
-import { usePathname } from "next/navigation";
 
 /**
  * @hook useUser
@@ -88,7 +88,6 @@ export function useKakaoLogin() {
   const kakaoLogin = () => {
     const api = process.env.NEXT_PUBLIC_API_URL;
     if (!api) {
-      console.error("NEXT_PUBLIC_API_URL 누락");
       alert("환경설정 오류: API 주소가 없습니다.");
       return;
     }

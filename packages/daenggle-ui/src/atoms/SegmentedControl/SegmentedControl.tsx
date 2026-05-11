@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as s from "./style.css";
 
 export interface SegmentedControlOption {
@@ -39,7 +39,7 @@ export const SegmentedControl = ({
         width: `${clientWidth}px`,
       });
     }
-  }, [activeOption, options, typeof window !== "undefined" ? window.innerWidth : 0]);
+  }, [activeOption, options]);
 
   return (
     <div ref={containerRef} className={`${s.container} ${className}`}>

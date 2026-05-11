@@ -1,6 +1,5 @@
-import React from "react";
-import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import * as s from "@/app/chat/style.css";
+import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 
 const Spacer = ({ height }: { height: number }) => <div style={{ height }} />;
 

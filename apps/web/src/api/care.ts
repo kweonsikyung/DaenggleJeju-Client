@@ -1,5 +1,5 @@
-import { postRequest } from "./common";
 import { PostCareReq, PostCareRes } from "@/types/care";
+import { postRequest } from "./common";
 
 /**
  * @function postCareQuestion

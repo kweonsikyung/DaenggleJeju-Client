@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
 import * as s from "./AvatarPicker.css";
 
 export interface AvatarPickerProps {

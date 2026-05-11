@@ -1,5 +1,5 @@
-import { postRequest } from "./common";
 import { PostPreferenceReq, PostPreferenceRes } from "@/types/preference";
+import { postRequest } from "./common";
 
 /**
  * @function postPreference

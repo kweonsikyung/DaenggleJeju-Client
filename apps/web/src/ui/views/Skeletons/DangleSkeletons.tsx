@@ -1,5 +1,5 @@
-import React from "react";
 import { Skeleton } from "daenggle-ui";
+import React from "react";
 import * as s from "@/app/dangle/style.css";
 
 export function DanglePlaceSkeleton() {

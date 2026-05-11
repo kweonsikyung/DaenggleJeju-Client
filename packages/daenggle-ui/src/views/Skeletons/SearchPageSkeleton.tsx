@@ -1,9 +1,8 @@
-import React from "react";
-import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import * as s from "@/app/search/style.css";
 import * as navS from "../../atoms/NavBar/NavBar.css";
-import * as headerS from "../../molecules/SearchHeader/SearchHeader.css";
+import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import * as gridS from "../../molecules/Grid/Grid.css";
+import * as headerS from "../../molecules/SearchHeader/SearchHeader.css";
 
 function DanglePlaySkeleton() {
   return (

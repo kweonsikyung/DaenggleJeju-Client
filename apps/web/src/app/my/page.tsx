@@ -1,35 +1,30 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import * as s from "./style.css";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 //components
 import {
-  TopBar,
+  DanglePlace,
+  DanglePlay,
+  DangleReview,
+  EmptyState,
+  Grid,
   NavBar,
   ProfileCard,
   SegmentedControl,
   Tabs,
-  EmptyState,
-  Button,
-  DanglePlay,
-  DanglePlace,
-  Grid,
-  DangleReview,
+  TopBar,
 } from "daenggle-ui";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-
-//utils and hooks
-import { mainTabs, subTabs, emptyStateContent } from "./_util";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useMyFootprints } from "@/hooks/api/useFootprints";
 import { usePetProfileList } from "@/hooks/api/usePetProfile";
 import { useScrapList } from "@/hooks/api/useScraps";
-import { useMyFootprints } from "@/hooks/api/useFootprints";
-import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
+import { ScrapDangleItem, ScrapPlaceItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 import { extractHashtags } from "@/utils/textParsing";
-import { NAV_ITEMS } from "@/constants/navData";
+//utils and hooks
+import { emptyStateContent, mainTabs, subTabs } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 마이 페이지
@@ -68,12 +63,15 @@ export default function Page() {
       : undefined
   );
 
-  const tabIdToContentType: Record<string, string> = {
-    accom: "숙박",
-    restaurant: "음식점",
-    tourist: "관광지",
-    activity: "레포츠",
-  };
+  const tabIdToContentType = useMemo<Record<string, string>>(
+    () => ({
+      accom: "숙박",
+      restaurant: "음식점",
+      tourist: "관광지",
+      activity: "레포츠",
+    }),
+    []
+  );
 
   const filteredItems = useMemo(() => {
     if (activeMainTab !== "saved" || !scrapData?.items) return [];
@@ -84,7 +82,7 @@ export default function Page() {
     return (scrapData.items as ScrapPlaceItem[]).filter(
       (item) => item.contentType?.name === targetContentType
     );
-  }, [scrapData, activeSubTab, activeMainTab]);
+  }, [scrapData, activeSubTab, activeMainTab, tabIdToContentType]);
 
   const detailsString = [
     myPet?.breedNameKo,

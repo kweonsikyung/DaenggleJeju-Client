@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import { Chip, Pagination } from "daenggle-ui";
 import useEmblaCarousel from "embla-carousel-react";
-import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-import { Pagination, Chip } from "daenggle-ui";
-import * as s from "./style.css";
+import { useCallback, useEffect, useState } from "react";
 import { slides } from "./_util";
+import * as s from "./style.css";
 
 export default function Onboarding() {
   /** router */

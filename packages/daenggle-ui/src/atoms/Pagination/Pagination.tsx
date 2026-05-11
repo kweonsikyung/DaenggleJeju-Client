@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import * as s from "./Pagination.css";
 
 interface PaginationProps {

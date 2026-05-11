@@ -1,22 +1,22 @@
-import { getRequest } from "./common";
 import {
-  // Request
-  GetDaenggleAccommodationsReq,
-  GetDaenggleTrendingReq,
-  GetDaenggleRegionsReq,
-  GetDaengglePreferenceReq,
-  GetDaenggleSearchReq,
-  GetDaenggleConceptsReq,
-  GetDaengglePlaceRecommendationsReq,
-  GetDaengglePlacesAllReq,
-  GetDaengglePlacesMapReq,
-  // Result
-  DaenggleVideoListResult,
   DaenggleConceptShelf,
   DaengglePlaceRecommendationsResult,
   DaengglePlacesAllResult,
   DaengglePlacesMapResult,
+  // Result
+  DaenggleVideoListResult,
+  // Request
+  GetDaenggleAccommodationsReq,
+  GetDaenggleConceptsReq,
+  GetDaengglePlaceRecommendationsReq,
+  GetDaengglePlacesAllReq,
+  GetDaengglePlacesMapReq,
+  GetDaengglePreferenceReq,
+  GetDaenggleRegionsReq,
+  GetDaenggleSearchReq,
+  GetDaenggleTrendingReq,
 } from "@/types/daenggle";
+import { getRequest } from "./common";
 
 /**
  * @function getDaenggleAccommodations
@@ -40,7 +40,7 @@ export async function getDaenggleAccommodations(
 export async function getDaenggleTrending(
   params: GetDaenggleTrendingReq
 ): Promise<DaenggleVideoListResult> {
-  const queryParams = createBaseSearchParams(params).toString();
+  const _queryParams = createBaseSearchParams(params).toString();
   return await getRequest<DaenggleVideoListResult>(`/daenggle/trending`);
 }
 

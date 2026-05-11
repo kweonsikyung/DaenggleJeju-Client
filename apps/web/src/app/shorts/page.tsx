@@ -1,30 +1,27 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperCore } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 //components
-import { NavBar, TopBar, ShortsOverlay, ShortsBottomInfo, EmptyState, Dropdown } from "daenggle-ui";
-
+import { Dropdown, EmptyState, NavBar, ShortsBottomInfo, ShortsOverlay, TopBar } from "daenggle-ui";
+import { NAV_ITEMS } from "@/constants/navData";
 //hooks
 import {
-  useDaenggleRegions,
-  useDaenggleConcepts,
   useDaenggleAccommodations,
+  useDaenggleConcepts,
+  useDaenggleRegions,
   useDaenggleTrending,
 } from "@/hooks/api/useDaenggle";
-
 //utils
-import { DaenggleContextId, DaenggleConceptKey } from "@/types/daenggle";
+import { DaenggleConceptKey, DaenggleContextId } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
 import { formatApiVideoToLocal, JEJU_REGIONS } from "./_util";
-
 import * as s from "./style.css";
-import { NAV_ITEMS } from "@/constants/navData";
 
 /** type (related YOUTUBE) */
 declare global {
@@ -115,35 +112,48 @@ function ShortsPageContent() {
   );
 
   /** utils */
-  let formattedVideos: VideoData[] = [];
-  if (contentId) {
-    formattedVideos = [
-      {
-        id: contentId,
-        loc: "",
-        videoId: contentId,
-        thumbnailUrl: `https://i.ytimg.com/vi/${contentId}/hqdefault.jpg`,
-        profileImageUrl: "",
-        userName: "",
-        description: "",
-        tags: [],
-        bookmarks: 0,
-        comments: 0,
-        likes: 0,
-      },
-    ];
-  } else if (contextId && daenggleRegionsData?.items) {
-    formattedVideos = daenggleRegionsData.items.map(formatApiVideoToLocal);
-  } else if (conceptKey && daenggleConceptsData?.shelves) {
-    const shelf = daenggleConceptsData.shelves.find((s) => s.key === conceptKey);
-    if (shelf?.items) {
-      formattedVideos = shelf.items.map(formatApiVideoToLocal);
+  const formattedVideos = useMemo<VideoData[]>(() => {
+    if (contentId) {
+      return [
+        {
+          id: contentId,
+          loc: "",
+          videoId: contentId,
+          thumbnailUrl: `https://i.ytimg.com/vi/${contentId}/hqdefault.jpg`,
+          profileImageUrl: "",
+          userName: "",
+          description: "",
+          tags: [],
+          bookmarks: 0,
+          comments: 0,
+          likes: 0,
+        },
+      ];
     }
-  } else if (listType === "accommodations" && daenggleAccommodationsData?.items) {
-    formattedVideos = daenggleAccommodationsData.items.map(formatApiVideoToLocal);
-  } else if (listType === "trending" && daenggleTrendingData?.items) {
-    formattedVideos = daenggleTrendingData.items.map(formatApiVideoToLocal);
-  }
+    if (contextId && daenggleRegionsData?.items) {
+      return daenggleRegionsData.items.map(formatApiVideoToLocal);
+    }
+    if (conceptKey && daenggleConceptsData?.shelves) {
+      const shelf = daenggleConceptsData.shelves.find((s) => s.key === conceptKey);
+      if (shelf?.items) return shelf.items.map(formatApiVideoToLocal);
+    }
+    if (listType === "accommodations" && daenggleAccommodationsData?.items) {
+      return daenggleAccommodationsData.items.map(formatApiVideoToLocal);
+    }
+    if (listType === "trending" && daenggleTrendingData?.items) {
+      return daenggleTrendingData.items.map(formatApiVideoToLocal);
+    }
+    return [];
+  }, [
+    contentId,
+    contextId,
+    conceptKey,
+    listType,
+    daenggleRegionsData,
+    daenggleConceptsData,
+    daenggleAccommodationsData,
+    daenggleTrendingData,
+  ]);
 
   /** lifecycle */
   useEffect(() => {
@@ -200,7 +210,7 @@ function ShortsPageContent() {
     } else {
       playerRef.current.pauseVideo();
     }
-  }, [isPlaying]);
+  }, [isPlaying, isStarted]);
 
   /** loading */
   const isLoading =

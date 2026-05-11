@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { PlaceItem } from "@/types/place";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DaengglePlacesMapResult } from "@/types/daenggle";
+import { PlaceItem } from "@/types/place";
 
 /** Kakao type declaration */
 declare global {

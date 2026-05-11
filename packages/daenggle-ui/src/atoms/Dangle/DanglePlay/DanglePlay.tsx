@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import * as s from "./DanglePlay.css";
 
@@ -57,7 +56,7 @@ export function DanglePlay({
   commentIconSrc,
   onClick,
 }: DanglePlayProps) {
-  const isSmall = type === "small";
+  const _isSmall = type === "small";
   const isMedium = type === "medium";
   const isShort = type === "short";
 
@@ -68,8 +67,7 @@ export function DanglePlay({
     imageHeight = 242;
   }
 
-  const isValidImageUrl =
-    typeof imageUrl === "string" && /^https?:\/\//i.test(imageUrl);
+  const isValidImageUrl = typeof imageUrl === "string" && /^https?:\/\//i.test(imageUrl);
   const imageSrc = isValidImageUrl ? imageUrl : (fallbackImageUrl ?? null);
 
   return (
@@ -124,16 +122,12 @@ export function DanglePlay({
           {views && (
             <div className={s.stats}>
               <div className={s.statItem}>
-                {viewIconSrc && (
-                  <Image src={viewIconSrc} alt="조회수" width={12} height={12} />
-                )}
+                {viewIconSrc && <Image src={viewIconSrc} alt="조회수" width={12} height={12} />}
                 <span className={s.statValue}>{views?.toLocaleString()}</span>
               </div>
               <div className={s.statItem}>·</div>
               <div className={s.statItem}>
-                {commentIconSrc && (
-                  <Image alt="댓글" width={12} height={12} src={commentIconSrc} />
-                )}
+                {commentIconSrc && <Image alt="댓글" width={12} height={12} src={commentIconSrc} />}
                 <span className={s.statValue}>{comments?.toLocaleString()}</span>
               </div>
               <div className={s.statItem}>·</div>

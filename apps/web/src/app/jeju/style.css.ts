@@ -1,6 +1,6 @@
-import { style, keyframes } from "@vanilla-extract/css";
-import { TYPO } from "@/styles/typography.css";
+import { keyframes, style } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
+import { TYPO } from "@/styles/typography.css";
 
 const fadeInUp = keyframes({
   "0%": {

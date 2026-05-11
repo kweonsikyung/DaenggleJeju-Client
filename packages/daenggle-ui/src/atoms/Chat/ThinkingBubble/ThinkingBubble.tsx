@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import * as s from "./ThinkingBubble.css";
 
 export function ThinkingBubble() {

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import React, { ReactNode } from "react";
 import * as s from "./Carousel.css";
 
 export interface CarouselProps {

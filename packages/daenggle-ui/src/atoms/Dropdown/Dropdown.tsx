@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import * as s from "./Dropdown.css";
 
 export interface DropdownOption {

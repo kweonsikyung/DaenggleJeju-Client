@@ -1,34 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
-import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
-import * as s from "./style.css";
-
 // components
 import {
-  TopBar,
-  NavBar,
+  Button,
+  Carousel,
   DanglePlay,
   DangleReview,
   EmptyState,
-  Carousel,
   Modal,
-  Button,
+  NavBar,
+  TopBar,
 } from "daenggle-ui";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
-
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
+import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 // hooks
 import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
-import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
 import { usePostScrap } from "@/hooks/api/useScraps";
-import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 import { useModal } from "@/hooks/useModal";
-
-// utils
-import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { NAV_ITEMS } from "@/constants/navData";
+// utils
+import { callPhoneNumber, copyToClipboard } from "@/utils/interaction";
+import * as s from "./style.css";
+
 const MAX_LENGTH = 200;
 
 /**
@@ -63,8 +61,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     if (typeof url === "string" && url.includes("%")) {
       try {
         url = decodeURIComponent(url);
-      } catch (e) {
-        console.error("URL 디코딩 실패:", url, e);
+      } catch (_e) {
         url = null;
       }
     }
@@ -120,8 +117,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     try {
       await postScrap({ id: contentId, type: "place" });
       mutate();
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };

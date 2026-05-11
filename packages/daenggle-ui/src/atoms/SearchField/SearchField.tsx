@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useId, useMemo, useState, forwardRef } from "react";
 import Image from "next/image";
+import React, { forwardRef, useId, useMemo, useState } from "react";
 import * as s from "./SearchField.css";
 
-export interface SearchFieldProps extends Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "size" | "type"
-> {
+export interface SearchFieldProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "type"> {
   /** placeholder */
   placeholder?: string;
   /** 컨트롤드 값 */

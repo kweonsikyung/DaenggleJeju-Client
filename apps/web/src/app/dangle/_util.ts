@@ -1,5 +1,5 @@
-import { BANNER_DATA } from "@/utils/dummy_data";
 import { DaenggleConceptKey, DaenggleContextId } from "@/types/daenggle";
+import { BANNER_DATA } from "@/utils/dummy_data";
 
 /**
  * 댕글 영상 썸네일 URL 생성 함수
@@ -15,7 +15,7 @@ export const getThumbnailUrl = (videoId: string, thumbUrl?: string) => {
  * JEJU_DATA의 title을 API의 contextId로 매핑하는 객체
  */
 export const regionContextMap: { [key: string]: DaenggleContextId | null } = {
-  "애월·한림": "PLACE_aeweol",
+  애월·한림: "PLACE_aeweol",
   이호동: "PLACE_jeju_si",
   조천: "PLACE_jocheon",
   성산: "PLACE_seongsan",

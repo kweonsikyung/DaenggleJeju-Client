@@ -1,11 +1,10 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
-import * as s from "./MapFloatingButtons.css";
-import { Fab, FabProps } from "../../atoms/Fab/Fab";
 import { ChipMapList, ChipMapListProps } from "../../atoms/Chip/ChipMapList/ChipMapList";
+import { Fab, FabProps } from "../../atoms/Fab/Fab";
 import { Tooltip, TooltipProps } from "../../atoms/Tooltip/Tooltip";
+import * as s from "./MapFloatingButtons.css";
 
 export interface MapFloatingButtonsProps {
   /** GPS 버튼 클릭 이벤트 핸들러 */
@@ -36,9 +35,7 @@ export function MapFloatingButtons({
     <div className={s.root}>
       <div>
         <button className={s.gpsButton} onClick={onGpsClick}>
-          {gpsIconSrc && (
-            <Image src={gpsIconSrc} alt="현재 위치" width={24} height={24} />
-          )}
+          {gpsIconSrc && <Image src={gpsIconSrc} alt="현재 위치" width={24} height={24} />}
         </button>
       </div>
       <div>

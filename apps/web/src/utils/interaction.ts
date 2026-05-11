@@ -27,7 +27,6 @@ export const copyToClipboard = (
         alert(alertMessage);
       })
       .catch((err) => {
-        console.error("Clipboard API failed: ", err);
         alert("복사에 실패했습니다.");
       });
   } else {
@@ -46,8 +45,7 @@ export const copyToClipboard = (
       document.body.removeChild(textArea);
 
       alert(alertMessage);
-    } catch (err) {
-      console.error("Fallback copy failed: ", err);
+    } catch (_err) {
       alert("복사에 실패했습니다.");
     }
   }

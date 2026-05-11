@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-import * as s from "./Tooltip.css";
 import Image from "next/image";
+import * as s from "./Tooltip.css";
 
 export type TooltipPosition = "top" | "left" | "right" | "bottom";
 
