@@ -34,8 +34,8 @@ apps/web/src/
     atoms/            # 단일 역할 UI 단위 (Button, Chip, TextField …)
     molecules/        # atoms 조합, 특정 기능 보유 (SearchHeader, FilterSection …)
     views/            # 페이지 섹션급 복합 뷰 (Skeleton 그룹 등)
-  components/         # 전역 Provider·Portal·Context 래퍼 (SWRProvider 등) — UI 컴포넌트 아님
-    providers/    
+  components/         # Provider·Portal·Context 등 UI가 아닌 래퍼 패턴
+    providers/        # (예: SWRProvider)
   api/                # API 호출 함수 (도메인별 파일)
   hooks/    
     api/              # SWR 기반 데이터 훅 (useAuth, usePlaces …)
