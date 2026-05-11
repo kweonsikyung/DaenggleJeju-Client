@@ -1,6 +1,5 @@
-import React from "react";
-import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import * as s from "@/app/detail/[contentId]/style.css";
+import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 
 const VideoCarouselSkeletonContent = () => (
   <div

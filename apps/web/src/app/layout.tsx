@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import localFont from "next/font/local";
 import Script from "next/script";
 import { SWRProvider } from "@/components/providers/SWRProvider";
-import localFont from "next/font/local";
 
 const pretendard = localFont({
   src: [
@@ -42,7 +41,7 @@ const laundryGothic = localFont({
   variable: "--font-laundry",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const ogImageUrl = `${siteUrl}/og-image.png`;
 
 export const metadata: Metadata = {

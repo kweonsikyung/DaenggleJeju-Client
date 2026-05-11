@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
-import { TYPO } from "@/styles/typography.css";
 import { COLORS } from "@/styles/colors.css";
+import { TYPO } from "@/styles/typography.css";
 
 export const root = style({
   backgroundColor: "#FAFAFA",

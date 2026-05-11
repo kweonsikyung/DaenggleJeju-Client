@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { ReactNode } from "react";
 import * as s from "./TopBar.css";
@@ -5,10 +7,16 @@ import * as s from "./TopBar.css";
 export type TopBarProps = {
   /** back 아이콘 핸들러: 주면 자동으로 아이콘 노출 + 핸들러 등록 */
   backIconHandler?: () => void;
+  /** 뒤로가기 아이콘 src */
+  backIconSrc?: string;
   /** 제목 텍스트 */
   title?: string;
   /** 상단 로고 노출 여부 */
   isShowLogo?: boolean;
+  /** 로고 이미지 src (isShowLogo=true 일 때 사용) */
+  logoSrc?: string;
+  /** 로고 alt 텍스트 */
+  logoAlt?: string;
   /** 우측 아이콘들(오른쪽 끝부터 보임) */
   rightIcons?: {
     icon: ReactNode; // 24x24 아이콘
@@ -31,8 +39,11 @@ export type TopBarProps = {
  */
 export function TopBar({
   backIconHandler,
+  backIconSrc,
   title,
   isShowLogo = false,
+  logoSrc,
+  logoAlt = "",
   rightIcons = [],
   sticky = false,
   transparent = false,
@@ -55,15 +66,15 @@ export function TopBar({
             onClick={backIconHandler}
             aria-label="뒤로가기"
           >
-            <Image src="/assets/icon24/arrow-left_line.svg" alt="뒤로가기" width={24} height={24} />
+            {backIconSrc && <Image src={backIconSrc} alt="뒤로가기" width={24} height={24} />}
           </button>
         ) : null}
       </div>
 
       {/* Center */}
       <div className={s.center} aria-live="polite">
-        {isShowLogo ? (
-          <Image src="/assets/logo/logo-top.svg" alt="댕글 로고" width={72.56} height={24} />
+        {isShowLogo && logoSrc ? (
+          <Image src={logoSrc} alt={logoAlt} width={72.56} height={24} />
         ) : title ? (
           <div className={s.title} title={title}>
             {title}

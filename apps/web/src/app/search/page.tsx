@@ -1,42 +1,41 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import * as s from "./style.css";
-import { mutate } from "swr";
-
 // components
-import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { ChipKeyword } from "@/ui/atoms/Chip/ChipKeyword/ChipKeyword";
-import { DangleVideo } from "@/ui/atoms/Dangle/DangleVideo/DangleVideo";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-
+import {
+  BottomSheet,
+  Button,
+  ChipKeyword,
+  DanglePlace,
+  DanglePlay,
+  DangleVideo,
+  EmptyState,
+  FilterChip,
+  FilterSection,
+  Grid,
+  NavBar,
+  SearchHeader,
+} from "daenggle-ui";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
+import { mutate } from "swr";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlacesAll, useDaenggleSearch } from "@/hooks/api/useDaenggle";
 // hooks
-import { usePlaceSearch, usePlaceList } from "@/hooks/api/usePlaces";
-import { useDaenggleSearch, useDaengglePlacesAll } from "@/hooks/api/useDaenggle";
+import { usePlaceList, usePlaceSearch } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
-
+import type { GetPlaceListReq, GetPlaceSearchReq } from "@/types/place";
+import { getRandomAvatar } from "@/utils/getRandomAvatar";
+import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
+import { getThumbnailUrl } from "../dangle/_util";
 // utils and types
 import {
   FILTER_CHIPS,
-  OPTION_DATA,
   FILTER_OPTION_ID_TO_API_PARAM,
   getContentTypeIdByChipId,
+  OPTION_DATA,
 } from "../map/_util";
-import type { GetPlaceSearchReq, GetPlaceListReq } from "@/types/place";
-import type { GetDaenggleSearchReq } from "@/types/daenggle";
-import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
-import { getThumbnailUrl } from "../dangle/_util";
-import { getRandomAvatar } from "@/utils/getRandomAvatar";
+import * as s from "./style.css";
 
 /**
  * 검색 페이지
@@ -147,8 +146,7 @@ function SearchPageContent() {
       } else {
         mutate(["/places/search", placeSearchReq]);
       }
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };
@@ -417,6 +415,10 @@ function SearchPageContent() {
                                 handleScrapToggle(item.contentId, item.isScrapped)
                               }
                               isBookmarked={item.isScrapped}
+                              icons={{
+                                bookmarkFilled: "/assets/icon24/bookmark_filled.svg",
+                                bookmarkLine: "/assets/icon24/bookmark_line.svg",
+                              }}
                               tags={[...(item.chips1 || []), ...(item.chips2 || [])]}
                               onClick={() => router.push(`/detail/${item.contentId}`)}
                             />
@@ -431,7 +433,7 @@ function SearchPageContent() {
           </>
         )}
       </div>
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       {/* 바텀시트 */}
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen} title="필터">
         <div className={s.bottomSheetContent}>

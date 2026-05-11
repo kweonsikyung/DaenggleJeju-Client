@@ -1,7 +1,9 @@
-import { Drawer } from "vaul";
-import { ReactNode } from "react";
-import * as s from "./BottomSheet.css";
+"use client";
+
 import Image from "next/image";
+import { ReactNode } from "react";
+import { Drawer } from "vaul";
+import * as s from "./BottomSheet.css";
 
 type BottomSheetProps = {
   /** 패널 오픈 여부 */

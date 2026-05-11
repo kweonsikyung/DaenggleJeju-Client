@@ -1,6 +1,6 @@
 import React from "react";
-import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 import * as s from "@/app/dangle/style.css";
+import { Skeleton } from "../../atoms/Skeleton/Skeleton";
 
 export function DanglePlaceSkeleton() {
   return (

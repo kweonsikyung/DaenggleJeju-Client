@@ -1,35 +1,37 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { useRouter } from "next/navigation";
-import * as s from "./style.css";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { MapFloatingButtons } from "@/ui/molecules/MapFloatingButtons/MapFloatingButtons";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 import {
-  MARKER_IMAGES,
-  FILTER_CHIPS,
-  OPTION_DATA,
-  JEJU_BBOX,
-  FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
-  FILTER_OPTION_ID_TO_API_PARAM,
-} from "./_util";
-import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+  BottomSheet,
+  Button,
+  DanglePlace,
+  FilterChip,
+  FilterSection,
+  LoadingSpinner,
+  MapFloatingButtons,
+  NavBar,
+  SearchHeader,
+  WelcomeOverlay,
+} from "daenggle-ui";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { mutate } from "swr";
+import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
-import { GetPlaceMapReq, PlaceItem } from "@/types/place";
-import { normalizeChips } from "@/utils/normalizeChips";
-import { mutate } from "swr";
-import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { useKakaoMap } from "@/hooks/useKakaoMap";
-import { WelcomeOverlay } from "@/ui/molecules/WelcomeOverlay/WelcomeOverlay";
-import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
 import { useLocationStore } from "@/stores/locationStore";
+import { GetPlaceMapReq, PlaceItem } from "@/types/place";
+import {
+  FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
+  FILTER_CHIPS,
+  FILTER_OPTION_ID_TO_API_PARAM,
+  JEJU_BBOX,
+  MARKER_IMAGES,
+  OPTION_DATA,
+} from "./_util";
+import * as s from "./style.css";
 
 const LOCAL_STORAGE_KEY = "hasVisitedMap";
 
@@ -134,8 +136,7 @@ export default function MapPage() {
       });
 
       mutate(["/places/map", apiParams]);
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };
@@ -278,6 +279,10 @@ export default function MapPage() {
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
             onBookmarkClick={() => handleScrapToggle(selectedPlace.contentId)}
             isBookmarked={selectedPlace.isScrapped}
+            icons={{
+              bookmarkFilled: "/assets/icon24/bookmark_filled.svg",
+              bookmarkLine: "/assets/icon24/bookmark_line.svg",
+            }}
           />
         </div>
       )}
@@ -286,12 +291,13 @@ export default function MapPage() {
       <div className={s.bottomContainer}>
         <MapFloatingButtons
           onGpsClick={handleGpsClick}
+          gpsIconSrc="/assets/icon24/gps.svg"
           chipMapListProps={{
             text: "장소 목록",
             cnt: totalCount,
             onLocationListClick: handleLocationListClick,
           }}
-          fabProps={{ onClick: handleDangleRecommendClick }}
+          fabProps={{ onClick: handleDangleRecommendClick, imageSrc: "/assets/map/fab.svg" }}
           tooltipProps={{
             title: "댕글제주 PICK!",
             text: "제주의 다양한 영상을 지역, 테마, 인기별로 발견해보세요.",
@@ -303,11 +309,18 @@ export default function MapPage() {
       </div>
 
       {/* nav */}
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
 
       {/* WelcomeOverlay 컴포넌트 */}
       {showWelcomeOverlay && (
         <WelcomeOverlay
+          logoImageSrc="/assets/footprint.png"
+          logoAlt="댕글제주"
+          title="🎉 환영합니다"
+          subtitle="댕댕이와 함께할 여행을 준비하고 있어요"
+          steps={["반려동물 정보 분석 중", "여행 취향 분석 중", "위치 정보 확인 중(선택)"]}
+          ctaText="댕글제주 탐색하기"
+          loadingText="위치 찾는 중..."
           onFetchLocation={fetchLocation}
           latitude={latitude}
           longitude={longitude}

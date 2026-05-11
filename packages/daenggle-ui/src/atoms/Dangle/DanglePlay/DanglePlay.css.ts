@@ -1,6 +1,6 @@
+import { style, styleVariants } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 import { TYPO } from "@/styles/typography.css";
-import { style, styleVariants } from "@vanilla-extract/css";
 
 const baseRoot = style({
   position: "relative",

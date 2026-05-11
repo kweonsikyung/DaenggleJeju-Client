@@ -1,5 +1,4 @@
-import React from "react";
-import { Skeleton } from "@/ui/atoms/Skeleton/Skeleton";
+import { Skeleton } from "daenggle-ui";
 import * as s from "@/app/chat/style.css";
 
 const Spacer = ({ height }: { height: number }) => <div style={{ height }} />;

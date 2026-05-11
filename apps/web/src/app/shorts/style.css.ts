@@ -1,5 +1,5 @@
+import { globalStyle, style } from "@vanilla-extract/css";
 import { TYPO } from "@/styles/typography.css";
-import { style, globalStyle } from "@vanilla-extract/css";
 
 export const page = style({
   width: "100%",

@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import * as s from "./style.css";
 
 interface RadioOption {

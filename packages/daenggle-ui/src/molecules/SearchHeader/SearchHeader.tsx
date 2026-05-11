@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
+import React from "react";
+import { SearchField } from "../../atoms/SearchField/SearchField";
 import * as s from "./SearchHeader.css";
-import SearchField from "../../atoms/SearchField/SearchField";
 
 export interface SearchHeaderProps {
   /** back 아이콘 핸들러: 주면 자동으로 아이콘 노출 + 핸들러 등록 */

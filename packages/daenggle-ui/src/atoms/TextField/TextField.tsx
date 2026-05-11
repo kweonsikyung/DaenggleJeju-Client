@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useId, useMemo, useState } from "react";
 import * as s from "./TextField.css";
 

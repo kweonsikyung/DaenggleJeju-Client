@@ -1,8 +1,8 @@
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
-import { postPetProfile, getPetProfile } from "@/api/pet";
-import { PostPetProfileReq, PetProfileRes, GetPetProfileReq } from "@/types/pet";
+import { postPetProfile } from "@/api/pet";
+import { GetPetProfileReq, PetProfileRes, PostPetProfileReq } from "@/types/pet";
 
 /**
  * @hook usePetProfile

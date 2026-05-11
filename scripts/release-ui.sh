@@ -2,8 +2,10 @@
 
 echo "🚀 daenggle-ui 릴리즈 시작"
 
+PKG="packages/daenggle-ui/package.json"
+
 # 현재 버전 확인
-CURRENT_VERSION=$(cat packages/daenggle-ui/package.json | grep '"version"' | head -1 | awk -F'"' '{print $4}')
+CURRENT_VERSION=$(cat $PKG | grep '"version"' | head -1 | awk -F'"' '{print $4}')
 echo "현재 버전: $CURRENT_VERSION"
 
 # 버전 타입 선택
@@ -31,25 +33,35 @@ NEW_VERSION=$(node -e "
 echo "새 버전: $NEW_VERSION"
 
 # package.json 버전 업데이트
-sed -i '' "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" packages/daenggle-ui/package.json
+sed -i '' "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" $PKG
 echo "✅ package.json 버전 업데이트 완료"
 
 # CHANGELOG 업데이트 확인
 read -p "packages/daenggle-ui/CHANGELOG.md 업데이트 했나요? (y/n): " CHANGELOG_CHECK
 if [ "$CHANGELOG_CHECK" != "y" ]; then
   echo "CHANGELOG.md를 먼저 업데이트해주세요."
+  sed -i '' "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$CURRENT_VERSION\"/" $PKG
   exit 1
 fi
 
-# 패키지 유효성 검사
-echo "🔍 패키지 유효성 검사 중..."
-pnpm check:ui
-if [ $? -ne 0 ]; then
-  echo "❌ 패키지 유효성 검사 실패"
-  sed -i '' "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$CURRENT_VERSION\"/" packages/daenggle-ui/package.json
-  exit 1
-fi
-echo "✅ 패키지 유효성 검사 완료"
+# exports를 dist로 교체 (npm 배포용)
+echo "🔄 exports를 dist로 전환 중..."
+node -e "
+  const fs = require('fs');
+  const pkg = JSON.parse(fs.readFileSync('$PKG', 'utf8'));
+  pkg.main = './dist/index.js';
+  pkg.module = './dist/index.mjs';
+  pkg.types = './dist/index.d.ts';
+  pkg.exports = {
+    '.': {
+      types: './dist/index.d.ts',
+      import: './dist/index.mjs',
+      require: './dist/index.js',
+    }
+  };
+  fs.writeFileSync('$PKG', JSON.stringify(pkg, null, 2) + '\n');
+"
+echo "✅ exports dist로 전환 완료"
 
 # 빌드
 echo "📦 빌드 시작..."
@@ -57,11 +69,29 @@ cd packages/daenggle-ui && pnpm build
 if [ $? -ne 0 ]; then
   echo "❌ 빌드 실패"
   cd ../..
-  sed -i '' "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$CURRENT_VERSION\"/" packages/daenggle-ui/package.json
+  node -e "
+    const fs = require('fs');
+    const pkg = JSON.parse(fs.readFileSync('$PKG', 'utf8'));
+    pkg.main = './src/index.ts';
+    pkg.module = './src/index.ts';
+    pkg.types = './src/index.ts';
+    pkg.exports = { '.': { types: './src/index.ts', import: './src/index.ts', require: './src/index.ts' } };
+    pkg.version = '$CURRENT_VERSION';
+    fs.writeFileSync('$PKG', JSON.stringify(pkg, null, 2) + '\n');
+  "
   exit 1
 fi
 cd ../..
 echo "✅ 빌드 완료"
+
+# 패키지 유효성 검사
+echo "🔍 패키지 유효성 검사 중..."
+pnpm check:ui
+if [ $? -ne 0 ]; then
+  echo "❌ 패키지 유효성 검사 실패"
+  exit 1
+fi
+echo "✅ 패키지 유효성 검사 완료"
 
 # 로컬 확인
 read -p "로컬에서 확인했나요? (y/n): " LOCAL_CHECK
@@ -75,9 +105,29 @@ echo "📤 npm 배포 중..."
 cd packages/daenggle-ui && npm publish
 if [ $? -ne 0 ]; then
   echo "❌ npm 배포 실패"
+  cd ../..
   exit 1
 fi
 cd ../..
+
+# exports를 src로 복원 (모노레포용)
+echo "🔄 exports를 src로 복원 중..."
+node -e "
+  const fs = require('fs');
+  const pkg = JSON.parse(fs.readFileSync('$PKG', 'utf8'));
+  pkg.main = './src/index.ts';
+  pkg.module = './src/index.ts';
+  pkg.types = './src/index.ts';
+  pkg.exports = {
+    '.': {
+      types: './src/index.ts',
+      import: './src/index.ts',
+      require: './src/index.ts',
+    }
+  };
+  fs.writeFileSync('$PKG', JSON.stringify(pkg, null, 2) + '\n');
+"
+echo "✅ exports src로 복원 완료"
 
 # git 커밋
 git add packages/daenggle-ui/package.json packages/daenggle-ui/CHANGELOG.md packages/daenggle-ui/README.md
@@ -89,5 +139,4 @@ git tag "daenggle-ui@$NEW_VERSION"
 git push origin "daenggle-ui@$NEW_VERSION"
 
 echo "✅ git 푸시 완료"
-
 echo "🎉 릴리즈 완료: daenggle-ui@$NEW_VERSION"

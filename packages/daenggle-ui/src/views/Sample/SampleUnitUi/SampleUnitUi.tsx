@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import * as styles from "./SampleUnitUi.css";
 
 interface SampleUnitUiProps {

@@ -1,24 +1,17 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import * as s from "./DangleReview.css";
-
-/**
- * 칩 순서에 맞는 고정 레이블
- * API 응답 'chips[0]' -> "출입 가능 여부"
- * API 응답 'chips[1]' -> "출입 조건"
- * API 응답 'chips[2]' -> "반려견 친화도"
- */
-const CHIP_LABELS = ["출입 가능 여부", "출입 조건", "반려견 친화도"];
 
 export interface DangleReviewProps {
   /** [isMine=false] 리뷰 작성자의 프로필 이미지 URL */
   profileImageUrl?: string;
+  /** [isMine=false] 프로필 이미지 로드 실패 시 대체 이미지 URL */
+  fallbackProfileImageUrl?: string;
   /** [isMine=false] 리뷰 작성자의 이름 */
   userName?: string;
-  /** [isMine=false] 리뷰 작성자의 반려견 정보 */
-  dogInfo?: string;
+  /** [isMine=false] 리뷰 작성자의 부가 정보 */
+  userSubInfo?: string;
   /** [isMine=true] 장소 위치/카테고리 */
   locationCategory?: string;
   /** [isMine=true] 장소명 */
@@ -27,88 +20,106 @@ export interface DangleReviewProps {
   isMine: boolean;
   /** 평점 (1-5 사이의 숫자) */
   rating: number;
-  /** 리뷰 작성 날짜 (API: createdAtText) */
+  /** 평점 활성 아이콘 src (없으면 ★ 텍스트 사용) */
+  filledRatingIconSrc?: string;
+  /** 평점 비활성 아이콘 src (없으면 ☆ 텍스트 사용) */
+  emptyRatingIconSrc?: string;
+  /** 리뷰 작성 날짜 */
   date: string;
-  /** 리뷰 칩 배열 (API: chips) */
+  /** 리뷰 칩 값 배열 */
   chips: string[];
-  /** 리뷰 본문 내용 (API: body) */
+  /** 칩 레이블 배열 (chips와 1:1 매핑) */
+  chipLabels?: string[];
+  /** 리뷰 본문 내용 */
   content: string;
   /** [isMine=true] 카드 클릭 이벤트 핸들러 */
   onClick?: () => void;
 }
 
-/**
- * 평점을 발바닥 아이콘으로 표시하는 컴포넌트
- */
-const PawRating = ({ rating }: { rating: number }) => {
+const RatingDisplay = ({
+  rating,
+  filledIconSrc,
+  emptyIconSrc,
+}: {
+  rating: number;
+  filledIconSrc?: string;
+  emptyIconSrc?: string;
+}) => {
   return (
     <div className={s.stars}>
-      {[...Array(5)].map((_, index) => (
-        <Image
-          key={index}
-          alt={index < rating ? "paw-filled" : "paw-empty"}
-          width={16}
-          height={16}
-          src={
-            index < rating
-              ? "/assets/icon24/dogfootprint-blue.svg" // 꽉 찬 발바닥
-              : "/assets/icon24/dogfootprint-white.svg" // 빈 발바닥
-          }
-        />
-      ))}
+      {[...Array(5)].map((_, index) =>
+        filledIconSrc || emptyIconSrc ? (
+          <Image
+            key={index}
+            alt={index < rating ? "rating-filled" : "rating-empty"}
+            width={16}
+            height={16}
+            src={index < rating ? (filledIconSrc ?? "") : (emptyIconSrc ?? "")}
+          />
+        ) : (
+          <span key={index}>{index < rating ? "★" : "☆"}</span>
+        )
+      )}
     </div>
   );
 };
 
 export function DangleReview({
   profileImageUrl,
+  fallbackProfileImageUrl,
   userName,
-  dogInfo,
+  userSubInfo,
   locationCategory,
   placeName,
   isMine,
   rating,
+  filledRatingIconSrc,
+  emptyRatingIconSrc,
   date,
   chips,
+  chipLabels,
   content,
   onClick,
 }: DangleReviewProps) {
+  const resolvedProfileSrc = profileImageUrl || fallbackProfileImageUrl;
+
   return (
     <div className={s.root} onClick={onClick}>
-      {/* isMine 여부에 따라 장소 정보 또는 유저 정보 렌더링 */}
       {isMine ? (
-        // 내 리뷰일 경우 (장소 정보)
         <div className={s.placeInfo}>
           <span className={s.locationCategory}>{locationCategory}</span>
           <div className={s.placeName}>{placeName}</div>
         </div>
       ) : (
-        // 다른 사람 리뷰일 경우 (유저 정보)
         <div className={s.userInfo}>
-          <Image
-            src={profileImageUrl || "/assets/dangle/dog.png"} // 기본 이미지
-            alt={userName || "user"}
-            width={24}
-            height={24}
-            className={s.profileImage}
-          />
+          {resolvedProfileSrc && (
+            <Image
+              src={resolvedProfileSrc}
+              alt={userName || "user"}
+              width={24}
+              height={24}
+              className={s.profileImage}
+            />
+          )}
           <div className={s.userInfoText}>
             <span className={s.userName}>{userName}</span>
-            {dogInfo && <span className={s.dogInfo}>{dogInfo}</span>}
+            {userSubInfo && <span className={s.dogInfo}>{userSubInfo}</span>}
           </div>
         </div>
       )}
 
-      {/* 리뷰 상세 */}
       <div className={s.reviewDetails}>
         <div className={s.reviewHeader}>
-          <PawRating rating={rating} />
+          <RatingDisplay
+            rating={rating}
+            filledIconSrc={filledRatingIconSrc}
+            emptyIconSrc={emptyRatingIconSrc}
+          />
           <span className={s.date}>{date}</span>
         </div>
 
-        {/* chips 배열을 고정 레이블과 1:1 매핑 */}
         {chips.map((chipValue, index) => {
-          const label = CHIP_LABELS[index];
+          const label = chipLabels?.[index];
           if (!label) return null;
 
           return (
@@ -120,7 +131,6 @@ export function DangleReview({
         })}
       </div>
 
-      {/* 리뷰 본문 */}
       <p className={s.reviewContent}>{content}</p>
     </div>
   );

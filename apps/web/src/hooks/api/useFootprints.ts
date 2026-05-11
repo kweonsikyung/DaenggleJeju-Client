@@ -1,14 +1,14 @@
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { ApiError } from "@/api/common";
-import { postFootprint, getMyFootprints, getPlaceFootprints } from "@/api/footprint";
+import { getMyFootprints, getPlaceFootprints, postFootprint } from "@/api/footprint";
 import {
-  PostFootprintReq,
-  PostFootprintRes,
   GetMyFootprintsReq,
   GetMyFootprintsRes,
   GetPlaceFootprintsReq,
   GetPlaceFootprintsRes,
+  PostFootprintReq,
+  PostFootprintRes,
 } from "@/types/footprint";
 
 /**

@@ -1,5 +1,5 @@
+import { GetPetProfileReq, PetProfileRes, PostPetProfileReq } from "@/types/pet";
 import { getRequest, postRequest } from "./common";
-import { PostPetProfileReq, PetProfileRes, GetPetProfileReq } from "@/types/pet";
 
 /**
  * @function postPetProfile

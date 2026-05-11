@@ -1,5 +1,4 @@
-import React from "react";
-import { Skeleton } from "@/ui/atoms/Skeleton/Skeleton";
+import { Skeleton } from "daenggle-ui";
 import * as s from "@/app/detail/[contentId]/style.css";
 
 const VideoCarouselSkeletonContent = () => (

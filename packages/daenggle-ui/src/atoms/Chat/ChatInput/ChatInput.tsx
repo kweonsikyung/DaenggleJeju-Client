@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+"use client";
+
 import Image from "next/image";
+import React, { useState } from "react";
 import * as s from "./style.css";
 
 interface ChatInputProps {

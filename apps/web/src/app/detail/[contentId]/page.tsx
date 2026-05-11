@@ -1,31 +1,32 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, ChangeEvent } from "react";
-import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
-import * as s from "./style.css";
-
 // components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Carousel } from "@/ui/molecules/Carousel/Carousel";
-import { Modal } from "@/ui/atoms/Modal/Modal";
+import {
+  Button,
+  Carousel,
+  DanglePlay,
+  DangleReview,
+  EmptyState,
+  Modal,
+  NavBar,
+  TopBar,
+} from "daenggle-ui";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
-
+import { NAV_ITEMS } from "@/constants/navData";
+import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
+import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 // hooks
 import { usePlaceFullDetail } from "@/hooks/api/usePlaces";
-import { useDaengglePlaceRecommendations } from "@/hooks/api/useDaenggle";
 import { usePostScrap } from "@/hooks/api/useScraps";
-import { usePlaceFootprints } from "@/hooks/api/useFootprints";
 import { useModal } from "@/hooks/useModal";
-
-// utils
-import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+// utils
+import { callPhoneNumber, copyToClipboard } from "@/utils/interaction";
+import * as s from "./style.css";
+
 const MAX_LENGTH = 200;
 
 /**
@@ -60,8 +61,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     if (typeof url === "string" && url.includes("%")) {
       try {
         url = decodeURIComponent(url);
-      } catch (e) {
-        console.error("URL 디코딩 실패:", url, e);
+      } catch (_e) {
         url = null;
       }
     }
@@ -117,8 +117,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     try {
       await postScrap({ id: contentId, type: "place" });
       mutate();
-    } catch (e) {
-      console.error("Scrap action failed:", e);
+    } catch (_e) {
       alert("스크랩 작업에 실패했습니다.");
     }
   };
@@ -188,6 +187,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     <div className={s.page}>
       <TopBar
         backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         rightIcons={[
           {
             icon: (
@@ -413,13 +413,15 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                     key={review.footprintId}
                     profileImageUrl={getRandomAvatar()}
                     userName={review.writer.pet?.name || "댕글제주"}
-                    dogInfo={
+                    userSubInfo={
                       `${review.writer.pet?.breedNameKo} · ${review.writer.pet?.sizeLabelKo}` ||
                       "중형견(6~15kg)"
                     }
                     rating={review.rating}
+                    filledRatingIconSrc="/assets/icon16/star-fill.svg"
                     date={review.createdAtText}
                     chips={review.chips}
+                    chipLabels={["출입 가능 여부", "출입 조건", "반려견 친화도"]}
                     content={review.body}
                   />
                 ))
@@ -467,7 +469,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
         </div>
       </Modal>
 
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -484,11 +486,14 @@ export default function DetailPage() {
   if (contentId === null) {
     return (
       <div className={s.page}>
-        <TopBar backIconHandler={() => router.back()} />
+        <TopBar
+          backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
+        />
         <div className={s.container}>
           <EmptyState title="페이지 준비 중" description="정보를 불러오고 있습니다" />
         </div>
-        <NavBar activePage="near" />
+        <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }

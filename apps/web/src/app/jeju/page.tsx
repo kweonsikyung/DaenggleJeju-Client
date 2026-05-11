@@ -1,16 +1,14 @@
 "use client";
 
-import React, { Suspense, useState, useEffect, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { NavBar, NoticeBox, ProgressCircle, TopBar } from "daenggle-ui";
 import Image from "next/image";
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import * as s from "./style.css";
-import { jejuOptions } from "./_util";
-import { useWebShare } from "@/hooks/useWebShare";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import { NAV_ITEMS } from "@/constants/navData";
 import { useNotice } from "@/hooks/useNotice";
-import { NoticeBox } from "@/ui/atoms/NoticeBox/NoticeBox";
-import { ProgressCircle } from "@/ui/atoms/ProgressCircle/ProgressCircle";
+import { useWebShare } from "@/hooks/useWebShare";
+import { jejuOptions } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 제주 이동 방법 메인 & 상세 페이지
@@ -77,6 +75,7 @@ function JejuPageContent() {
         <TopBar
           transparent
           backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
           rightIcons={[
             {
               icon: (
@@ -133,7 +132,11 @@ function JejuPageContent() {
   const renderMainPage = () => {
     return (
       <>
-        <TopBar transparent backIconHandler={() => router.back()} />
+        <TopBar
+          transparent
+          backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
+        />
         <div className={s.container}>
           <Image src={"/assets/jeju.png"} width={274} height={190} alt="제주" />
           <div className={s.title}>
@@ -167,7 +170,7 @@ function JejuPageContent() {
   return (
     <div className={s.page}>
       {type ? renderDetailPage() : renderMainPage()}
-      <NavBar activePage="jeju" />
+      <NavBar activeId="jeju" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -178,7 +181,11 @@ function JejuPageContent() {
 export default function JejuPage() {
   const FallbackUI = (
     <div className={s.page}>
-      <TopBar transparent backIconHandler={() => {}} />
+      <TopBar
+        transparent
+        backIconHandler={() => {}}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
+      />
       <div className={s.container}>
         <Image src={"/assets/jeju.png"} width={274} height={190} alt="제주" />
         <div className={s.title}>
@@ -187,7 +194,7 @@ export default function JejuPage() {
           쉽게 안내해 드릴게요
         </div>
       </div>
-      <NavBar activePage="jeju" />
+      <NavBar activeId="jeju" items={NAV_ITEMS} onNavigate={() => {}} />
     </div>
   );
 

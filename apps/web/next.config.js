@@ -3,7 +3,8 @@ const withVanillaExtract = createVanillaExtractPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  transpilePackages: ["daenggle-ui"],
+  output: "standalone",
   async rewrites() {
     return [
       {

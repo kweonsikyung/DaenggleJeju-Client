@@ -1,33 +1,26 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
 import Image from "next/image";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperCore } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 //components
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { ShortsOverlay } from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
-import { ShortsBottomInfo } from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Dropdown } from "@/ui/atoms/Dropdown/Dropdown";
-
+import { Dropdown, EmptyState, NavBar, ShortsBottomInfo, ShortsOverlay, TopBar } from "daenggle-ui";
+import { NAV_ITEMS } from "@/constants/navData";
 //hooks
 import {
-  useDaenggleRegions,
-  useDaenggleConcepts,
   useDaenggleAccommodations,
+  useDaenggleConcepts,
+  useDaenggleRegions,
   useDaenggleTrending,
 } from "@/hooks/api/useDaenggle";
-
 //utils
-import { DaenggleContextId, DaenggleConceptKey } from "@/types/daenggle";
-import { VideoData } from "@/utils/dummy_data";
+import { DaenggleConceptKey, DaenggleContextId } from "@/types/daenggle";
+import { VideoData } from "@/utils/dummyData";
 import { formatApiVideoToLocal, JEJU_REGIONS } from "./_util";
-
 import * as s from "./style.css";
 
 /** type (related YOUTUBE) */
@@ -119,35 +112,48 @@ function ShortsPageContent() {
   );
 
   /** utils */
-  let formattedVideos: VideoData[] = [];
-  if (contentId) {
-    formattedVideos = [
-      {
-        id: contentId,
-        loc: "",
-        videoId: contentId,
-        thumbnailUrl: `https://i.ytimg.com/vi/${contentId}/hqdefault.jpg`,
-        profileImageUrl: "",
-        userName: "",
-        description: "",
-        tags: [],
-        bookmarks: 0,
-        comments: 0,
-        likes: 0,
-      },
-    ];
-  } else if (contextId && daenggleRegionsData?.items) {
-    formattedVideos = daenggleRegionsData.items.map(formatApiVideoToLocal);
-  } else if (conceptKey && daenggleConceptsData?.shelves) {
-    const shelf = daenggleConceptsData.shelves.find((s) => s.key === conceptKey);
-    if (shelf?.items) {
-      formattedVideos = shelf.items.map(formatApiVideoToLocal);
+  const formattedVideos = useMemo<VideoData[]>(() => {
+    if (contentId) {
+      return [
+        {
+          id: contentId,
+          loc: "",
+          videoId: contentId,
+          thumbnailUrl: `https://i.ytimg.com/vi/${contentId}/hqdefault.jpg`,
+          profileImageUrl: "",
+          userName: "",
+          description: "",
+          tags: [],
+          bookmarks: 0,
+          comments: 0,
+          likes: 0,
+        },
+      ];
     }
-  } else if (listType === "accommodations" && daenggleAccommodationsData?.items) {
-    formattedVideos = daenggleAccommodationsData.items.map(formatApiVideoToLocal);
-  } else if (listType === "trending" && daenggleTrendingData?.items) {
-    formattedVideos = daenggleTrendingData.items.map(formatApiVideoToLocal);
-  }
+    if (contextId && daenggleRegionsData?.items) {
+      return daenggleRegionsData.items.map(formatApiVideoToLocal);
+    }
+    if (conceptKey && daenggleConceptsData?.shelves) {
+      const shelf = daenggleConceptsData.shelves.find((s) => s.key === conceptKey);
+      if (shelf?.items) return shelf.items.map(formatApiVideoToLocal);
+    }
+    if (listType === "accommodations" && daenggleAccommodationsData?.items) {
+      return daenggleAccommodationsData.items.map(formatApiVideoToLocal);
+    }
+    if (listType === "trending" && daenggleTrendingData?.items) {
+      return daenggleTrendingData.items.map(formatApiVideoToLocal);
+    }
+    return [];
+  }, [
+    contentId,
+    contextId,
+    conceptKey,
+    listType,
+    daenggleRegionsData,
+    daenggleConceptsData,
+    daenggleAccommodationsData,
+    daenggleTrendingData,
+  ]);
 
   /** lifecycle */
   useEffect(() => {
@@ -204,7 +210,7 @@ function ShortsPageContent() {
     } else {
       playerRef.current.pauseVideo();
     }
-  }, [isPlaying]);
+  }, [isPlaying, isStarted]);
 
   /** loading */
   const isLoading =
@@ -216,7 +222,7 @@ function ShortsPageContent() {
     return (
       <div className={s.page}>
         <EmptyState title="로딩 중" description="잠시만 기다려 주세요." />
-        <NavBar activePage="dangle" />
+        <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }
@@ -225,7 +231,7 @@ function ShortsPageContent() {
     return (
       <div className={s.page}>
         <EmptyState title="에러 발생" description="잠시 후 다시 시도해주세요" />
-        <NavBar activePage="dangle" />
+        <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }
@@ -270,6 +276,7 @@ function ShortsPageContent() {
         transparent
         whiteIcon
         backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         rightIcons={[
           {
             icon: <Image alt="검색" height={24} src="/assets/icon16/search_line.svg" width={24} />,
@@ -459,7 +466,7 @@ function ShortsPageContent() {
   return (
     <div className={s.page}>
       {renderContent()}
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -471,7 +478,7 @@ export default function ShortsPage() {
   const FallbackUI = (
     <div className={s.page}>
       <EmptyState title="로딩 중" description="잠시만 기다려 주세요." />
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={() => {}} />
     </div>
   );
   return (

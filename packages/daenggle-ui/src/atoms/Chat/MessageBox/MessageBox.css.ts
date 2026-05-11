@@ -1,6 +1,6 @@
+import { style } from "@vanilla-extract/css";
 import { COLORS } from "@/styles/colors.css";
 import { TYPO } from "@/styles/typography.css";
-import { style } from "@vanilla-extract/css";
 
 export const wrapper = style({
   display: "flex",

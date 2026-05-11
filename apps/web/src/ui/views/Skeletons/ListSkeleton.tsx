@@ -1,7 +1,6 @@
-import React from "react";
-import { Skeleton } from "@/ui/atoms/Skeleton/Skeleton";
-import { DanglePlaceSkeleton } from "./DangleSkeletons";
+import { Skeleton } from "daenggle-ui";
 import * as s from "@/app/list/style.css";
+import { DanglePlaceSkeleton } from "./DangleSkeletons";
 
 export function ListSkeleton() {
   return (

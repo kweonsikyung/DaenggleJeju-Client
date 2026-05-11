@@ -1,30 +1,29 @@
 "use client";
 
-import React from "react";
-import * as s from "./style.css";
+//components
+import {
+  Carousel,
+  DangleCard,
+  DangleItem,
+  DanglePlay,
+  EmptyState,
+  Grid,
+  Header,
+  NavBar,
+  TopBar,
+} from "daenggle-ui";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-//components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { Header } from "@/ui/atoms/Header/Header";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { DangleItem } from "@/ui/atoms/Dangle/DangleItem/DangleItem";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DangleCard } from "@/ui/atoms/Dangle/DangleCard/DangleCard";
-import { Carousel } from "@/ui/molecules/Carousel/Carousel";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
+import { NAV_ITEMS } from "@/constants/navData";
 
 //hooks
 import { useDaenggleAccommodations, useDaenggleTrending } from "@/hooks/api/useDaenggle";
 import { useVisitedRegions } from "@/hooks/useVisitedRegions";
-
-//utils
-import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
-import { JEJU_DATA } from "@/utils/dummy_data";
-import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
+import { JEJU_DATA } from "@/utils/dummyData";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
+//utils
+import { conceptBanners, getThumbnailUrl, regionContextMap } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 댕글추천 페이지
@@ -67,7 +66,10 @@ export default function Page() {
         backIconHandler={() => {
           router.back();
         }}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         isShowLogo
+        logoSrc="/assets/logo/logo-top.svg"
+        logoAlt="댕글제주"
         rightIcons={[
           {
             icon: <Image alt="검색" height={24} width={24} src="/assets/icon24/search.svg" />,
@@ -196,7 +198,7 @@ export default function Page() {
       </div>
 
       {/* Nav */}
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }

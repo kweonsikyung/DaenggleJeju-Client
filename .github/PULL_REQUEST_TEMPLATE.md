@@ -3,8 +3,8 @@
 <!-- Briefly explain the purpose of this PR -->
 
 ### Related Issues
-Epic: #<epic_number>  
-Issue: #<issue_number>  
+Epic: Resolves #<epic_number>  
+Issue: Resolves #<issue_number>  
 
 ### Changes
 <!-- List the key changes in this PR -->

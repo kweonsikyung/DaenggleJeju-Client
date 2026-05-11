@@ -1,13 +1,12 @@
 "use client";
 
+import { LoadingSpinner, LoginButton } from "daenggle-ui";
 import Image from "next/image";
-import * as s from "./style.css";
-import { LoginButton } from "@/ui/atoms/Buttons/LoginButton/LoginButton";
-import { LOGIN_TYPE } from "@/types/LoginType";
 import { useRouter } from "next/navigation";
-import { useDevLogin, useKakaoLogin } from "@/hooks/api/useAuth";
 import React from "react";
-import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
+import { useDevLogin, useKakaoLogin } from "@/hooks/api/useAuth";
+import { LOGIN_TYPE } from "@/types/loginType";
+import * as s from "./style.css";
 
 const LOGIN_CONFIG = [
   { type: LOGIN_TYPE.KAKAO, title: "Kakao로 시작하기" },
@@ -27,7 +26,7 @@ export default function Login() {
     try {
       await devLogin();
       router.push("/curation");
-    } catch (error) {
+    } catch (_error) {
       alert("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -50,6 +49,7 @@ export default function Login() {
               key={type}
               provider={type}
               title={title}
+              iconSrc={`/assets/login/${type}.svg`}
               onClick={() => {
                 if (type === LOGIN_TYPE.KAKAO) kakaoLogin();
               }}

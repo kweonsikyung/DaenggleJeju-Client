@@ -1,7 +1,4 @@
 module.exports = {
-  'apps/web/**/*.{ts,tsx,js,jsx}': [
-    'prettier --write',
-    () => 'pnpm --filter web lint:fix',
-  ],
-  '*.{json,css,md}': ['prettier --write'],
+  "**/*.{ts,tsx,js,jsx}": ["biome check --write --unsafe"],
+  "**/*.{json,css}": ["biome format --write --files-ignore-unknown=true"],
 };

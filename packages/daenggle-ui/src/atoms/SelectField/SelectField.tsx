@@ -1,6 +1,8 @@
-import React, { useId, useMemo } from "react";
-import * as s from "./SelectField.css";
+"use client";
+
 import Image from "next/image";
+import { useId, useMemo } from "react";
+import * as s from "./SelectField.css";
 
 export interface SelectFieldProps {
   /** 라벨 텍스트 */

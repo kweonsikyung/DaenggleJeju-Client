@@ -1,7 +1,6 @@
 "use client";
 
 import * as s from "./style.css";
-import Image from "next/image";
 
 /**
  * @component LoadingSpinner

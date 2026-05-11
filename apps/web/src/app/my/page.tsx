@@ -1,32 +1,30 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import * as s from "./style.css";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
 //components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { ProfileCard } from "@/ui/atoms/ProfileCard/ProfileCard";
-import { SegmentedControl } from "@/ui/atoms/SegmentedControl/SegmentedControl";
-import { Tabs } from "@/ui/atoms/Tabs/Tabs";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
-
-//utils and hooks
-import { mainTabs, subTabs, emptyStateContent } from "./_util";
+import {
+  DanglePlace,
+  DanglePlay,
+  DangleReview,
+  EmptyState,
+  Grid,
+  NavBar,
+  ProfileCard,
+  SegmentedControl,
+  Tabs,
+  TopBar,
+} from "daenggle-ui";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { NAV_ITEMS } from "@/constants/navData";
+import { useMyFootprints } from "@/hooks/api/useFootprints";
 import { usePetProfileList } from "@/hooks/api/usePetProfile";
 import { useScrapList } from "@/hooks/api/useScraps";
-import { useMyFootprints } from "@/hooks/api/useFootprints";
-import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
+import { ScrapDangleItem, ScrapPlaceItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 import { extractHashtags } from "@/utils/textParsing";
+//utils and hooks
+import { emptyStateContent, mainTabs, subTabs } from "./_util";
+import * as s from "./style.css";
 
 /**
  * 마이 페이지
@@ -65,12 +63,15 @@ export default function Page() {
       : undefined
   );
 
-  const tabIdToContentType: Record<string, string> = {
-    accom: "숙박",
-    restaurant: "음식점",
-    tourist: "관광지",
-    activity: "레포츠",
-  };
+  const tabIdToContentType = useMemo<Record<string, string>>(
+    () => ({
+      accom: "숙박",
+      restaurant: "음식점",
+      tourist: "관광지",
+      activity: "레포츠",
+    }),
+    []
+  );
 
   const filteredItems = useMemo(() => {
     if (activeMainTab !== "saved" || !scrapData?.items) return [];
@@ -81,7 +82,7 @@ export default function Page() {
     return (scrapData.items as ScrapPlaceItem[]).filter(
       (item) => item.contentType?.name === targetContentType
     );
-  }, [scrapData, activeSubTab, activeMainTab]);
+  }, [scrapData, activeSubTab, activeMainTab, tabIdToContentType]);
 
   const detailsString = [
     myPet?.breedNameKo,
@@ -95,7 +96,11 @@ export default function Page() {
 
   return (
     <div className={s.page}>
-      <TopBar backIconHandler={() => router.back()} title="마이댕글" />
+      <TopBar
+        backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
+        title="마이댕글"
+      />
       <div className={s.container}>
         <div className={s.contentWrapper}>
           {isPetProfileLoading ? (
@@ -196,8 +201,10 @@ export default function Page() {
                     locationCategory={item.metaLine || item.contentType?.name || ""}
                     placeName={item.title}
                     rating={item.rating}
+                    filledRatingIconSrc="/assets/icon16/star-fill.svg"
                     date={item.createdAtText}
                     chips={item.chips}
+                    chipLabels={["출입 가능 여부", "출입 조건", "반려견 친화도"]}
                     content={item.body}
                     onClick={() => router.push(`/detail/${item.contentId}`)}
                   />
@@ -209,7 +216,7 @@ export default function Page() {
       </div>
 
       {/* Nav */}
-      <NavBar activePage="my" />
+      <NavBar activeId="my" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }

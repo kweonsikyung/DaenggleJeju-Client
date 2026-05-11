@@ -1,12 +1,25 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import * as s from "./DanglePlace.css";
+
+export interface DanglePlaceIcons {
+  /** 재생 수 아이콘 src */
+  play?: string;
+  /** 북마크 수 아이콘 src */
+  bookmark?: string;
+  /** 북마크 버튼 활성 상태 아이콘 src */
+  bookmarkFilled?: string;
+  /** 북마크 버튼 비활성 상태 아이콘 src */
+  bookmarkLine?: string;
+}
 
 export interface DanglePlaceProps {
   /** 썸네일 이미지 URL */
   thumbnailUrl: string | null;
+  /** 이미지 로드 실패 시 대체 이미지 URL */
+  fallbackImageUrl?: string;
   /** 위치 및 카테고리 정보 */
   locationCategory: string;
   /** 장소명 */
@@ -23,16 +36,23 @@ export interface DanglePlaceProps {
   isExpanded?: boolean;
   /** 상세 정보 (확장 시) */
   details?: { time: string; price: string };
+  /** 상세 정보 기준 레이블 (기본값: "Per day") */
+  detailsBaseLabel?: string;
+  /** 상세 정보 가격 단위 (기본값: "") */
+  detailsPriceUnit?: string;
   /** 클릭 이벤트 핸들러 */
   onClick?: () => void;
   /** 북마크 상태 */
   isBookmarked?: boolean;
   /** 북마크 클릭 이벤트 핸들러 */
   onBookmarkClick?: () => Promise<void> | void;
+  /** 아이콘 src 모음 */
+  icons?: DanglePlaceIcons;
 }
 
 export function DanglePlace({
   thumbnailUrl,
+  fallbackImageUrl,
   locationCategory,
   name,
   distance,
@@ -41,43 +61,37 @@ export function DanglePlace({
   isExpanded = false,
   tags = [],
   details,
+  detailsBaseLabel = "Per day",
+  detailsPriceUnit = "",
   onClick,
   isBookmarked = false,
   onBookmarkClick,
+  icons = {},
 }: DanglePlaceProps) {
-  // 1. 초기 이미지 URL 디코딩 및 유효성 검사
   const initialImageSrc = useMemo(() => {
-    let decodedThumbnailUrl = thumbnailUrl;
+    let decoded = thumbnailUrl;
     if (typeof thumbnailUrl === "string" && thumbnailUrl.includes("%")) {
       try {
-        decodedThumbnailUrl = decodeURIComponent(thumbnailUrl);
-      } catch (e) {
-        console.error("URL 디코딩 실패:", thumbnailUrl, e);
-        decodedThumbnailUrl = null;
+        decoded = decodeURIComponent(thumbnailUrl);
+      } catch {
+        decoded = null;
       }
     }
 
-    if (
-      typeof decodedThumbnailUrl === "string" &&
-      decodedThumbnailUrl !== "사진 없음" &&
-      /^https?:\/\//i.test(decodedThumbnailUrl)
-    ) {
-      return decodedThumbnailUrl; // 유효한 URL
+    if (typeof decoded === "string" && /^https?:\/\//i.test(decoded)) {
+      return decoded;
     }
-    return "/assets/jeju.png"; // 기본 이미지
-  }, [thumbnailUrl]);
+    return fallbackImageUrl ?? null;
+  }, [thumbnailUrl, fallbackImageUrl]);
 
-  // 2. 이미지 URL 상태 관리
   const [currentImageSrc, setCurrentImageSrc] = useState(initialImageSrc);
 
-  // 3. thumbnailUrl prop이 변경될 때 상태 업데이트
   useEffect(() => {
     setCurrentImageSrc(initialImageSrc);
   }, [initialImageSrc]);
 
-  // 4. 이미지 로드 에러 핸들러
   const handleImageError = () => {
-    setCurrentImageSrc("/assets/jeju.png");
+    if (fallbackImageUrl) setCurrentImageSrc(fallbackImageUrl);
   };
 
   const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,14 +105,16 @@ export function DanglePlace({
     <div className={s.root[isExpanded ? "isExpanded" : "default"]} onClick={onClick}>
       <div className={s.headerContainer}>
         <div className={s.thumbnailWrapper}>
-          <Image
-            src={currentImageSrc}
-            alt={"이미지"}
-            width={80}
-            height={80}
-            className={s.thumbnail}
-            onError={handleImageError}
-          />
+          {currentImageSrc && (
+            <Image
+              src={currentImageSrc}
+              alt={"이미지"}
+              width={80}
+              height={80}
+              className={s.thumbnail}
+              onError={handleImageError}
+            />
+          )}
         </div>
         <div className={s.contentWrapper}>
           <span className={s.locationCategory}>{locationCategory}</span>
@@ -111,7 +127,7 @@ export function DanglePlace({
 
             {typeof playCount === "number" && (
               <div className={s.statItem}>
-                <Image alt="재생 수" width={12} height={12} src="/assets/icon12/play_filled.svg" />
+                {icons.play && <Image alt="재생 수" width={12} height={12} src={icons.play} />}
                 <span className={s.statValue}>{playCount}</span>
               </div>
             )}
@@ -122,12 +138,9 @@ export function DanglePlace({
 
             {typeof bookmarkCount === "number" && (
               <div className={s.statItem}>
-                <Image
-                  alt="북마크"
-                  width={12}
-                  height={12}
-                  src="/assets/icon12/bookmark_filled.svg"
-                />
+                {icons.bookmark && (
+                  <Image alt="북마크" width={12} height={12} src={icons.bookmark} />
+                )}
                 <span className={s.statValue}>{bookmarkCount}</span>
               </div>
             )}
@@ -143,16 +156,14 @@ export function DanglePlace({
         </div>
         {onBookmarkClick && (
           <button className={s.bookmarkButton} onClick={handleBookmarkClick}>
-            <Image
-              alt="북마크"
-              width={24}
-              height={24}
-              src={
-                isBookmarked
-                  ? "/assets/icon24/bookmark_filled.svg"
-                  : "/assets/icon24/bookmark_line.svg"
-              }
-            />
+            {(icons.bookmarkFilled || icons.bookmarkLine) && (
+              <Image
+                alt="북마크"
+                width={24}
+                height={24}
+                src={isBookmarked ? (icons.bookmarkFilled ?? "") : (icons.bookmarkLine ?? "")}
+              />
+            )}
           </button>
         )}
       </div>
@@ -161,12 +172,12 @@ export function DanglePlace({
           {details && (
             <div className={s.details}>
               <div className={s.detailsTop}>
-                <div>하루 기준</div>
+                <div>{detailsBaseLabel}</div>
                 <div className={s.detailLabel}>{details.time}</div>
               </div>
               <div className={s.detailValue}>
                 {details.price}
-                <span className={s.detailLabel}> 원~</span>
+                {detailsPriceUnit && <span className={s.detailLabel}>{detailsPriceUnit}</span>}
               </div>
             </div>
           )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const STORAGE_KEY = "daenggle_visited_regions";
 
@@ -18,8 +18,7 @@ function getVisitedFromStorage(): Set<string> {
     }
     const parsedArray: string[] = JSON.parse(storedData);
     return new Set(parsedArray);
-  } catch (e) {
-    console.error("Failed to parse visited regions from storage", e);
+  } catch (_e) {
     return new Set();
   }
 }
@@ -54,9 +53,7 @@ export function useVisitedRegions() {
 
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(newSet)));
-      } catch (e) {
-        console.error("Failed to save visited regions to storage", e);
-      }
+      } catch (_e) {}
 
       return newSet;
     });

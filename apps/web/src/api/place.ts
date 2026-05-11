@@ -1,17 +1,17 @@
-import { getRequest } from "./common";
 import {
+  GetPlaceDetailReq,
+  GetPlaceDetailRes,
+  GetPlaceFullDetailReq,
+  GetPlaceFullDetailRes,
   GetPlaceListReq,
   GetPlaceListRes,
   GetPlaceMapReq,
   GetPlaceMapRes,
   GetPlaceSearchReq,
   GetPlaceSearchRes,
-  GetPlaceDetailReq,
-  GetPlaceDetailRes,
-  GetPlaceFullDetailReq,
-  GetPlaceFullDetailRes,
 } from "@/types/place";
 import { createQueryString } from "@/utils/createQueryString";
+import { getRequest } from "./common";
 
 /**
  * @function getPlaceList

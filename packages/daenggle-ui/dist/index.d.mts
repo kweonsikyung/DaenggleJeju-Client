@@ -16,8 +16,12 @@ interface AvatarPickerProps {
     disabled?: boolean;
     /** 추가 className */
     className?: string;
+    /** 기본 아바타 이미지 src (미리보기 없을 때 표시) */
+    placeholderImageSrc?: string;
+    /** 카메라 버튼 아이콘 src */
+    cameraIconSrc?: string;
 }
-declare function AvatarPicker({ size, value, defaultValue, onChange, accept, disabled, className, }: AvatarPickerProps): React__default.JSX.Element;
+declare function AvatarPicker({ size, value, defaultValue, onChange, accept, disabled, className, placeholderImageSrc, cameraIconSrc, }: AvatarPickerProps): React__default.JSX.Element;
 
 type BottomSheetProps = {
     /** 패널 오픈 여부 */
@@ -29,7 +33,7 @@ type BottomSheetProps = {
     /** 패널 내부에 렌더링할 콘텐츠 */
     children: ReactNode;
 };
-declare function BottomSheet({ open, onOpenChange, title, children, }: BottomSheetProps): React$1.JSX.Element;
+declare function BottomSheet({ open, onOpenChange, title, children }: BottomSheetProps): React$1.JSX.Element;
 
 interface LocationProps extends Omit<React__default.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
     /** 상단 굵은 타이틀 */
@@ -83,8 +87,9 @@ type LoginType = `${LOGIN_TYPE}`;
 interface LoginButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type"> {
     provider: LoginType;
     title: string;
+    iconSrc: string;
 }
-declare function LoginButton({ provider, title, className, ...rest }: LoginButtonProps): React$1.JSX.Element;
+declare function LoginButton({ provider, title, iconSrc, className, ...rest }: LoginButtonProps): React$1.JSX.Element;
 
 interface AiProfileHeaderProps {
     /** 프로필 이미지 URL */
@@ -94,7 +99,7 @@ interface AiProfileHeaderProps {
     /** 서브 타이틀 (예: "빠르게 찾는 반려견 건강 정보") */
     subtitle: string;
 }
-declare function AiProfileHeader({ imageUrl, title, subtitle, }: AiProfileHeaderProps): React__default.JSX.Element;
+declare function AiProfileHeader({ imageUrl, title, subtitle }: AiProfileHeaderProps): React__default.JSX.Element;
 
 interface ChatInputProps {
     onSend: (message: string) => void;
@@ -107,7 +112,7 @@ interface MessageBoxProps {
     /** 메시지 주체 ('ai' 또는 'user') */
     variant?: "ai" | "user";
 }
-declare function MessageBox({ children, variant, }: MessageBoxProps): React__default.JSX.Element;
+declare function MessageBox({ children, variant }: MessageBoxProps): React__default.JSX.Element;
 
 declare function ThinkingBubble(): React__default.JSX.Element;
 
@@ -117,7 +122,7 @@ interface TopicSelectorProps {
     /** 특정 주제 버튼을 클릭했을 때 호출될 함수 */
     onSelectTopic: (topic: string) => void;
 }
-declare function TopicSelector({ topics, onSelectTopic, }: TopicSelectorProps): React__default.JSX.Element;
+declare function TopicSelector({ topics, onSelectTopic }: TopicSelectorProps): React__default.JSX.Element;
 
 interface ChipProps {
     /** 텍스트 */
@@ -138,7 +143,7 @@ interface ChipKeywordProps {
     /** 칩 전체 클릭 이벤트 핸들러 */
     onClick?: () => void;
 }
-declare function ChipKeyword({ text, selected, onClose, onClick, }: ChipKeywordProps): React__default.JSX.Element;
+declare function ChipKeyword({ text, selected, onClose, onClick }: ChipKeywordProps): React__default.JSX.Element;
 
 interface ChipMapListProps {
     /** 칩 중앙 텍스트 */
@@ -148,13 +153,15 @@ interface ChipMapListProps {
     /** 칩 클릭 핸들러 */
     onLocationListClick: () => void;
 }
-declare function ChipMapList({ text, cnt, onLocationListClick, }: ChipMapListProps): React__default.JSX.Element;
+declare function ChipMapList({ text, cnt, onLocationListClick }: ChipMapListProps): React__default.JSX.Element;
 
 interface DangleCardProps {
     /** 배경 이미지 URL */
     imageUrl: string;
     /** 좋아요(조회수) 수 */
     views?: number;
+    /** 조회수 아이콘 src */
+    viewIconSrc?: string;
     /** 카드 제목 */
     title: string;
     /** 해시태그 텍스트 */
@@ -162,7 +169,7 @@ interface DangleCardProps {
     /** 클릭 이벤트 핸들러 */
     onClick?: () => void;
 }
-declare function DangleCard({ imageUrl, views, title, hashtag, onClick, }: DangleCardProps): React__default.JSX.Element;
+declare function DangleCard({ imageUrl, views, viewIconSrc, title, hashtag, onClick, }: DangleCardProps): React__default.JSX.Element;
 
 interface DangleItemProps {
     /** 아이템의 상태: 'before' 또는 'after' */
@@ -174,11 +181,23 @@ interface DangleItemProps {
     /** 클릭 이벤트 핸들러 */
     onClick: () => void;
 }
-declare function DangleItem({ state, imageUrl, text, onClick, }: DangleItemProps): React__default.JSX.Element;
+declare function DangleItem({ state, imageUrl, text, onClick }: DangleItemProps): React__default.JSX.Element;
 
+interface DanglePlaceIcons {
+    /** 재생 수 아이콘 src */
+    play?: string;
+    /** 북마크 수 아이콘 src */
+    bookmark?: string;
+    /** 북마크 버튼 활성 상태 아이콘 src */
+    bookmarkFilled?: string;
+    /** 북마크 버튼 비활성 상태 아이콘 src */
+    bookmarkLine?: string;
+}
 interface DanglePlaceProps {
     /** 썸네일 이미지 URL */
     thumbnailUrl: string | null;
+    /** 이미지 로드 실패 시 대체 이미지 URL */
+    fallbackImageUrl?: string;
     /** 위치 및 카테고리 정보 */
     locationCategory: string;
     /** 장소명 */
@@ -198,14 +217,20 @@ interface DanglePlaceProps {
         time: string;
         price: string;
     };
+    /** 상세 정보 기준 레이블 (기본값: "Per day") */
+    detailsBaseLabel?: string;
+    /** 상세 정보 가격 단위 (기본값: "") */
+    detailsPriceUnit?: string;
     /** 클릭 이벤트 핸들러 */
     onClick?: () => void;
     /** 북마크 상태 */
     isBookmarked?: boolean;
     /** 북마크 클릭 이벤트 핸들러 */
     onBookmarkClick?: () => Promise<void> | void;
+    /** 아이콘 src 모음 */
+    icons?: DanglePlaceIcons;
 }
-declare function DanglePlace({ thumbnailUrl, locationCategory, name, distance, playCount, bookmarkCount, isExpanded, tags, details, onClick, isBookmarked, onBookmarkClick, }: DanglePlaceProps): React__default.JSX.Element;
+declare function DanglePlace({ thumbnailUrl, fallbackImageUrl, locationCategory, name, distance, playCount, bookmarkCount, isExpanded, tags, details, detailsBaseLabel, detailsPriceUnit, onClick, isBookmarked, onBookmarkClick, icons, }: DanglePlaceProps): React__default.JSX.Element;
 
 interface DanglePlayProps {
     /** 컴포넌트 타입 */
@@ -214,6 +239,8 @@ interface DanglePlayProps {
     width?: string | number;
     /** 배경 이미지 URL */
     imageUrl: string;
+    /** 이미지 로드 실패 시 대체 이미지 URL */
+    fallbackImageUrl?: string;
     /** 프로필 이미지 URL */
     profileImageUrl?: string;
     /** 사용자 이름 */
@@ -232,18 +259,24 @@ interface DanglePlayProps {
     timeAgo?: string;
     /** 해시태그 (medium 타입 전용) */
     tags?: string[];
+    /** 조회수 아이콘 src */
+    viewIconSrc?: string;
+    /** 댓글 아이콘 src */
+    commentIconSrc?: string;
     /** 클릭 이벤트 핸들러 */
     onClick?: () => void;
 }
-declare function DanglePlay({ type, width, imageUrl, profileImageUrl, name, location, address, title, views, comments, timeAgo, tags, onClick, }: DanglePlayProps): React__default.JSX.Element;
+declare function DanglePlay({ type, width, imageUrl, fallbackImageUrl, profileImageUrl, name, location, address, title, views, comments, timeAgo, tags, viewIconSrc, commentIconSrc, onClick, }: DanglePlayProps): React__default.JSX.Element;
 
 interface DangleReviewProps {
     /** [isMine=false] 리뷰 작성자의 프로필 이미지 URL */
     profileImageUrl?: string;
+    /** [isMine=false] 프로필 이미지 로드 실패 시 대체 이미지 URL */
+    fallbackProfileImageUrl?: string;
     /** [isMine=false] 리뷰 작성자의 이름 */
     userName?: string;
-    /** [isMine=false] 리뷰 작성자의 반려견 정보 */
-    dogInfo?: string;
+    /** [isMine=false] 리뷰 작성자의 부가 정보 */
+    userSubInfo?: string;
     /** [isMine=true] 장소 위치/카테고리 */
     locationCategory?: string;
     /** [isMine=true] 장소명 */
@@ -252,16 +285,22 @@ interface DangleReviewProps {
     isMine: boolean;
     /** 평점 (1-5 사이의 숫자) */
     rating: number;
-    /** 리뷰 작성 날짜 (API: createdAtText) */
+    /** 평점 활성 아이콘 src (없으면 ★ 텍스트 사용) */
+    filledRatingIconSrc?: string;
+    /** 평점 비활성 아이콘 src (없으면 ☆ 텍스트 사용) */
+    emptyRatingIconSrc?: string;
+    /** 리뷰 작성 날짜 */
     date: string;
-    /** 리뷰 칩 배열 (API: chips) */
+    /** 리뷰 칩 값 배열 */
     chips: string[];
-    /** 리뷰 본문 내용 (API: body) */
+    /** 칩 레이블 배열 (chips와 1:1 매핑) */
+    chipLabels?: string[];
+    /** 리뷰 본문 내용 */
     content: string;
     /** [isMine=true] 카드 클릭 이벤트 핸들러 */
     onClick?: () => void;
 }
-declare function DangleReview({ profileImageUrl, userName, dogInfo, locationCategory, placeName, isMine, rating, date, chips, content, onClick, }: DangleReviewProps): React__default.JSX.Element;
+declare function DangleReview({ profileImageUrl, fallbackProfileImageUrl, userName, userSubInfo, locationCategory, placeName, isMine, rating, filledRatingIconSrc, emptyRatingIconSrc, date, chips, chipLabels, content, onClick, }: DangleReviewProps): React__default.JSX.Element;
 
 interface DangleVideoProps {
     /** 썸네일 이미지 URL */
@@ -278,8 +317,14 @@ interface DangleVideoProps {
     onClick?: () => void;
     /** 해시태그 */
     tags?: string[];
+    /** 조회수 아이콘 src */
+    viewIconSrc?: string;
+    /** 댓글 아이콘 src */
+    commentIconSrc?: string;
+    /** 재생 버튼 아이콘 src */
+    playIconSrc?: string;
 }
-declare function DangleVideo({ thumbnailUrl, title, views, comments, timeAgo, tags, onClick, }: DangleVideoProps): React__default.JSX.Element;
+declare function DangleVideo({ thumbnailUrl, title, views, comments, timeAgo, tags, onClick, viewIconSrc, commentIconSrc, playIconSrc, }: DangleVideoProps): React__default.JSX.Element;
 
 interface DropdownOption {
     value: string;
@@ -311,12 +356,16 @@ interface EmptyStateProps {
 declare function EmptyState({ imageUrl, title, description, }: EmptyStateProps): React__default.JSX.Element;
 
 interface FabProps {
+    /** FAB 이미지 src */
+    imageSrc?: string;
+    /** FAB 이미지 alt */
+    imageAlt?: string;
     /** 클릭 이벤트 핸들러 */
     onClick?: () => void;
     /** 외부에서 주입할 클래스 */
     className?: string;
 }
-declare function Fab({ onClick, className }: FabProps): React__default.JSX.Element;
+declare function Fab({ imageSrc, imageAlt, onClick, className }: FabProps): React__default.JSX.Element;
 
 interface FilterChipProps {
     /** 칩에 표시될 텍스트 */
@@ -328,7 +377,7 @@ interface FilterChipProps {
     /** 클릭 이벤트 핸들러 */
     onClick?: () => void;
 }
-declare function FilterChip({ text, iconUrl, selected, onClick, }: FilterChipProps): React__default.JSX.Element;
+declare function FilterChip({ text, iconUrl, selected, onClick }: FilterChipProps): React__default.JSX.Element;
 
 interface FilterChipExpandProps {
     /** 칩의 메인 타이틀 텍스트 */
@@ -354,7 +403,7 @@ interface HeaderProps {
     /** 컴포넌트 상단 여백 */
     marginTop?: string | number;
 }
-declare function Header({ title, desc, onArrowClick, onReClick, marginTop, }: HeaderProps): React__default.JSX.Element;
+declare function Header({ title, desc, onArrowClick, onReClick, marginTop }: HeaderProps): React__default.JSX.Element;
 
 /**
  * @component LoadingSpinner
@@ -374,44 +423,19 @@ interface ModalProps {
 }
 declare function Modal({ isOpen, onClose, children, title }: ModalProps): React__default.JSX.Element | null;
 
-declare const NAV_ITEMS: readonly [{
-    readonly id: "near";
-    readonly text: "내근처";
-    readonly iconFill: "/assets/nav/map_active.svg";
-    readonly iconLine: "/assets/nav/map.svg";
-    readonly path: "/map";
-}, {
-    readonly id: "dangle";
-    readonly text: "댕글영상";
-    readonly iconFill: "/assets/nav/video_active.svg";
-    readonly iconLine: "/assets/nav/video.svg";
-    readonly path: "/shorts?contextId=PLACE_jeju_si";
-}, {
-    readonly id: "ai";
-    readonly text: "AI여행케어";
-    readonly iconFill: "/assets/nav/ai_active.svg";
-    readonly iconLine: "/assets/nav/ai.svg";
-    readonly path: "/chat";
-}, {
-    readonly id: "jeju";
-    readonly text: "제주이동";
-    readonly iconFill: "/assets/nav/move_active.svg";
-    readonly iconLine: "/assets/nav/move.svg";
-    readonly path: "/jeju";
-}, {
-    readonly id: "my";
-    readonly text: "마이";
-    readonly iconFill: "/assets/nav/my_active.svg";
-    readonly iconLine: "/assets/nav/my.svg";
-    readonly path: "/my";
-}];
-type NavItemId = (typeof NAV_ITEMS)[number]["id"];
-
-interface NavBarProps {
-    /** 현재 활성화된 페이지를 나타내는 식별자 */
-    activePage: NavItemId;
+interface NavBarItem {
+    id: string;
+    text: string;
+    activeIconSrc: string;
+    inactiveIconSrc: string;
+    path: string;
 }
-declare function NavBar({ activePage }: NavBarProps): React__default.JSX.Element;
+interface NavBarProps {
+    activeId: string;
+    items: NavBarItem[];
+    onNavigate: (path: string) => void;
+}
+declare function NavBar({ activeId, items, onNavigate }: NavBarProps): React__default.JSX.Element;
 
 interface NoticeBoxProps {
     /** NoticeBox를 렌더링할지 여부 */
@@ -435,7 +459,7 @@ interface PaginationProps {
     /** 페이지 변경 핸들러 */
     onPageChange: (page: number) => void;
 }
-declare function Pagination({ currentPage, totalPages, onPageChange, }: PaginationProps): React__default.JSX.Element | null;
+declare function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps): React__default.JSX.Element | null;
 
 interface ProfileCardProps {
     imageUrl: string;
@@ -539,8 +563,10 @@ interface VideoData {
 }
 interface ShortsBottomInfoProps {
     video: VideoData;
+    /** 위치 아이콘 src */
+    locationIconSrc?: string;
 }
-declare function ShortsBottomInfo({ video }: ShortsBottomInfoProps): React__default.JSX.Element;
+declare function ShortsBottomInfo({ video, locationIconSrc }: ShortsBottomInfoProps): React__default.JSX.Element;
 
 interface SkeletonProps {
     width?: string | number;
@@ -553,7 +579,7 @@ interface SkeletonProps {
  * @param width - CSS width 값 (기본값: 100%)
  * @param height - CSS height 값 (기본값: 1em)
  */
-declare function Skeleton({ width, height, className, style, }: SkeletonProps): React__default.JSX.Element;
+declare function Skeleton({ width, height, className, style }: SkeletonProps): React__default.JSX.Element;
 
 interface Tab {
     id: string;
@@ -602,15 +628,21 @@ interface TooltipProps {
     /** 툴팁 위치 (기본값: 'top') */
     position?: TooltipPosition;
 }
-declare function Tooltip({ title, text, onClose, isVisible, position, }: TooltipProps): React__default.JSX.Element | null;
+declare function Tooltip({ title, text, onClose, isVisible, position }: TooltipProps): React__default.JSX.Element | null;
 
 type TopBarProps = {
     /** back 아이콘 핸들러: 주면 자동으로 아이콘 노출 + 핸들러 등록 */
     backIconHandler?: () => void;
+    /** 뒤로가기 아이콘 src */
+    backIconSrc?: string;
     /** 제목 텍스트 */
     title?: string;
     /** 상단 로고 노출 여부 */
     isShowLogo?: boolean;
+    /** 로고 이미지 src (isShowLogo=true 일 때 사용) */
+    logoSrc?: string;
+    /** 로고 alt 텍스트 */
+    logoAlt?: string;
     /** 우측 아이콘들(오른쪽 끝부터 보임) */
     rightIcons?: {
         icon: ReactNode;
@@ -630,7 +662,7 @@ type TopBarProps = {
  * - isShowLogo면 logo-top.svg 노출
  * - rightIcons는 오른쪽 끝부터 보이도록 row-reverse 배치
  */
-declare function TopBar({ backIconHandler, title, isShowLogo, rightIcons, sticky, transparent, whiteIcon, className, }: TopBarProps): React$1.JSX.Element;
+declare function TopBar({ backIconHandler, backIconSrc, title, isShowLogo, logoSrc, logoAlt, rightIcons, sticky, transparent, whiteIcon, className, }: TopBarProps): React$1.JSX.Element;
 
 interface CarouselProps {
     children: ReactNode;
@@ -676,14 +708,16 @@ declare function Grid({ children, className }: GridProps): React__default.JSX.El
 interface MapFloatingButtonsProps {
     /** GPS 버튼 클릭 이벤트 핸들러 */
     onGpsClick: () => void;
+    /** GPS 아이콘 src */
+    gpsIconSrc?: string;
     /** 장소 목록 칩 컴포넌트 props */
     chipMapListProps: ChipMapListProps;
-    /** 댕글추천 FAB 컴포넌트 props */
+    /** FAB 컴포넌트 props */
     fabProps: FabProps;
     /** 툴팁 props */
     tooltipProps: TooltipProps;
 }
-declare function MapFloatingButtons({ onGpsClick, chipMapListProps, fabProps, tooltipProps, }: MapFloatingButtonsProps): React__default.JSX.Element;
+declare function MapFloatingButtons({ onGpsClick, gpsIconSrc, chipMapListProps, fabProps, tooltipProps, }: MapFloatingButtonsProps): React__default.JSX.Element;
 
 interface SearchHeaderProps {
     /** back 아이콘 핸들러: 주면 자동으로 아이콘 노출 + 핸들러 등록 */
@@ -711,7 +745,21 @@ interface WelcomeOverlayProps {
     longitude: number | null;
     isLoading: boolean;
     error: string | null;
+    /** 로고 이미지 경로 */
+    logoImageSrc: string;
+    /** 로고 이미지 alt 텍스트 */
+    logoAlt?: string;
+    /** 환영 타이틀 */
+    title?: string;
+    /** 서브타이틀 설명 */
+    subtitle?: string;
+    /** 로딩 단계 텍스트 목록 */
+    steps: string[];
+    /** 준비 완료 버튼 텍스트 */
+    ctaText?: string;
+    /** 위치 로딩 중 버튼 텍스트 */
+    loadingText?: string;
 }
-declare function WelcomeOverlay({ onFetchLocation, latitude, longitude, isLoading, error, }: WelcomeOverlayProps): React__default.JSX.Element | null;
+declare function WelcomeOverlay({ onFetchLocation, latitude, longitude, isLoading, error, logoImageSrc, logoAlt, title, subtitle, steps, ctaText, loadingText, }: WelcomeOverlayProps): React__default.JSX.Element | null;
 
-export { AiProfileHeader, AvatarPicker, BottomSheet, Button, Carousel, ChatInput, Chip, ChipKeyword, ChipMapList, DangleCard, DangleItem, DanglePlace, DanglePlay, DangleReview, DangleVideo, Dropdown, EmptyState, Fab, FilterChip, FilterChipExpand, FilterSection, Grid, Header, LoadingSpinner, Location, LoginButton, MapFloatingButtons, MessageBox, Modal, NavBar, NoticeBox, Pagination, ProfileCard, ProgressCircle, RadioGroup, SearchField, SearchHeader, SegmentedControl, SelectField, ShortsBottomInfo, ShortsOverlay, Skeleton, Tabs, TextField, ThinkingBubble, Tooltip, TopBar, TopicSelector, WelcomeOverlay };
+export { AiProfileHeader, AvatarPicker, BottomSheet, Button, Carousel, ChatInput, Chip, ChipKeyword, ChipMapList, DangleCard, DangleItem, DanglePlace, DanglePlay, DangleReview, DangleVideo, Dropdown, EmptyState, Fab, FilterChip, FilterChipExpand, FilterSection, Grid, Header, LoadingSpinner, Location, LoginButton, MapFloatingButtons, MessageBox, Modal, NavBar, type NavBarItem, NoticeBox, Pagination, ProfileCard, ProgressCircle, RadioGroup, SearchField, SearchHeader, SegmentedControl, SelectField, ShortsBottomInfo, ShortsOverlay, Skeleton, Tabs, TextField, ThinkingBubble, Tooltip, TopBar, TopicSelector, WelcomeOverlay };

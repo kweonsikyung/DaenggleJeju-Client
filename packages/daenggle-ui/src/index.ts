@@ -3,10 +3,9 @@ export { AvatarPicker } from "./atoms/AvatarPicker/AvatarPicker";
 
 // atoms - BottomSheet (named)
 export { BottomSheet } from "./atoms/BottomSheet/BottomSheet";
-
+export { Button } from "./atoms/Buttons/Button/Button";
 // atoms - Buttons
 export { Location } from "./atoms/Buttons/Location/Location";
-export { Button } from "./atoms/Buttons/Button/Button";
 export { LoginButton } from "./atoms/Buttons/LoginButton/LoginButton";
 
 // atoms - Chat
@@ -50,7 +49,7 @@ export { LoadingSpinner } from "./atoms/LoadingSpinner/LoadingSpinner";
 
 // atoms - Modal
 export { Modal } from "./atoms/Modal/Modal";
-
+export type { NavBarItem } from "./atoms/NavBar/NavBar";
 // atoms - NavBar
 export { NavBar } from "./atoms/NavBar/NavBar";
 

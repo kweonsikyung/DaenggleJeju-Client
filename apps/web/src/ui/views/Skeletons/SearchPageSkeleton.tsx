@@ -1,9 +1,5 @@
-import React from "react";
-import { Skeleton } from "@/ui/atoms/Skeleton/Skeleton";
+import { Skeleton } from "daenggle-ui";
 import * as s from "@/app/search/style.css";
-import * as navS from "@/ui/atoms/NavBar/NavBar.css";
-import * as headerS from "@/ui/molecules/SearchHeader/SearchHeader.css";
-import * as gridS from "@/ui/molecules/Grid/Grid.css";
 
 function DanglePlaySkeleton() {
   return (
@@ -27,7 +23,7 @@ function DanglePlaySkeleton() {
 }
 
 const SearchHeaderSkeleton = () => (
-  <div className={headerS.root}>
+  <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px" }}>
     <Skeleton width={24} height={24} style={{ flexShrink: 0 }} />
     <Skeleton width="100%" height={50} style={{ borderRadius: "8px" }} />
   </div>
@@ -42,7 +38,16 @@ const FilterChipsSkeleton = () => (
 );
 
 const NavBarSkeleton = () => (
-  <nav className={navS.root}>
+  <nav
+    style={{
+      display: "flex",
+      justifyContent: "space-around",
+      alignItems: "center",
+      height: "60px",
+      borderTop: "1px solid #f0f0f0",
+      padding: "0 16px",
+    }}
+  >
     {[...Array(5)].map((_, n) => (
       <Skeleton key={n} width={40} height={40} style={{ borderRadius: "8px" }} />
     ))}
@@ -55,7 +60,7 @@ export function SearchPageSkeleton() {
       <SearchHeaderSkeleton />
       <div className={s.container}>
         <FilterChipsSkeleton />
-        <div className={gridS.root}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
           <DanglePlaySkeleton />
           <DanglePlaySkeleton />
           <DanglePlaySkeleton />

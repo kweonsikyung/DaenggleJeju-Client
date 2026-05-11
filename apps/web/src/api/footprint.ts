@@ -1,13 +1,13 @@
-import { getRequest, postRequest } from "./common";
-import { createQueryString } from "@/utils/createQueryString";
 import {
-  PostFootprintReq,
-  PostFootprintRes,
   GetMyFootprintsReq,
   GetMyFootprintsRes,
   GetPlaceFootprintsReq,
   GetPlaceFootprintsRes,
+  PostFootprintReq,
+  PostFootprintRes,
 } from "@/types/footprint";
+import { createQueryString } from "@/utils/createQueryString";
+import { getRequest, postRequest } from "./common";
 
 /**
  * @function postFootprint

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode } from "react";
 import Image from "next/image";
+import React, { ReactNode } from "react";
 import * as s from "./Modal.css";
 
 export interface ModalProps {
