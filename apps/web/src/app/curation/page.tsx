@@ -8,9 +8,6 @@ import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 import { usePostPetProfile } from "@/hooks/api/usePetProfile";
 import { usePostPreference } from "@/hooks/api/usePreference";
 import { RegionContextId, StyleCode } from "@/types/preference";
-import Step1 from "./_step/step1";
-import Step2 from "./_step/step2";
-import Step3 from "./_step/step3";
 import {
   BREED_OPTIONS,
   currentStepTitle,
@@ -20,6 +17,9 @@ import {
   WEIGHT_OPTIONS,
 } from "./_util";
 import * as s from "./style.css";
+import Step1 from "./ui/step1";
+import Step2 from "./ui/step2";
+import Step3 from "./ui/step3";
 
 /**
  * curation 질문 페이지

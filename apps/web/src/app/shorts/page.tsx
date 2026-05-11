@@ -19,7 +19,7 @@ import {
 } from "@/hooks/api/useDaenggle";
 //utils
 import { DaenggleConceptKey, DaenggleContextId } from "@/types/daenggle";
-import { VideoData } from "@/utils/dummy_data";
+import { VideoData } from "@/utils/dummyData";
 import { formatApiVideoToLocal, JEJU_REGIONS } from "./_util";
 import * as s from "./style.css";
 

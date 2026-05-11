@@ -19,7 +19,7 @@ import { NAV_ITEMS } from "@/constants/navData";
 //hooks
 import { useDaenggleAccommodations, useDaenggleTrending } from "@/hooks/api/useDaenggle";
 import { useVisitedRegions } from "@/hooks/useVisitedRegions";
-import { JEJU_DATA } from "@/utils/dummy_data";
+import { JEJU_DATA } from "@/utils/dummyData";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 //utils
 import { conceptBanners, getThumbnailUrl, regionContextMap } from "./_util";

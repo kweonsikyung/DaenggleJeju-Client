@@ -1,4 +1,4 @@
-import { VideoData } from "@/utils/dummy_data";
+import { VideoData } from "@/utils/dummyData";
 
 interface DropdownOption {
   value: string;

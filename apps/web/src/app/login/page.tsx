@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useDevLogin, useKakaoLogin } from "@/hooks/api/useAuth";
-import { LOGIN_TYPE } from "@/types/LoginType";
+import { LOGIN_TYPE } from "@/types/loginType";
 import * as s from "./style.css";
 
 const LOGIN_CONFIG = [

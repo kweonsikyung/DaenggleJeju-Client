@@ -1,5 +1,5 @@
 import { DaenggleConceptKey, DaenggleContextId } from "@/types/daenggle";
-import { BANNER_DATA } from "@/utils/dummy_data";
+import { BANNER_DATA } from "@/utils/dummyData";
 
 /**
  * 댕글 영상 썸네일 URL 생성 함수
