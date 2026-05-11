@@ -1,3 +1,5 @@
+"use client";
+
 import { Drawer } from "vaul";
 import { ReactNode } from "react";
 import * as s from "./BottomSheet.css";

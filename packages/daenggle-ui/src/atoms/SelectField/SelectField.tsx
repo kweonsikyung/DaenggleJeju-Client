@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useId, useMemo } from "react";
 import * as s from "./SelectField.css";
 import Image from "next/image";
