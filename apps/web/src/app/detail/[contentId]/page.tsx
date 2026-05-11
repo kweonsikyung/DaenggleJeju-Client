@@ -418,8 +418,10 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                       "중형견(6~15kg)"
                     }
                     rating={review.rating}
+                    filledRatingIconSrc="/assets/icon16/star-fill.svg"
                     date={review.createdAtText}
                     chips={review.chips}
+                    chipLabels={["출입 가능 여부", "출입 조건", "반려견 친화도"]}
                     content={review.body}
                   />
                 ))

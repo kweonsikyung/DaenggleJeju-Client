@@ -53,6 +53,8 @@ export default function Step1({ setIsValid, formData, setFormData, setAvatarFile
       <AvatarPicker
         value={avatarUrl ?? undefined}
         accept="image/*"
+        placeholderImageSrc="/assets/curation/avatar.svg"
+        cameraIconSrc="/assets/curation/camera.svg"
         onChange={(file, url) => {
           if (avatarUrl?.startsWith("blob:")) URL.revokeObjectURL(avatarUrl);
           setAvatarUrl(url);

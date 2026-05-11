@@ -279,6 +279,10 @@ export default function MapPage() {
             onClick={() => router.push(`/detail/${selectedPlace.contentId}`)}
             onBookmarkClick={() => handleScrapToggle(selectedPlace.contentId)}
             isBookmarked={selectedPlace.isScrapped}
+            icons={{
+              bookmarkFilled: "/assets/icon24/bookmark_filled.svg",
+              bookmarkLine: "/assets/icon24/bookmark_line.svg",
+            }}
           />
         </div>
       )}
@@ -287,6 +291,7 @@ export default function MapPage() {
       <div className={s.bottomContainer}>
         <MapFloatingButtons
           onGpsClick={handleGpsClick}
+          gpsIconSrc="/assets/icon24/gps.svg"
           chipMapListProps={{
             text: "장소 목록",
             cnt: totalCount,
