@@ -42,7 +42,7 @@ const laundryGothic = localFont({
   variable: "--font-laundry",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 const ogImageUrl = `${siteUrl}/og-image.png`;
 
 export const metadata: Metadata = {
