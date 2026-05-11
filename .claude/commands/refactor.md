@@ -295,7 +295,7 @@ postScrap({ id, type: "place" satisfies ScrapType });
 |---|---|
 | 다른 프로젝트에서도 쓸 수 있는 범용 UI | `packages/daenggle-ui/src/` |
 | 이 앱 전용이지만 여러 페이지에서 재사용 | `apps/web/src/ui/` |
-| 특정 페이지에서만 사용 | 해당 페이지 폴더 내 `_components/` |
+| 특정 페이지에서만 사용 | 해당 페이지 폴더 내 `ui/` (예: `app/curation/ui/`) |
 
 아토믹 디자인 의존 방향: `atoms → molecules → views` (역방향 금지)
 
