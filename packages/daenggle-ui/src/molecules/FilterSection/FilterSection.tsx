@@ -2,7 +2,7 @@
 
 import React from "react";
 import * as s from "./FilterSection.css";
-import FilterChipExpand from "../../atoms/FilterChipExpand/FilterChipExpand";
+import { FilterChipExpand } from "../../atoms/FilterChipExpand/FilterChipExpand";
 
 export interface FilterSectionProps {
   /** 섹션 헤더 타이틀 */

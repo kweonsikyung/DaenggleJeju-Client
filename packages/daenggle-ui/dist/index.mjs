@@ -79,7 +79,9 @@ function AvatarPicker({
   onChange,
   accept = "image/*",
   disabled,
-  className
+  className,
+  placeholderImageSrc,
+  cameraIconSrc
 }) {
   var _a;
   const fileRef = useRef(null);
@@ -114,17 +116,17 @@ function AvatarPicker({
       style: { width: size2, height: size2 },
       "aria-label": "\uC544\uBC14\uD0C0 \uC120\uD0DD"
     },
-    previewUrl ? /* @__PURE__ */ React2.createElement("img", { src: previewUrl, alt: "\uC544\uBC14\uD0C0", className: avatarImg }) : /* @__PURE__ */ React2.createElement(
+    previewUrl ? /* @__PURE__ */ React2.createElement("img", { src: previewUrl, alt: "\uC544\uBC14\uD0C0", className: avatarImg }) : placeholderImageSrc ? /* @__PURE__ */ React2.createElement(
       Image,
       {
-        src: "/assets/curation/avatar.svg",
+        src: placeholderImageSrc,
         alt: "",
         width: size2,
         height: size2,
         className: avatarImg,
         priority: true
       }
-    ),
+    ) : null,
     /* @__PURE__ */ React2.createElement(
       "input",
       {
@@ -137,31 +139,14 @@ function AvatarPicker({
         tabIndex: -1
       }
     ),
-    /* @__PURE__ */ React2.createElement(
-      "div",
-      {
-        className: cameraBtn,
-        onClick: openPicker,
-        "aria-label": "\uC544\uBC14\uD0C0 \uBCC0\uACBD"
-      },
-      /* @__PURE__ */ React2.createElement(
-        Image,
-        {
-          src: "/assets/curation/camera.svg",
-          alt: "",
-          width: 28,
-          height: 28
-        }
-      )
-    )
+    /* @__PURE__ */ React2.createElement("div", { className: cameraBtn, onClick: openPicker, "aria-label": "\uC544\uBC14\uD0C0 \uBCC0\uACBD" }, cameraIconSrc && /* @__PURE__ */ React2.createElement(Image, { src: cameraIconSrc, alt: "", width: 28, height: 28 }))
   );
 }
-var AvatarPicker_default = AvatarPicker;
 
 // src/atoms/BottomSheet/BottomSheet.tsx
 import { Drawer } from "vaul";
 
-// ../../src/styles/typography.css.ts
+// src/styles/typography.css.ts
 var TYPO = {
   DISPLAY: {
     fontFamily: "var(--font-laundry)",
@@ -353,19 +338,8 @@ var body = style2({
 
 // src/atoms/BottomSheet/BottomSheet.tsx
 import Image2 from "next/image";
-function BottomSheet({
-  open,
-  onOpenChange,
-  title: title13,
-  children
-}) {
-  return /* @__PURE__ */ React.createElement(Drawer.Root, { open, onOpenChange, shouldScaleBackground: true }, /* @__PURE__ */ React.createElement(Drawer.Portal, null, /* @__PURE__ */ React.createElement(
-    Drawer.Overlay,
-    {
-      className: overlay,
-      onClick: () => onOpenChange(false)
-    }
-  ), /* @__PURE__ */ React.createElement(Drawer.Content, { className: content }, /* @__PURE__ */ React.createElement("div", { className: handle }), /* @__PURE__ */ React.createElement("div", { className: header }, /* @__PURE__ */ React.createElement(Drawer.Title, { style: { display: "none" } }), /* @__PURE__ */ React.createElement("div", { className: title }, title13), /* @__PURE__ */ React.createElement(
+function BottomSheet({ open, onOpenChange, title: title13, children }) {
+  return /* @__PURE__ */ React.createElement(Drawer.Root, { open, onOpenChange, shouldScaleBackground: true }, /* @__PURE__ */ React.createElement(Drawer.Portal, null, /* @__PURE__ */ React.createElement(Drawer.Overlay, { className: overlay, onClick: () => onOpenChange(false) }), /* @__PURE__ */ React.createElement(Drawer.Content, { className: content }, /* @__PURE__ */ React.createElement("div", { className: handle }), /* @__PURE__ */ React.createElement("div", { className: header }, /* @__PURE__ */ React.createElement(Drawer.Title, { style: { display: "none" } }), /* @__PURE__ */ React.createElement("div", { className: title }, title13), /* @__PURE__ */ React.createElement(
     "button",
     {
       type: "button",
@@ -373,15 +347,7 @@ function BottomSheet({
       className: close,
       onClick: () => onOpenChange(false)
     },
-    /* @__PURE__ */ React.createElement(
-      Image2,
-      {
-        src: "/assets/icon24/x_line.svg",
-        alt: "\uB4A4\uB85C\uAC00\uAE30",
-        width: 24,
-        height: 24
-      }
-    )
+    /* @__PURE__ */ React.createElement(Image2, { src: "/assets/icon24/x_line.svg", alt: "\uB4A4\uB85C\uAC00\uAE30", width: 24, height: 24 })
   )), /* @__PURE__ */ React.createElement("div", { className: body }, children))));
 }
 
@@ -391,7 +357,7 @@ import React3 from "react";
 // src/atoms/Buttons/Location/Location.css.ts
 import { style as style3, styleVariants } from "@vanilla-extract/css";
 
-// ../../src/styles/colors.css.ts
+// src/styles/colors.css.ts
 var COLORS = {
   GREEN50: "#F0FDF4",
   GREEN100: "#E3FFEE",
@@ -499,7 +465,6 @@ function Location(_a) {
     desc4 ? /* @__PURE__ */ React3.createElement("span", { className: desc }, desc4) : null
   );
 }
-var Location_default = Location;
 
 // src/atoms/Buttons/Button/Button.tsx
 import React4 from "react";
@@ -559,19 +524,7 @@ var SIZE_KEY = {
   ["large" /* LARGE */]: "large"
 };
 function Button(_a) {
-  var _b = _a, {
-    size: size2,
-    status,
-    text: text3,
-    className,
-    disabled
-  } = _b, rest = __objRest(_b, [
-    "size",
-    "status",
-    "text",
-    "className",
-    "disabled"
-  ]);
+  var _b = _a, { size: size2, status, text: text3, className, disabled } = _b, rest = __objRest(_b, ["size", "status", "text", "className", "disabled"]);
   const sizeKey = SIZE_KEY[size2];
   const statusKey = STATUS_KEY[status];
   const classes = [root2, size[sizeKey], state2[statusKey], className].filter(Boolean).join(" ");
@@ -633,15 +586,7 @@ var label2 = style5(__spreadProps(__spreadValues({}, TYPO.BODY1M), {
 
 // src/atoms/Buttons/LoginButton/LoginButton.tsx
 function LoginButton(_a) {
-  var _b = _a, {
-    provider,
-    title: title13,
-    className
-  } = _b, rest = __objRest(_b, [
-    "provider",
-    "title",
-    "className"
-  ]);
+  var _b = _a, { provider, title: title13, iconSrc, className } = _b, rest = __objRest(_b, ["provider", "title", "iconSrc", "className"]);
   return /* @__PURE__ */ React.createElement(
     "button",
     __spreadValues({
@@ -652,7 +597,7 @@ function LoginButton(_a) {
     /* @__PURE__ */ React.createElement(
       Image3,
       {
-        src: `/assets/login/${provider}.svg`,
+        src: iconSrc,
         alt: "",
         width: 24,
         height: 24,
@@ -695,21 +640,8 @@ var subtitle = style6(__spreadProps(__spreadValues({}, TYPO.CAPTION2M), {
 }));
 
 // src/atoms/Chat/AiProfileHeader/AiProfileHeader.tsx
-function AiProfileHeader({
-  imageUrl,
-  title: title13,
-  subtitle: subtitle3
-}) {
-  return /* @__PURE__ */ React5.createElement("div", { className: container }, /* @__PURE__ */ React5.createElement("div", { className: imageWrapper }, /* @__PURE__ */ React5.createElement(
-    Image4,
-    {
-      src: imageUrl,
-      alt: title13,
-      width: 40,
-      height: 40,
-      className: profileImage
-    }
-  )), /* @__PURE__ */ React5.createElement("div", { className: textContainer }, /* @__PURE__ */ React5.createElement("h1", { className: title3 }, title13), /* @__PURE__ */ React5.createElement("p", { className: subtitle }, subtitle3)));
+function AiProfileHeader({ imageUrl, title: title13, subtitle: subtitle3 }) {
+  return /* @__PURE__ */ React5.createElement("div", { className: container }, /* @__PURE__ */ React5.createElement("div", { className: imageWrapper }, /* @__PURE__ */ React5.createElement(Image4, { src: imageUrl, alt: title13, width: 40, height: 40, className: profileImage })), /* @__PURE__ */ React5.createElement("div", { className: textContainer }, /* @__PURE__ */ React5.createElement("h1", { className: title3 }, title13), /* @__PURE__ */ React5.createElement("p", { className: subtitle }, subtitle3)));
 }
 
 // src/atoms/Chat/ChatInput/ChatInput.tsx
@@ -799,15 +731,7 @@ function ChatInput({ onSend, disabled }) {
       disabled: disabled || !value.trim(),
       "aria-label": "\uC804\uC1A1"
     },
-    /* @__PURE__ */ React6.createElement(
-      Image5,
-      {
-        src: "/assets/icon24/send.svg",
-        alt: "\uC804\uC1A1",
-        width: 24,
-        height: 24
-      }
-    )
+    /* @__PURE__ */ React6.createElement(Image5, { src: "/assets/icon24/send.svg", alt: "\uC804\uC1A1", width: 24, height: 24 })
   )));
 }
 
@@ -846,10 +770,7 @@ var userMessageBox = style8([
 ]);
 
 // src/atoms/Chat/MessageBox/MessageBox.tsx
-function MessageBox({
-  children,
-  variant = "ai"
-}) {
+function MessageBox({ children, variant = "ai" }) {
   const messageClass = variant === "user" ? userMessageBox : aiMessageBox;
   return /* @__PURE__ */ React7.createElement("div", { className: wrapper3 }, /* @__PURE__ */ React7.createElement("div", { className: messageClass }, children));
 }
@@ -917,19 +838,8 @@ var topicButton = style10(__spreadProps(__spreadValues({
 }));
 
 // src/atoms/Chat/TopicSelector/TopicSelector.tsx
-function TopicSelector({
-  topics,
-  onSelectTopic
-}) {
-  return /* @__PURE__ */ React9.createElement("div", { className: container3 }, topics.map((topic) => /* @__PURE__ */ React9.createElement(
-    "button",
-    {
-      key: topic,
-      className: topicButton,
-      onClick: () => onSelectTopic(topic)
-    },
-    topic
-  )));
+function TopicSelector({ topics, onSelectTopic }) {
+  return /* @__PURE__ */ React9.createElement("div", { className: container3 }, topics.map((topic) => /* @__PURE__ */ React9.createElement("button", { key: topic, className: topicButton, onClick: () => onSelectTopic(topic) }, topic)));
 }
 
 // src/atoms/Chip/Chip/Chip.tsx
@@ -1009,32 +919,9 @@ var closeButton = style12({
 });
 
 // src/atoms/Chip/ChipKeyword/ChipKeyword.tsx
-function ChipKeyword({
-  text: text3,
-  selected = false,
-  onClose,
-  onClick
-}) {
-  return /* @__PURE__ */ React11.createElement(
-    "div",
-    {
-      className: chip[selected ? "selected" : "default"],
-      onClick,
-      role: "button"
-    },
-    /* @__PURE__ */ React11.createElement("span", null, text3),
-    selected && /* @__PURE__ */ React11.createElement("button", { className: closeButton, onClick: onClose, "aria-label": "\uB2EB\uAE30" }, /* @__PURE__ */ React11.createElement(
-      Image6,
-      {
-        src: "/assets/icon16/x_line.svg",
-        alt: "\uB2EB\uAE30",
-        width: 16,
-        height: 16
-      }
-    ))
-  );
+function ChipKeyword({ text: text3, selected = false, onClose, onClick }) {
+  return /* @__PURE__ */ React11.createElement("div", { className: chip[selected ? "selected" : "default"], onClick, role: "button" }, /* @__PURE__ */ React11.createElement("span", null, text3), selected && /* @__PURE__ */ React11.createElement("button", { className: closeButton, onClick: onClose, "aria-label": "\uB2EB\uAE30" }, /* @__PURE__ */ React11.createElement(Image6, { src: "/assets/icon16/x_line.svg", alt: "\uB2EB\uAE30", width: 16, height: 16 })));
 }
-var ChipKeyword_default = ChipKeyword;
 
 // src/atoms/Chip/ChipMapList/ChipMapList.tsx
 import React12 from "react";
@@ -1062,20 +949,8 @@ var locationListCount = style13(__spreadProps(__spreadValues({}, TYPO.LABEL2B), 
 }));
 
 // src/atoms/Chip/ChipMapList/ChipMapList.tsx
-function ChipMapList({
-  text: text3,
-  cnt,
-  onLocationListClick
-}) {
-  return /* @__PURE__ */ React12.createElement("button", { className: locationListButton, onClick: onLocationListClick }, /* @__PURE__ */ React12.createElement("span", null, /* @__PURE__ */ React12.createElement(
-    Image7,
-    {
-      src: "/assets/icon12/bullet-list_line-white.svg",
-      alt: "\uBAA9\uB85D",
-      width: 12,
-      height: 12
-    }
-  )), /* @__PURE__ */ React12.createElement("div", null, /* @__PURE__ */ React12.createElement("span", { className: locationListText }, text3), /* @__PURE__ */ React12.createElement("span", { className: locationListCount }, cnt)));
+function ChipMapList({ text: text3, cnt, onLocationListClick }) {
+  return /* @__PURE__ */ React12.createElement("button", { className: locationListButton, onClick: onLocationListClick }, /* @__PURE__ */ React12.createElement("span", null, /* @__PURE__ */ React12.createElement(Image7, { src: "/assets/icon12/bullet-list_line-white.svg", alt: "\uBAA9\uB85D", width: 12, height: 12 })), /* @__PURE__ */ React12.createElement("div", null, /* @__PURE__ */ React12.createElement("span", { className: locationListText }, text3), /* @__PURE__ */ React12.createElement("span", { className: locationListCount }, cnt)));
 }
 
 // src/atoms/Dangle/DangleCard/DangleCard.tsx
@@ -1151,28 +1026,12 @@ var image = style14({
 function DangleCard({
   imageUrl,
   views: views2 = 0,
+  viewIconSrc,
   title: title13,
   hashtag: hashtag2,
   onClick
 }) {
-  return /* @__PURE__ */ React13.createElement("button", { className: root5, onClick }, /* @__PURE__ */ React13.createElement("div", { className: imageWrapper2 }, /* @__PURE__ */ React13.createElement(
-    Image8,
-    {
-      src: imageUrl,
-      alt: title13,
-      width: 280,
-      height: 377,
-      className: image
-    }
-  ), /* @__PURE__ */ React13.createElement("div", { className: overlay2 }, views2 > 0 && /* @__PURE__ */ React13.createElement("div", { className: views }, /* @__PURE__ */ React13.createElement(
-    Image8,
-    {
-      src: "/assets/icon24/eye-outlined-white.svg",
-      alt: "\uC870\uD68C\uC218",
-      width: 24,
-      height: 24
-    }
-  ), /* @__PURE__ */ React13.createElement("span", null, views2.toLocaleString())), /* @__PURE__ */ React13.createElement("div", { className: bottom }, /* @__PURE__ */ React13.createElement("h3", { className: title4 }, title13), /* @__PURE__ */ React13.createElement("span", { className: hashtag }, hashtag2)))));
+  return /* @__PURE__ */ React13.createElement("button", { className: root5, onClick }, /* @__PURE__ */ React13.createElement("div", { className: imageWrapper2 }, /* @__PURE__ */ React13.createElement(Image8, { src: imageUrl, alt: title13, width: 280, height: 377, className: image }), /* @__PURE__ */ React13.createElement("div", { className: overlay2 }, views2 > 0 && /* @__PURE__ */ React13.createElement("div", { className: views }, viewIconSrc && /* @__PURE__ */ React13.createElement(Image8, { src: viewIconSrc, alt: "\uC870\uD68C\uC218", width: 24, height: 24 }), /* @__PURE__ */ React13.createElement("span", null, views2.toLocaleString())), /* @__PURE__ */ React13.createElement("div", { className: bottom }, /* @__PURE__ */ React13.createElement("h3", { className: title4 }, title13), /* @__PURE__ */ React13.createElement("span", { className: hashtag }, hashtag2)))));
 }
 
 // src/atoms/Dangle/DangleItem/DangleItem.tsx
@@ -1237,32 +1096,8 @@ var text = style15(__spreadProps(__spreadValues({}, TYPO.LABEL1M), {
 }));
 
 // src/atoms/Dangle/DangleItem/DangleItem.tsx
-function DangleItem({
-  state: state5,
-  imageUrl,
-  text: text3,
-  onClick
-}) {
-  return /* @__PURE__ */ React14.createElement(
-    "button",
-    {
-      type: "button",
-      className: root6,
-      onClick,
-      "aria-label": `${text3} \uC544\uC774\uD15C`
-    },
-    /* @__PURE__ */ React14.createElement("div", { className: imageContainer[state5] }, /* @__PURE__ */ React14.createElement(
-      Image9,
-      {
-        src: imageUrl,
-        alt: text3,
-        width: 70,
-        height: 70,
-        className: image2
-      }
-    )),
-    /* @__PURE__ */ React14.createElement("span", { className: text }, text3)
-  );
+function DangleItem({ state: state5, imageUrl, text: text3, onClick }) {
+  return /* @__PURE__ */ React14.createElement("button", { type: "button", className: root6, onClick, "aria-label": `${text3} \uC544\uC774\uD15C` }, /* @__PURE__ */ React14.createElement("div", { className: imageContainer[state5] }, /* @__PURE__ */ React14.createElement(Image9, { src: imageUrl, alt: text3, width: 70, height: 70, className: image2 })), /* @__PURE__ */ React14.createElement("span", { className: text }, text3));
 }
 
 // src/atoms/Dangle/DanglePlace/DanglePlace.tsx
@@ -1380,6 +1215,7 @@ var detailValue = style16(__spreadProps(__spreadValues({
 // src/atoms/Dangle/DanglePlace/DanglePlace.tsx
 function DanglePlace({
   thumbnailUrl,
+  fallbackImageUrl,
   locationCategory: locationCategory3,
   name: name4,
   distance,
@@ -1388,31 +1224,34 @@ function DanglePlace({
   isExpanded = false,
   tags: tags3 = [],
   details: details3,
+  detailsBaseLabel = "Per day",
+  detailsPriceUnit = "",
   onClick,
   isBookmarked = false,
-  onBookmarkClick
+  onBookmarkClick,
+  icons = {}
 }) {
+  var _a, _b;
   const initialImageSrc = useMemo(() => {
-    let decodedThumbnailUrl = thumbnailUrl;
+    let decoded = thumbnailUrl;
     if (typeof thumbnailUrl === "string" && thumbnailUrl.includes("%")) {
       try {
-        decodedThumbnailUrl = decodeURIComponent(thumbnailUrl);
+        decoded = decodeURIComponent(thumbnailUrl);
       } catch (e) {
-        console.error("URL \uB514\uCF54\uB529 \uC2E4\uD328:", thumbnailUrl, e);
-        decodedThumbnailUrl = null;
+        decoded = null;
       }
     }
-    if (typeof decodedThumbnailUrl === "string" && decodedThumbnailUrl !== "\uC0AC\uC9C4 \uC5C6\uC74C" && /^https?:\/\//i.test(decodedThumbnailUrl)) {
-      return decodedThumbnailUrl;
+    if (typeof decoded === "string" && /^https?:\/\//i.test(decoded)) {
+      return decoded;
     }
-    return "/assets/jeju.png";
-  }, [thumbnailUrl]);
+    return fallbackImageUrl != null ? fallbackImageUrl : null;
+  }, [thumbnailUrl, fallbackImageUrl]);
   const [currentImageSrc, setCurrentImageSrc] = useState3(initialImageSrc);
   useEffect2(() => {
     setCurrentImageSrc(initialImageSrc);
   }, [initialImageSrc]);
   const handleImageError = () => {
-    setCurrentImageSrc("/assets/jeju.png");
+    if (fallbackImageUrl) setCurrentImageSrc(fallbackImageUrl);
   };
   const handleBookmarkClick = (e) => {
     e.stopPropagation();
@@ -1420,51 +1259,26 @@ function DanglePlace({
       onBookmarkClick();
     }
   };
-  return /* @__PURE__ */ React15.createElement(
-    "div",
+  return /* @__PURE__ */ React15.createElement("div", { className: root7[isExpanded ? "isExpanded" : "default"], onClick }, /* @__PURE__ */ React15.createElement("div", { className: headerContainer }, /* @__PURE__ */ React15.createElement("div", { className: thumbnailWrapper }, currentImageSrc && /* @__PURE__ */ React15.createElement(
+    Image10,
     {
-      className: root7[isExpanded ? "isExpanded" : "default"],
-      onClick
-    },
-    /* @__PURE__ */ React15.createElement("div", { className: headerContainer }, /* @__PURE__ */ React15.createElement("div", { className: thumbnailWrapper }, /* @__PURE__ */ React15.createElement(
-      Image10,
-      {
-        src: currentImageSrc,
-        alt: "\uC774\uBBF8\uC9C0",
-        width: 80,
-        height: 80,
-        className: thumbnail,
-        onError: handleImageError
-      }
-    )), /* @__PURE__ */ React15.createElement("div", { className: contentWrapper }, /* @__PURE__ */ React15.createElement("span", { className: locationCategory }, locationCategory3), /* @__PURE__ */ React15.createElement("h3", { className: name }, name4), /* @__PURE__ */ React15.createElement("div", { className: stats }, distance && /* @__PURE__ */ React15.createElement("span", { className: statValue }, distance, "km"), distance && (typeof playCount === "number" || typeof bookmarkCount === "number") && /* @__PURE__ */ React15.createElement("div", { className: statItem }, "\xB7"), typeof playCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, /* @__PURE__ */ React15.createElement(
-      Image10,
-      {
-        alt: "\uC7AC\uC0DD \uC218",
-        width: 12,
-        height: 12,
-        src: "/assets/icon12/play_filled.svg"
-      }
-    ), /* @__PURE__ */ React15.createElement("span", { className: statValue }, playCount)), typeof playCount === "number" && typeof bookmarkCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, "\xB7"), typeof bookmarkCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, /* @__PURE__ */ React15.createElement(
-      Image10,
-      {
-        alt: "\uBD81\uB9C8\uD06C",
-        width: 12,
-        height: 12,
-        src: "/assets/icon12/bookmark_filled.svg"
-      }
-    ), /* @__PURE__ */ React15.createElement("span", { className: statValue }, bookmarkCount))), /* @__PURE__ */ React15.createElement("div", { className: tags }, tags3.map((tag5, index) => /* @__PURE__ */ React15.createElement("span", { key: `${tag5}-${index}`, className: tag }, tag5)))), onBookmarkClick && /* @__PURE__ */ React15.createElement("button", { className: bookmarkButton, onClick: handleBookmarkClick }, /* @__PURE__ */ React15.createElement(
-      Image10,
-      {
-        alt: "\uBD81\uB9C8\uD06C",
-        width: 24,
-        height: 24,
-        src: isBookmarked ? "/assets/icon24/bookmark_filled.svg" : "/assets/icon24/bookmark_line.svg"
-      }
-    ))),
-    isExpanded && /* @__PURE__ */ React15.createElement("div", { className: expandedContent }, details3 && /* @__PURE__ */ React15.createElement("div", { className: details }, /* @__PURE__ */ React15.createElement("div", { className: detailsTop }, /* @__PURE__ */ React15.createElement("div", null, "\uD558\uB8E8 \uAE30\uC900"), /* @__PURE__ */ React15.createElement("div", { className: detailLabel }, details3.time)), /* @__PURE__ */ React15.createElement("div", { className: detailValue }, details3.price, /* @__PURE__ */ React15.createElement("span", { className: detailLabel }, " \uC6D0~"))))
-  );
+      src: currentImageSrc,
+      alt: "\uC774\uBBF8\uC9C0",
+      width: 80,
+      height: 80,
+      className: thumbnail,
+      onError: handleImageError
+    }
+  )), /* @__PURE__ */ React15.createElement("div", { className: contentWrapper }, /* @__PURE__ */ React15.createElement("span", { className: locationCategory }, locationCategory3), /* @__PURE__ */ React15.createElement("h3", { className: name }, name4), /* @__PURE__ */ React15.createElement("div", { className: stats }, distance && /* @__PURE__ */ React15.createElement("span", { className: statValue }, distance, "km"), distance && (typeof playCount === "number" || typeof bookmarkCount === "number") && /* @__PURE__ */ React15.createElement("div", { className: statItem }, "\xB7"), typeof playCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, icons.play && /* @__PURE__ */ React15.createElement(Image10, { alt: "\uC7AC\uC0DD \uC218", width: 12, height: 12, src: icons.play }), /* @__PURE__ */ React15.createElement("span", { className: statValue }, playCount)), typeof playCount === "number" && typeof bookmarkCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, "\xB7"), typeof bookmarkCount === "number" && /* @__PURE__ */ React15.createElement("div", { className: statItem }, icons.bookmark && /* @__PURE__ */ React15.createElement(Image10, { alt: "\uBD81\uB9C8\uD06C", width: 12, height: 12, src: icons.bookmark }), /* @__PURE__ */ React15.createElement("span", { className: statValue }, bookmarkCount))), /* @__PURE__ */ React15.createElement("div", { className: tags }, tags3.map((tag5, index) => /* @__PURE__ */ React15.createElement("span", { key: `${tag5}-${index}`, className: tag }, tag5)))), onBookmarkClick && /* @__PURE__ */ React15.createElement("button", { className: bookmarkButton, onClick: handleBookmarkClick }, (icons.bookmarkFilled || icons.bookmarkLine) && /* @__PURE__ */ React15.createElement(
+    Image10,
+    {
+      alt: "\uBD81\uB9C8\uD06C",
+      width: 24,
+      height: 24,
+      src: isBookmarked ? (_a = icons.bookmarkFilled) != null ? _a : "" : (_b = icons.bookmarkLine) != null ? _b : ""
+    }
+  ))), isExpanded && /* @__PURE__ */ React15.createElement("div", { className: expandedContent }, details3 && /* @__PURE__ */ React15.createElement("div", { className: details }, /* @__PURE__ */ React15.createElement("div", { className: detailsTop }, /* @__PURE__ */ React15.createElement("div", null, detailsBaseLabel), /* @__PURE__ */ React15.createElement("div", { className: detailLabel }, details3.time)), /* @__PURE__ */ React15.createElement("div", { className: detailValue }, details3.price, detailsPriceUnit && /* @__PURE__ */ React15.createElement("span", { className: detailLabel }, detailsPriceUnit)))));
 }
-var DanglePlace_default = DanglePlace;
 
 // src/atoms/Dangle/DanglePlay/DanglePlay.tsx
 import React16 from "react";
@@ -1615,6 +1429,7 @@ function DanglePlay({
   type,
   width = "100%",
   imageUrl,
+  fallbackImageUrl,
   profileImageUrl,
   name: name4,
   location: location3,
@@ -1624,6 +1439,8 @@ function DanglePlay({
   comments,
   timeAgo: timeAgo3,
   tags: tags3,
+  viewIconSrc,
+  commentIconSrc,
   onClick
 }) {
   const isSmall = type === "small";
@@ -1635,9 +1452,9 @@ function DanglePlay({
     imageWidth = 162;
     imageHeight = 242;
   }
-  const isValidImageUrl = typeof imageUrl === "string" && imageUrl !== "\uC0AC\uC9C4 \uC5C6\uC74C" && /^https?:\/\//i.test(imageUrl);
-  const imageSrc = isValidImageUrl ? imageUrl : "/assets/jeju.png";
-  return /* @__PURE__ */ React16.createElement("div", { className: root8[type], style: { width }, onClick }, /* @__PURE__ */ React16.createElement("div", { className: imageWrapper3[type] }, /* @__PURE__ */ React16.createElement(
+  const isValidImageUrl = typeof imageUrl === "string" && /^https?:\/\//i.test(imageUrl);
+  const imageSrc = isValidImageUrl ? imageUrl : fallbackImageUrl != null ? fallbackImageUrl : null;
+  return /* @__PURE__ */ React16.createElement("div", { className: root8[type], style: { width }, onClick }, /* @__PURE__ */ React16.createElement("div", { className: imageWrapper3[type] }, imageSrc && /* @__PURE__ */ React16.createElement(
     Image11,
     {
       src: imageSrc,
@@ -1650,28 +1467,12 @@ function DanglePlay({
     Image11,
     {
       src: profileImageUrl,
-      alt: `${name4}\uC758 \uD504\uB85C\uD544 \uC774\uBBF8\uC9C0`,
+      alt: name4 ? `${name4}\uC758 \uD504\uB85C\uD544 \uC774\uBBF8\uC9C0` : "\uD504\uB85C\uD544 \uC774\uBBF8\uC9C0",
       width: 22,
       height: 22,
       className: profileImage2
     }
-  ), /* @__PURE__ */ React16.createElement("span", { className: name2 }, name4)))), isMedium && /* @__PURE__ */ React16.createElement("div", { className: content2 }, /* @__PURE__ */ React16.createElement("div", { className: textInfo }, /* @__PURE__ */ React16.createElement("div", { className: location }, location3, address2 && /* @__PURE__ */ React16.createElement(React16.Fragment, null, " \xB7 ", /* @__PURE__ */ React16.createElement("span", { className: address }, address2))), /* @__PURE__ */ React16.createElement("div", { className: title5 }, title13), /* @__PURE__ */ React16.createElement("div", { className: tagWrapper }, tags3 == null ? void 0 : tags3.map((tag5) => /* @__PURE__ */ React16.createElement("span", { key: tag5, className: tag2 }, tag5)))), views2 && /* @__PURE__ */ React16.createElement("div", { className: stats2 }, /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, /* @__PURE__ */ React16.createElement(
-    Image11,
-    {
-      src: "/assets/icon12/eye-outlined.svg",
-      alt: "\uC870\uD68C\uC218",
-      width: 12,
-      height: 12
-    }
-  ), /* @__PURE__ */ React16.createElement("span", { className: statValue2 }, views2 == null ? void 0 : views2.toLocaleString())), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, "\xB7"), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, /* @__PURE__ */ React16.createElement(
-    Image11,
-    {
-      alt: "\uB313\uAE00",
-      width: 12,
-      height: 12,
-      src: "/assets/icon12/bookmark_filled.svg"
-    }
-  ), /* @__PURE__ */ React16.createElement("span", { className: statValue2 }, comments == null ? void 0 : comments.toLocaleString())), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, "\xB7"), /* @__PURE__ */ React16.createElement("div", { className: timeAgo }, timeAgo3))), isShort && /* @__PURE__ */ React16.createElement("div", { className: content2 }, /* @__PURE__ */ React16.createElement("div", { className: location }, location3, address2 && /* @__PURE__ */ React16.createElement(React16.Fragment, null, " \xB7 ", /* @__PURE__ */ React16.createElement("span", { className: address }, address2)))));
+  ), /* @__PURE__ */ React16.createElement("span", { className: name2 }, name4)))), isMedium && /* @__PURE__ */ React16.createElement("div", { className: content2 }, /* @__PURE__ */ React16.createElement("div", { className: textInfo }, /* @__PURE__ */ React16.createElement("div", { className: location }, location3, address2 && /* @__PURE__ */ React16.createElement(React16.Fragment, null, " \xB7 ", /* @__PURE__ */ React16.createElement("span", { className: address }, address2))), /* @__PURE__ */ React16.createElement("div", { className: title5 }, title13), /* @__PURE__ */ React16.createElement("div", { className: tagWrapper }, tags3 == null ? void 0 : tags3.map((tag5) => /* @__PURE__ */ React16.createElement("span", { key: tag5, className: tag2 }, tag5)))), views2 && /* @__PURE__ */ React16.createElement("div", { className: stats2 }, /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, viewIconSrc && /* @__PURE__ */ React16.createElement(Image11, { src: viewIconSrc, alt: "\uC870\uD68C\uC218", width: 12, height: 12 }), /* @__PURE__ */ React16.createElement("span", { className: statValue2 }, views2 == null ? void 0 : views2.toLocaleString())), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, "\xB7"), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, commentIconSrc && /* @__PURE__ */ React16.createElement(Image11, { alt: "\uB313\uAE00", width: 12, height: 12, src: commentIconSrc }), /* @__PURE__ */ React16.createElement("span", { className: statValue2 }, comments == null ? void 0 : comments.toLocaleString())), /* @__PURE__ */ React16.createElement("div", { className: statItem2 }, "\xB7"), /* @__PURE__ */ React16.createElement("div", { className: timeAgo }, timeAgo3))), isShort && /* @__PURE__ */ React16.createElement("div", { className: content2 }, /* @__PURE__ */ React16.createElement("div", { className: location }, location3, address2 && /* @__PURE__ */ React16.createElement(React16.Fragment, null, " \xB7 ", /* @__PURE__ */ React16.createElement("span", { className: address }, address2)))));
 }
 
 // src/atoms/Dangle/DangleReview/DangleReview.tsx
@@ -1698,10 +1499,7 @@ var placeInfo = style18({
   flexDirection: "column",
   gap: "2px"
 });
-var locationCategory2 = style18([
-  TYPO.CAPTION2M,
-  { color: COLORS.NEUTRAL500 }
-]);
+var locationCategory2 = style18([TYPO.CAPTION2M, { color: COLORS.NEUTRAL500 }]);
 var placeName = style18([TYPO.BODY2B, { color: "#262626" }]);
 var profileImage3 = style18({
   width: "32px",
@@ -1750,49 +1548,60 @@ var detailValue2 = style18([
 var reviewContent = style18([TYPO.BODY2M, { color: COLORS.NEUTRAL700 }]);
 
 // src/atoms/Dangle/DangleReview/DangleReview.tsx
-var CHIP_LABELS = ["\uCD9C\uC785 \uAC00\uB2A5 \uC5EC\uBD80", "\uCD9C\uC785 \uC870\uAC74", "\uBC18\uB824\uACAC \uCE5C\uD654\uB3C4"];
-var PawRating = ({ rating }) => {
-  return /* @__PURE__ */ React17.createElement("div", { className: stars }, [...Array(5)].map((_, index) => /* @__PURE__ */ React17.createElement(
-    Image12,
-    {
-      key: index,
-      alt: index < rating ? "paw-filled" : "paw-empty",
-      width: 16,
-      height: 16,
-      src: index < rating ? "/assets/icon24/dogfootprint-blue.svg" : "/assets/icon24/dogfootprint-white.svg"
-    }
-  )));
+var RatingDisplay = ({
+  rating,
+  filledIconSrc,
+  emptyIconSrc
+}) => {
+  return /* @__PURE__ */ React17.createElement("div", { className: stars }, [...Array(5)].map(
+    (_, index) => filledIconSrc || emptyIconSrc ? /* @__PURE__ */ React17.createElement(
+      Image12,
+      {
+        key: index,
+        alt: index < rating ? "rating-filled" : "rating-empty",
+        width: 16,
+        height: 16,
+        src: index < rating ? filledIconSrc != null ? filledIconSrc : "" : emptyIconSrc != null ? emptyIconSrc : ""
+      }
+    ) : /* @__PURE__ */ React17.createElement("span", { key: index }, index < rating ? "\u2605" : "\u2606")
+  ));
 };
 function DangleReview({
   profileImageUrl,
+  fallbackProfileImageUrl,
   userName: userName3,
-  dogInfo: dogInfo2,
+  userSubInfo,
   locationCategory: locationCategory3,
   placeName: placeName2,
   isMine,
   rating,
+  filledRatingIconSrc,
+  emptyRatingIconSrc,
   date: date2,
   chips,
+  chipLabels,
   content: content4,
   onClick
 }) {
-  return /* @__PURE__ */ React17.createElement("div", { className: root9, onClick }, isMine ? (
-    // 내 리뷰일 경우 (장소 정보)
-    /* @__PURE__ */ React17.createElement("div", { className: placeInfo }, /* @__PURE__ */ React17.createElement("span", { className: locationCategory2 }, locationCategory3), /* @__PURE__ */ React17.createElement("div", { className: placeName }, placeName2))
-  ) : (
-    // 다른 사람 리뷰일 경우 (유저 정보)
-    /* @__PURE__ */ React17.createElement("div", { className: userInfo }, /* @__PURE__ */ React17.createElement(
-      Image12,
-      {
-        src: profileImageUrl || "/assets/dangle/dog.png",
-        alt: userName3 || "user",
-        width: 24,
-        height: 24,
-        className: profileImage3
-      }
-    ), /* @__PURE__ */ React17.createElement("div", { className: userInfoText }, /* @__PURE__ */ React17.createElement("span", { className: userName }, userName3), dogInfo2 && /* @__PURE__ */ React17.createElement("span", { className: dogInfo }, dogInfo2)))
-  ), /* @__PURE__ */ React17.createElement("div", { className: reviewDetails }, /* @__PURE__ */ React17.createElement("div", { className: reviewHeader }, /* @__PURE__ */ React17.createElement(PawRating, { rating }), /* @__PURE__ */ React17.createElement("span", { className: date }, date2)), chips.map((chipValue, index) => {
-    const label6 = CHIP_LABELS[index];
+  const resolvedProfileSrc = profileImageUrl || fallbackProfileImageUrl;
+  return /* @__PURE__ */ React17.createElement("div", { className: root9, onClick }, isMine ? /* @__PURE__ */ React17.createElement("div", { className: placeInfo }, /* @__PURE__ */ React17.createElement("span", { className: locationCategory2 }, locationCategory3), /* @__PURE__ */ React17.createElement("div", { className: placeName }, placeName2)) : /* @__PURE__ */ React17.createElement("div", { className: userInfo }, resolvedProfileSrc && /* @__PURE__ */ React17.createElement(
+    Image12,
+    {
+      src: resolvedProfileSrc,
+      alt: userName3 || "user",
+      width: 24,
+      height: 24,
+      className: profileImage3
+    }
+  ), /* @__PURE__ */ React17.createElement("div", { className: userInfoText }, /* @__PURE__ */ React17.createElement("span", { className: userName }, userName3), userSubInfo && /* @__PURE__ */ React17.createElement("span", { className: dogInfo }, userSubInfo))), /* @__PURE__ */ React17.createElement("div", { className: reviewDetails }, /* @__PURE__ */ React17.createElement("div", { className: reviewHeader }, /* @__PURE__ */ React17.createElement(
+    RatingDisplay,
+    {
+      rating,
+      filledIconSrc: filledRatingIconSrc,
+      emptyIconSrc: emptyRatingIconSrc
+    }
+  ), /* @__PURE__ */ React17.createElement("span", { className: date }, date2)), chips.map((chipValue, index) => {
+    const label6 = chipLabels == null ? void 0 : chipLabels[index];
     if (!label6) return null;
     return /* @__PURE__ */ React17.createElement("div", { key: label6, className: detailItem2 }, /* @__PURE__ */ React17.createElement("span", { className: detailLabel2 }, label6), /* @__PURE__ */ React17.createElement("span", { className: detailValue2 }, chipValue));
   })), /* @__PURE__ */ React17.createElement("p", { className: reviewContent }, content4));
@@ -1881,9 +1690,12 @@ function DangleVideo({
   title: title13,
   views: views2 = 0,
   comments = 0,
-  timeAgo: timeAgo3 = "1\uAC1C\uC6D4 \uC804",
+  timeAgo: timeAgo3,
   tags: tags3,
-  onClick
+  onClick,
+  viewIconSrc,
+  commentIconSrc,
+  playIconSrc
 }) {
   return /* @__PURE__ */ React18.createElement("div", { className: root10, onClick }, /* @__PURE__ */ React18.createElement("div", { className: thumbnailWrapper2 }, /* @__PURE__ */ React18.createElement(
     Image13,
@@ -1894,33 +1706,8 @@ function DangleVideo({
       height: 90,
       className: thumbnail2
     }
-  )), /* @__PURE__ */ React18.createElement("div", { className: contentWrapper2 }, /* @__PURE__ */ React18.createElement("h3", { className: title6 }, title13), tags3 && /* @__PURE__ */ React18.createElement("div", { className: tagWrapper2 }, tags3 == null ? void 0 : tags3.map((tag5) => /* @__PURE__ */ React18.createElement("span", { key: tag5, className: tag3 }, tag5))), /* @__PURE__ */ React18.createElement("div", { className: stats3 }, /* @__PURE__ */ React18.createElement("div", { className: statItem3 }, /* @__PURE__ */ React18.createElement(
-    Image13,
-    {
-      src: "/assets/icon12/eye-outlined.svg",
-      alt: "\uC870\uD68C\uC218",
-      width: 12,
-      height: 12
-    }
-  ), /* @__PURE__ */ React18.createElement("span", { className: statValue3 }, views2.toLocaleString())), /* @__PURE__ */ React18.createElement("span", { className: divider }, "\xB7"), /* @__PURE__ */ React18.createElement("div", { className: statItem3 }, /* @__PURE__ */ React18.createElement(
-    Image13,
-    {
-      alt: "\uB313\uAE00",
-      width: 12,
-      height: 12,
-      src: "/assets/icon12/bookmark_filled.svg"
-    }
-  ), /* @__PURE__ */ React18.createElement("span", { className: statValue3 }, comments.toLocaleString())), /* @__PURE__ */ React18.createElement("span", { className: divider }, "\xB7"), /* @__PURE__ */ React18.createElement("span", { className: timeAgo2 }, timeAgo3))), /* @__PURE__ */ React18.createElement("div", { className: playButtonWrapper }, /* @__PURE__ */ React18.createElement(
-    Image13,
-    {
-      src: "/assets/icon32/play-btn.svg",
-      alt: "\uC7AC\uC0DD",
-      width: 32,
-      height: 32
-    }
-  )));
+  )), /* @__PURE__ */ React18.createElement("div", { className: contentWrapper2 }, /* @__PURE__ */ React18.createElement("h3", { className: title6 }, title13), tags3 && /* @__PURE__ */ React18.createElement("div", { className: tagWrapper2 }, tags3 == null ? void 0 : tags3.map((tag5) => /* @__PURE__ */ React18.createElement("span", { key: tag5, className: tag3 }, tag5))), /* @__PURE__ */ React18.createElement("div", { className: stats3 }, /* @__PURE__ */ React18.createElement("div", { className: statItem3 }, viewIconSrc && /* @__PURE__ */ React18.createElement(Image13, { src: viewIconSrc, alt: "\uC870\uD68C\uC218", width: 12, height: 12 }), /* @__PURE__ */ React18.createElement("span", { className: statValue3 }, views2.toLocaleString())), /* @__PURE__ */ React18.createElement("span", { className: divider }, "\xB7"), /* @__PURE__ */ React18.createElement("div", { className: statItem3 }, commentIconSrc && /* @__PURE__ */ React18.createElement(Image13, { alt: "\uB313\uAE00", width: 12, height: 12, src: commentIconSrc }), /* @__PURE__ */ React18.createElement("span", { className: statValue3 }, comments.toLocaleString())), timeAgo3 && /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement("span", { className: divider }, "\xB7"), /* @__PURE__ */ React18.createElement("span", { className: timeAgo2 }, timeAgo3)))), playIconSrc && /* @__PURE__ */ React18.createElement("div", { className: playButtonWrapper }, /* @__PURE__ */ React18.createElement(Image13, { src: playIconSrc, alt: "\uC7AC\uC0DD", width: 32, height: 32 })));
 }
-var DangleVideo_default = DangleVideo;
 
 // src/atoms/Dropdown/Dropdown.tsx
 import React19, { useState as useState4, useEffect as useEffect3, useRef as useRef2 } from "react";
@@ -2064,22 +1851,12 @@ var description = style21(__spreadProps(__spreadValues({}, TYPO.LABEL2M), {
 
 // src/atoms/EmptyState/EmptyState.tsx
 function EmptyState({
-  imageUrl = "/assets/dog_bag.png",
-  title: title13 = "\uC7A5\uC18C\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
+  imageUrl,
+  title: title13 = "\uACB0\uACFC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.",
   description: description4 = "\uC870\uAC74\uC744 \uBCC0\uACBD\uD558\uAC70\uB098 \uB2E4\uB978 \uAC80\uC0C9\uC5B4\uB85C \uB2E4\uC2DC \uC2DC\uB3C4\uD574 \uBCF4\uC138\uC694."
 }) {
-  return /* @__PURE__ */ React20.createElement("div", { className: root11 }, imageUrl && /* @__PURE__ */ React20.createElement("div", { className: imageWrapper4 }, /* @__PURE__ */ React20.createElement(
-    Image15,
-    {
-      src: imageUrl,
-      alt: "empty",
-      width: 160,
-      height: 160,
-      className: image4
-    }
-  )), /* @__PURE__ */ React20.createElement("h3", { className: title7 }, title13), /* @__PURE__ */ React20.createElement("p", { className: description }, description4));
+  return /* @__PURE__ */ React20.createElement("div", { className: root11 }, imageUrl && /* @__PURE__ */ React20.createElement("div", { className: imageWrapper4 }, /* @__PURE__ */ React20.createElement(Image15, { src: imageUrl, alt: "empty", width: 160, height: 160, className: image4 })), /* @__PURE__ */ React20.createElement("h3", { className: title7 }, title13), /* @__PURE__ */ React20.createElement("p", { className: description }, description4));
 }
-var EmptyState_default = EmptyState;
 
 // src/atoms/Fab/Fab.tsx
 import React21 from "react";
@@ -2103,9 +1880,9 @@ var root12 = style22({
 });
 
 // src/atoms/Fab/Fab.tsx
-function Fab({ onClick, className }) {
+function Fab({ imageSrc, imageAlt = "", onClick, className }) {
   const combinedClassName = [root12, className].filter(Boolean).join(" ");
-  return /* @__PURE__ */ React21.createElement("button", { className: combinedClassName, onClick }, /* @__PURE__ */ React21.createElement(Image16, { src: "/assets/map/fab.svg", alt: "\uB315\uAE00\uCD94\uCC9C", width: 60, height: 60 }));
+  return /* @__PURE__ */ React21.createElement("button", { className: combinedClassName, onClick }, imageSrc && /* @__PURE__ */ React21.createElement(Image16, { src: imageSrc, alt: imageAlt, width: 60, height: 60 }));
 }
 
 // src/atoms/FilterChip/FilterChip.tsx
@@ -2159,22 +1936,8 @@ var icon2 = styleVariants8({
 });
 
 // src/atoms/FilterChip/FilterChip.tsx
-function FilterChip({
-  text: text3,
-  iconUrl,
-  selected = false,
-  onClick
-}) {
-  return /* @__PURE__ */ React22.createElement(
-    "button",
-    {
-      className: chip2[selected ? "selected" : "default"],
-      onClick,
-      role: "button"
-    },
-    iconUrl && /* @__PURE__ */ React22.createElement("div", { className: icon2[selected ? "selected" : "default"] }, /* @__PURE__ */ React22.createElement(Image17, { src: iconUrl, alt: "", width: 16, height: 16 })),
-    /* @__PURE__ */ React22.createElement("span", { className: text2[selected ? "selected" : "default"] }, text3)
-  );
+function FilterChip({ text: text3, iconUrl, selected = false, onClick }) {
+  return /* @__PURE__ */ React22.createElement("button", { className: chip2[selected ? "selected" : "default"], onClick, role: "button" }, iconUrl && /* @__PURE__ */ React22.createElement("div", { className: icon2[selected ? "selected" : "default"] }, /* @__PURE__ */ React22.createElement(Image17, { src: iconUrl, alt: "", width: 16, height: 16 })), /* @__PURE__ */ React22.createElement("span", { className: text2[selected ? "selected" : "default"] }, text3));
 }
 
 // src/atoms/FilterChipExpand/FilterChipExpand.tsx
@@ -2238,17 +2001,8 @@ function FilterChipExpand({
   selected = false,
   onClick
 }) {
-  return /* @__PURE__ */ React23.createElement(
-    "button",
-    {
-      className: root13[selected ? "selected" : "default"],
-      onClick,
-      role: "button"
-    },
-    /* @__PURE__ */ React23.createElement("div", { className: textWrapper }, /* @__PURE__ */ React23.createElement("span", { className: title8 }, title13), caption2 && /* @__PURE__ */ React23.createElement("span", { className: caption }, caption2))
-  );
+  return /* @__PURE__ */ React23.createElement("button", { className: root13[selected ? "selected" : "default"], onClick, role: "button" }, /* @__PURE__ */ React23.createElement("div", { className: textWrapper }, /* @__PURE__ */ React23.createElement("span", { className: title8 }, title13), caption2 && /* @__PURE__ */ React23.createElement("span", { className: caption }, caption2)));
 }
-var FilterChipExpand_default = FilterChipExpand;
 
 // src/atoms/Header/Header.tsx
 import React24 from "react";
@@ -2288,13 +2042,7 @@ var iconButton = style25({
 
 // src/atoms/Header/Header.tsx
 import Image18 from "next/image";
-function Header({
-  title: title13,
-  desc: desc4,
-  onArrowClick,
-  onReClick,
-  marginTop
-}) {
+function Header({ title: title13, desc: desc4, onArrowClick, onReClick, marginTop }) {
   const hasRightIcon = onArrowClick || onReClick;
   return /* @__PURE__ */ React24.createElement("div", { className: root14, style: { marginTop } }, /* @__PURE__ */ React24.createElement("div", { className: titleWrapper }, /* @__PURE__ */ React24.createElement("h2", { className: title9 }, title13), hasRightIcon && /* @__PURE__ */ React24.createElement(
     "button",
@@ -2314,7 +2062,6 @@ function Header({
     )
   )), desc4 && /* @__PURE__ */ React24.createElement("p", { className: desc2 }, desc4));
 }
-var Header_default = Header;
 
 // src/atoms/LoadingSpinner/style.css.ts
 import { style as style26 } from "@vanilla-extract/css";
@@ -2426,21 +2173,12 @@ function Modal({ isOpen, onClose, children, title: title13 }) {
       onClose();
     }
   };
-  return /* @__PURE__ */ React25.createElement("div", { className: overlay4, onClick: handleBackdropClick }, /* @__PURE__ */ React25.createElement("div", { className: modalContainer }, /* @__PURE__ */ React25.createElement("div", { className: modalHeader }, title13 && /* @__PURE__ */ React25.createElement("h2", { className: modalTitle }, title13), /* @__PURE__ */ React25.createElement("button", { className: closeButton2, onClick: onClose, "aria-label": "\uB2EB\uAE30" }, /* @__PURE__ */ React25.createElement(
-    Image19,
-    {
-      src: "/assets/icon24/x_line.svg",
-      alt: "\uB2EB\uAE30",
-      width: 24,
-      height: 24
-    }
-  ))), /* @__PURE__ */ React25.createElement("div", { className: modalContent }, children)));
+  return /* @__PURE__ */ React25.createElement("div", { className: overlay4, onClick: handleBackdropClick }, /* @__PURE__ */ React25.createElement("div", { className: modalContainer }, /* @__PURE__ */ React25.createElement("div", { className: modalHeader }, title13 && /* @__PURE__ */ React25.createElement("h2", { className: modalTitle }, title13), /* @__PURE__ */ React25.createElement("button", { className: closeButton2, onClick: onClose, "aria-label": "\uB2EB\uAE30" }, /* @__PURE__ */ React25.createElement(Image19, { src: "/assets/icon24/x_line.svg", alt: "\uB2EB\uAE30", width: 24, height: 24 }))), /* @__PURE__ */ React25.createElement("div", { className: modalContent }, children)));
 }
 
 // src/atoms/NavBar/NavBar.tsx
 import React26 from "react";
 import Image20 from "next/image";
-import { useRouter } from "next/navigation";
 
 // src/atoms/NavBar/NavBar.css.ts
 import { style as style28 } from "@vanilla-extract/css";
@@ -2467,74 +2205,18 @@ var bottomNavTextBase = style28(__spreadValues({}, TYPO.CAPTION2M));
 var navText = style28([bottomNavTextBase, { color: COLORS.NEUTRAL400 }]);
 var navTextSelected = style28([bottomNavTextBase, { color: "#262626" }]);
 
-// ../../src/constants/navData.ts
-var NAV_ITEMS = [
-  {
-    id: "near",
-    text: "\uB0B4\uADFC\uCC98",
-    iconFill: "/assets/nav/map_active.svg",
-    iconLine: "/assets/nav/map.svg",
-    path: "/map"
-  },
-  {
-    id: "dangle",
-    text: "\uB315\uAE00\uC601\uC0C1",
-    iconFill: "/assets/nav/video_active.svg",
-    iconLine: "/assets/nav/video.svg",
-    path: "/shorts?contextId=PLACE_jeju_si"
-  },
-  {
-    id: "ai",
-    text: "AI\uC5EC\uD589\uCF00\uC5B4",
-    iconFill: "/assets/nav/ai_active.svg",
-    iconLine: "/assets/nav/ai.svg",
-    path: "/chat"
-  },
-  {
-    id: "jeju",
-    text: "\uC81C\uC8FC\uC774\uB3D9",
-    iconFill: "/assets/nav/move_active.svg",
-    iconLine: "/assets/nav/move.svg",
-    path: "/jeju"
-  },
-  {
-    id: "my",
-    text: "\uB9C8\uC774",
-    iconFill: "/assets/nav/my_active.svg",
-    iconLine: "/assets/nav/my.svg",
-    path: "/my"
-  }
-];
-
 // src/atoms/NavBar/NavBar.tsx
-function NavBar({ activePage }) {
-  const router = useRouter();
-  return /* @__PURE__ */ React26.createElement("nav", { className: root15 }, NAV_ITEMS.map((item) => /* @__PURE__ */ React26.createElement(
-    "button",
+function NavBar({ activeId, items, onNavigate }) {
+  return /* @__PURE__ */ React26.createElement("nav", { className: root15 }, items.map((item) => /* @__PURE__ */ React26.createElement("button", { key: item.id, className: navItem, onClick: () => onNavigate(item.path) }, /* @__PURE__ */ React26.createElement(
+    Image20,
     {
-      key: item.id,
-      className: navItem,
-      onClick: () => router.push(item.path)
-    },
-    /* @__PURE__ */ React26.createElement(
-      Image20,
-      {
-        src: activePage === item.id ? item.iconFill : item.iconLine,
-        alt: item.text,
-        width: 24,
-        height: 24
-      }
-    ),
-    /* @__PURE__ */ React26.createElement(
-      "span",
-      {
-        className: activePage === item.id ? navTextSelected : navText
-      },
-      item.text
-    )
-  )));
+      src: activeId === item.id ? item.activeIconSrc : item.inactiveIconSrc,
+      alt: item.text,
+      width: 24,
+      height: 24
+    }
+  ), /* @__PURE__ */ React26.createElement("span", { className: activeId === item.id ? navTextSelected : navText }, item.text))));
 }
-var NavBar_default = NavBar;
 
 // src/atoms/NoticeBox/NoticeBox.tsx
 import React27 from "react";
@@ -2617,27 +2299,8 @@ var NoticeBox = ({
   const themeClass = variant === "blue" ? blueTheme : yellowTheme;
   const emphasisIconSrc = variant === "blue" ? "/assets/icon16/circle-emphasis_line_blue.svg" : "/assets/icon16/circle-emphasis_line_yellow.svg";
   const closeIconSrc = variant === "blue" ? "/assets/icon16/x_line.svg" : "/assets/icon16/x_line_yellow.svg";
-  return /* @__PURE__ */ React27.createElement(
-    "div",
-    {
-      className: `${container5} ${themeClass} ${animationClass}`,
-      role: "alert"
-    },
-    /* @__PURE__ */ React27.createElement("div", { className: iconWrapper }, /* @__PURE__ */ React27.createElement(Image21, { src: emphasisIconSrc, alt: "icon", width: 16, height: 16 })),
-    /* @__PURE__ */ React27.createElement("p", { className: content3 }, children),
-    /* @__PURE__ */ React27.createElement(
-      "button",
-      {
-        type: "button",
-        className: closeButton3,
-        onClick: onClose,
-        "aria-label": "\uC54C\uB9BC \uB2EB\uAE30"
-      },
-      /* @__PURE__ */ React27.createElement(Image21, { src: closeIconSrc, alt: "close icon", width: 16, height: 16 })
-    )
-  );
+  return /* @__PURE__ */ React27.createElement("div", { className: `${container5} ${themeClass} ${animationClass}`, role: "alert" }, /* @__PURE__ */ React27.createElement("div", { className: iconWrapper }, /* @__PURE__ */ React27.createElement(Image21, { src: emphasisIconSrc, alt: "icon", width: 16, height: 16 })), /* @__PURE__ */ React27.createElement("p", { className: content3 }, children), /* @__PURE__ */ React27.createElement("button", { type: "button", className: closeButton3, onClick: onClose, "aria-label": "\uC54C\uB9BC \uB2EB\uAE30" }, /* @__PURE__ */ React27.createElement(Image21, { src: closeIconSrc, alt: "close icon", width: 16, height: 16 })));
 };
-var NoticeBox_default = NoticeBox;
 
 // src/atoms/Pagination/Pagination.tsx
 import React28 from "react";
@@ -2663,11 +2326,7 @@ var active = style30({
 });
 
 // src/atoms/Pagination/Pagination.tsx
-function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange
-}) {
+function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   return /* @__PURE__ */ React28.createElement("nav", { className: root16, "aria-label": "\uD398\uC774\uC9C0\uB124\uC774\uC158" }, pages.map((page2) => /* @__PURE__ */ React28.createElement(
@@ -2748,26 +2407,8 @@ var ProfileCard = ({
   onEditClick,
   className
 }) => {
-  return /* @__PURE__ */ React29.createElement("div", { className: `${container6} ${className}` }, /* @__PURE__ */ React29.createElement("div", { className: profileInfo }, /* @__PURE__ */ React29.createElement(
-    Image22,
-    {
-      src: imageUrl,
-      alt: name4,
-      width: 48,
-      height: 48,
-      className: avatar
-    }
-  ), /* @__PURE__ */ React29.createElement("div", { className: textInfo2 }, /* @__PURE__ */ React29.createElement("div", { className: nameLine }, /* @__PURE__ */ React29.createElement("span", { className: name3 }, name4), /* @__PURE__ */ React29.createElement("span", { className: description2 }, description4)), /* @__PURE__ */ React29.createElement("span", { className: details2 }, details3))), /* @__PURE__ */ React29.createElement("button", { className: editButton, onClick: onEditClick }, /* @__PURE__ */ React29.createElement(
-    Image22,
-    {
-      src: "/assets/icon16/pencil_line.svg",
-      alt: "\uC218\uC815",
-      width: 16,
-      height: 16
-    }
-  )));
+  return /* @__PURE__ */ React29.createElement("div", { className: `${container6} ${className}` }, /* @__PURE__ */ React29.createElement("div", { className: profileInfo }, /* @__PURE__ */ React29.createElement(Image22, { src: imageUrl, alt: name4, width: 48, height: 48, className: avatar }), /* @__PURE__ */ React29.createElement("div", { className: textInfo2 }, /* @__PURE__ */ React29.createElement("div", { className: nameLine }, /* @__PURE__ */ React29.createElement("span", { className: name3 }, name4), /* @__PURE__ */ React29.createElement("span", { className: description2 }, description4)), /* @__PURE__ */ React29.createElement("span", { className: details2 }, details3))), /* @__PURE__ */ React29.createElement("button", { className: editButton, onClick: onEditClick }, /* @__PURE__ */ React29.createElement(Image22, { src: "/assets/icon16/pencil_line.svg", alt: "\uC218\uC815", width: 16, height: 16 })));
 };
-var ProfileCard_default = ProfileCard;
 
 // src/atoms/ProgressCircle/ProgressCircle.tsx
 import React30 from "react";
@@ -2800,41 +2441,21 @@ function ProgressCircle({
   const radius = 10;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - progress * circumference;
-  return /* @__PURE__ */ React30.createElement(
-    "svg",
+  return /* @__PURE__ */ React30.createElement("svg", { className: `${circleBase} ${className}`, width: size2, height: size2, viewBox: "0 0 24 24" }, /* @__PURE__ */ React30.createElement("circle", { cx: "12", cy: "12", r: radius, stroke: "#E0E0E0", strokeWidth: "3", fill: "none" }), /* @__PURE__ */ React30.createElement(
+    "circle",
     {
-      className: `${circleBase} ${className}`,
-      width: size2,
-      height: size2,
-      viewBox: "0 0 24 24"
-    },
-    /* @__PURE__ */ React30.createElement(
-      "circle",
-      {
-        cx: "12",
-        cy: "12",
-        r: radius,
-        stroke: "#E0E0E0",
-        strokeWidth: "3",
-        fill: "none"
-      }
-    ),
-    /* @__PURE__ */ React30.createElement(
-      "circle",
-      {
-        className: `${progressRing} ${active4 ? active2 : ""}`,
-        cx: "12",
-        cy: "12",
-        r: radius,
-        stroke: color,
-        strokeWidth: "4",
-        fill: "none",
-        strokeLinecap: "round",
-        strokeDasharray: circumference,
-        strokeDashoffset: offset
-      }
-    )
-  );
+      className: `${progressRing} ${active4 ? active2 : ""}`,
+      cx: "12",
+      cy: "12",
+      r: radius,
+      stroke: color,
+      strokeWidth: "4",
+      fill: "none",
+      strokeLinecap: "round",
+      strokeDasharray: circumference,
+      strokeDashoffset: offset
+    }
+  ));
 }
 
 // src/atoms/RadioGroup/RadioGroup.tsx
@@ -3068,211 +2689,45 @@ var SearchField = forwardRef(
       if (!isControlled) setInner("");
       onClear == null ? void 0 : onClear();
     };
-    return /* @__PURE__ */ React32.createElement("div", { className: [wrapper5, className].filter(Boolean).join(" ") }, /* @__PURE__ */ React32.createElement(
-      "div",
+    return /* @__PURE__ */ React32.createElement("div", { className: [wrapper5, className].filter(Boolean).join(" ") }, /* @__PURE__ */ React32.createElement("div", { className: [field, stateClass].join(" "), "aria-disabled": isDisabled || void 0 }, /* @__PURE__ */ React32.createElement(
+      Image23,
       {
-        className: [field, stateClass].join(" "),
-        "aria-disabled": isDisabled || void 0
-      },
-      /* @__PURE__ */ React32.createElement(
-        Image23,
-        {
-          src: loading ? "/assets/icon16/loading.svg" : "/assets/icon16/search_line.svg",
-          alt: "\uAC80\uC0C9",
-          width: 16,
-          height: 16,
-          className: [icon3, loading && rotate].filter(Boolean).join(" ")
-        }
-      ),
-      /* @__PURE__ */ React32.createElement(
-        "input",
-        __spreadValues({
-          ref,
-          id: inputId,
-          className: input2,
-          type: "text",
-          placeholder,
-          value: currentValue,
-          onChange: handleChange,
-          onFocus: handleFocus,
-          onBlur: handleBlur,
-          onMouseDown: () => setPressed(true),
-          onMouseUp: () => setPressed(false),
-          onKeyDown: () => setPressed(true),
-          onKeyUp: () => setPressed(false),
-          disabled: isDisabled
-        }, rest)
-      ),
-      filled && !disabled && !loading && /* @__PURE__ */ React32.createElement("button", { className: clearButton, onClick: handleClear, type: "button" }, /* @__PURE__ */ React32.createElement(
-        Image23,
-        {
-          src: "/assets/icon16/x-circle.svg",
-          alt: "\uC9C0\uC6B0\uAE30",
-          width: 16,
-          height: 16
-        }
-      ))
-    ), error && /* @__PURE__ */ React32.createElement("p", { className: errorMessage }, error));
+        src: loading ? "/assets/icon16/loading.svg" : "/assets/icon16/search_line.svg",
+        alt: "\uAC80\uC0C9",
+        width: 16,
+        height: 16,
+        className: [icon3, loading && rotate].filter(Boolean).join(" ")
+      }
+    ), /* @__PURE__ */ React32.createElement(
+      "input",
+      __spreadValues({
+        ref,
+        id: inputId,
+        className: input2,
+        type: "text",
+        placeholder,
+        value: currentValue,
+        onChange: handleChange,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
+        onMouseDown: () => setPressed(true),
+        onMouseUp: () => setPressed(false),
+        onKeyDown: () => setPressed(true),
+        onKeyUp: () => setPressed(false),
+        disabled: isDisabled
+      }, rest)
+    ), filled && !disabled && !loading && /* @__PURE__ */ React32.createElement("button", { className: clearButton, onClick: handleClear, type: "button" }, /* @__PURE__ */ React32.createElement(Image23, { src: "/assets/icon16/x-circle.svg", alt: "\uC9C0\uC6B0\uAE30", width: 16, height: 16 }))), error && /* @__PURE__ */ React32.createElement("p", { className: errorMessage }, error));
   }
 );
 SearchField.displayName = "SearchField";
-var SearchField_default = SearchField;
 
 // src/atoms/SegmentedControl/SegmentedControl.tsx
 import React33, { useState as useState6, useRef as useRef3, useEffect as useEffect4 } from "react";
 
 // src/atoms/SegmentedControl/style.css.ts
-import { style as style36 } from "@vanilla-extract/css";
-
-// ../../node_modules/.pnpm/@vanilla-extract+recipes@0.5.7_@vanilla-extract+css@1.17.4/node_modules/@vanilla-extract/recipes/dist/vanilla-extract-recipes.esm.js
-import { addRecipe } from "@vanilla-extract/css/recipe";
-import { style as style35, styleVariants as styleVariants11 } from "@vanilla-extract/css";
-
-// ../../node_modules/.pnpm/@vanilla-extract+recipes@0.5.7_@vanilla-extract+css@1.17.4/node_modules/@vanilla-extract/recipes/dist/createRuntimeFn-62c9670f.esm.js
-function toPrimitive(t, r) {
-  if ("object" != typeof t || !t) return t;
-  var e = t[Symbol.toPrimitive];
-  if (void 0 !== e) {
-    var i = e.call(t, r || "default");
-    if ("object" != typeof i) return i;
-    throw new TypeError("@@toPrimitive must return a primitive value.");
-  }
-  return ("string" === r ? String : Number)(t);
-}
-function toPropertyKey(t) {
-  var i = toPrimitive(t, "string");
-  return "symbol" == typeof i ? i : String(i);
-}
-function _defineProperty(obj, key, value) {
-  key = toPropertyKey(key);
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-  return obj;
-}
-function ownKeys(e, r) {
-  var t = Object.keys(e);
-  if (Object.getOwnPropertySymbols) {
-    var o = Object.getOwnPropertySymbols(e);
-    r && (o = o.filter(function(r2) {
-      return Object.getOwnPropertyDescriptor(e, r2).enumerable;
-    })), t.push.apply(t, o);
-  }
-  return t;
-}
-function _objectSpread2(e) {
-  for (var r = 1; r < arguments.length; r++) {
-    var t = null != arguments[r] ? arguments[r] : {};
-    r % 2 ? ownKeys(Object(t), true).forEach(function(r2) {
-      _defineProperty(e, r2, t[r2]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function(r2) {
-      Object.defineProperty(e, r2, Object.getOwnPropertyDescriptor(t, r2));
-    });
-  }
-  return e;
-}
-function mapValues(input4, fn) {
-  var result = {};
-  for (var _key in input4) {
-    result[_key] = fn(input4[_key], _key);
-  }
-  return result;
-}
-var shouldApplyCompound = (compoundCheck, selections, defaultVariants) => {
-  for (var key of Object.keys(compoundCheck)) {
-    var _selections$key;
-    if (compoundCheck[key] !== ((_selections$key = selections[key]) !== null && _selections$key !== void 0 ? _selections$key : defaultVariants[key])) {
-      return false;
-    }
-  }
-  return true;
-};
-var createRuntimeFn = (config) => {
-  var runtimeFn = (options) => {
-    var className = config.defaultClassName;
-    var selections = _objectSpread2(_objectSpread2({}, config.defaultVariants), options);
-    for (var variantName in selections) {
-      var _selections$variantNa;
-      var variantSelection = (_selections$variantNa = selections[variantName]) !== null && _selections$variantNa !== void 0 ? _selections$variantNa : config.defaultVariants[variantName];
-      if (variantSelection != null) {
-        var selection = variantSelection;
-        if (typeof selection === "boolean") {
-          selection = selection === true ? "true" : "false";
-        }
-        var selectionClassName = (
-          // @ts-expect-error
-          config.variantClassNames[variantName][selection]
-        );
-        if (selectionClassName) {
-          className += " " + selectionClassName;
-        }
-      }
-    }
-    for (var [compoundCheck, compoundClassName] of config.compoundVariants) {
-      if (shouldApplyCompound(compoundCheck, selections, config.defaultVariants)) {
-        className += " " + compoundClassName;
-      }
-    }
-    return className;
-  };
-  runtimeFn.variants = () => Object.keys(config.variantClassNames);
-  runtimeFn.classNames = {
-    get base() {
-      return config.defaultClassName.split(" ")[0];
-    },
-    get variants() {
-      return mapValues(config.variantClassNames, (classNames) => mapValues(classNames, (className) => className.split(" ")[0]));
-    }
-  };
-  return runtimeFn;
-};
-
-// ../../node_modules/.pnpm/@vanilla-extract+recipes@0.5.7_@vanilla-extract+css@1.17.4/node_modules/@vanilla-extract/recipes/dist/vanilla-extract-recipes.esm.js
-function recipe(options, debugId) {
-  var {
-    variants = {},
-    defaultVariants = {},
-    compoundVariants = [],
-    base
-  } = options;
-  var defaultClassName;
-  if (!base || typeof base === "string") {
-    var baseClassName = style35({});
-    defaultClassName = base ? "".concat(baseClassName, " ").concat(base) : baseClassName;
-  } else {
-    defaultClassName = style35(base, debugId);
-  }
-  var variantClassNames = mapValues(variants, (variantGroup, variantGroupName) => styleVariants11(variantGroup, (styleRule) => typeof styleRule === "string" ? [styleRule] : styleRule, debugId ? "".concat(debugId, "_").concat(variantGroupName) : variantGroupName));
-  var compounds = [];
-  for (var {
-    style: theStyle,
-    variants: _variants
-  } of compoundVariants) {
-    compounds.push([_variants, typeof theStyle === "string" ? theStyle : style35(theStyle, "".concat(debugId, "_compound_").concat(compounds.length))]);
-  }
-  var config = {
-    defaultClassName,
-    variantClassNames,
-    defaultVariants,
-    compoundVariants: compounds
-  };
-  return addRecipe(createRuntimeFn(config), {
-    importPath: "@vanilla-extract/recipes/createRuntimeFn",
-    importName: "createRuntimeFn",
-    // @ts-expect-error
-    args: [config]
-  });
-}
-
-// src/atoms/SegmentedControl/style.css.ts
-var container7 = style36({
+import { style as style35 } from "@vanilla-extract/css";
+import { recipe } from "@vanilla-extract/recipes";
+var container7 = style35({
   position: "relative",
   display: "flex",
   width: "100%",
@@ -3302,7 +2757,7 @@ var optionButton = recipe({
     }
   }
 });
-var activeIndicator = style36({
+var activeIndicator = style35({
   flex: "1",
   position: "absolute",
   top: "4px",
@@ -3325,9 +2780,7 @@ var SegmentedControl = ({
   const containerRef = useRef3(null);
   const optionRefs = useRef3([]);
   useEffect4(() => {
-    const activeIndex = options.findIndex(
-      (option) => option.id === activeOption
-    );
+    const activeIndex = options.findIndex((option) => option.id === activeOption);
     const activeOptionElement = optionRefs.current[activeIndex];
     if (activeOptionElement) {
       const { offsetLeft, clientWidth } = activeOptionElement;
@@ -3336,11 +2789,7 @@ var SegmentedControl = ({
         width: `${clientWidth}px`
       });
     }
-  }, [
-    activeOption,
-    options,
-    typeof window !== "undefined" ? window.innerWidth : 0
-  ]);
+  }, [activeOption, options, typeof window !== "undefined" ? window.innerWidth : 0]);
   return /* @__PURE__ */ React33.createElement("div", { ref: containerRef, className: `${container7} ${className}` }, /* @__PURE__ */ React33.createElement("div", { className: activeIndicator, style: indicatorStyle }), options.map((option, index) => /* @__PURE__ */ React33.createElement(
     "button",
     {
@@ -3354,23 +2803,22 @@ var SegmentedControl = ({
     option.label
   )));
 };
-var SegmentedControl_default = SegmentedControl;
 
 // src/atoms/SelectField/SelectField.tsx
 import React34, { useId as useId2, useMemo as useMemo3 } from "react";
 
 // src/atoms/SelectField/SelectField.css.ts
-import { style as style37, styleVariants as styleVariants12 } from "@vanilla-extract/css";
-var root17 = style37({
+import { style as style36, styleVariants as styleVariants11 } from "@vanilla-extract/css";
+var root17 = style36({
   display: "flex",
   flexDirection: "column",
   width: "100%"
 });
-var label4 = style37(__spreadProps(__spreadValues({}, TYPO.LABEL1B), {
+var label4 = style36(__spreadProps(__spreadValues({}, TYPO.LABEL1B), {
   color: COLORS.NEUTRAL600,
   marginBottom: "8px"
 }));
-var fieldBase = style37({
+var fieldBase = style36({
   height: "56px",
   display: "flex",
   alignItems: "center",
@@ -3383,7 +2831,7 @@ var fieldBase = style37({
   cursor: "pointer",
   transition: "box-shadow .12s ease, background-color .12s ease"
 });
-var fieldState = styleVariants12({
+var fieldState = styleVariants11({
   default: {
     background: COLORS.NEUTRAL0,
     boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL300}`
@@ -3398,10 +2846,10 @@ var fieldState = styleVariants12({
     cursor: "not-allowed"
   }
 });
-var valueText = style37(__spreadProps(__spreadValues({}, TYPO.BODY1M), {
+var valueText = style36(__spreadProps(__spreadValues({}, TYPO.BODY1M), {
   color: COLORS.NEUTRAL800
 }));
-var placeholderText = style37(__spreadProps(__spreadValues({}, TYPO.BODY1M), {
+var placeholderText = style36(__spreadProps(__spreadValues({}, TYPO.BODY1M), {
   color: COLORS.NEUTRAL400
 }));
 
@@ -3435,15 +2883,7 @@ function SelectField({
       "aria-haspopup": "listbox"
     },
     /* @__PURE__ */ React34.createElement("span", { className: hasValue ? valueText : placeholderText }, hasValue ? value : placeholder),
-    /* @__PURE__ */ React34.createElement(
-      Image24,
-      {
-        src: "/assets/icon24/chevron-down.svg",
-        alt: "\uC120\uD0DD",
-        width: 24,
-        height: 24
-      }
-    )
+    /* @__PURE__ */ React34.createElement(Image24, { src: "/assets/icon24/chevron-down.svg", alt: "\uC120\uD0DD", width: 24, height: 24 })
   ));
 }
 
@@ -3452,34 +2892,34 @@ import React35 from "react";
 import Image25 from "next/image";
 
 // src/atoms/ShortsBottomInfo/ShortsBottomInfo.css.ts
-import { style as style38 } from "@vanilla-extract/css";
-var bottomInfo = style38({
+import { style as style37 } from "@vanilla-extract/css";
+var bottomInfo = style37({
   width: "100%",
   display: "flex",
   gap: "8px",
   padding: "24px 18px"
 });
-var userInfo2 = style38({
+var userInfo2 = style37({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   gap: "8px"
 });
-var profileImage4 = style38({
+var profileImage4 = style37({
   borderRadius: "50%"
 });
-var userName2 = style38(__spreadProps(__spreadValues({}, TYPO.CAPTION2M), {
+var userName2 = style37(__spreadProps(__spreadValues({}, TYPO.CAPTION2M), {
   width: "60px",
   textAlign: "center",
   overflow: "ellipse"
 }));
-var locInfo = style38({
+var locInfo = style37({
   display: "flex",
   flexDirection: "column",
   alignItems: "start",
   gap: "8px"
 });
-var location2 = style38(__spreadProps(__spreadValues({}, TYPO.LABEL2B), {
+var location2 = style37(__spreadProps(__spreadValues({}, TYPO.LABEL2B), {
   padding: "6px 15px",
   borderRadius: "39px",
   backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -3487,20 +2927,20 @@ var location2 = style38(__spreadProps(__spreadValues({}, TYPO.LABEL2B), {
   gap: "4px",
   alignItems: "center"
 }));
-var description3 = style38(__spreadProps(__spreadValues({}, TYPO.BODY2M), {
+var description3 = style37(__spreadProps(__spreadValues({}, TYPO.BODY2M), {
   overflow: "hidden",
   textOverflow: "ellipsis",
   display: "-webkit-box",
   WebkitLineClamp: 3,
   WebkitBoxOrient: "vertical"
 }));
-var tags2 = style38({
+var tags2 = style37({
   display: "flex",
   flexWrap: "wrap",
   gap: "4px",
   maxHeight: "70px"
 });
-var tag4 = style38(__spreadProps(__spreadValues({
+var tag4 = style37(__spreadProps(__spreadValues({
   backgroundColor: "rgba(0, 0, 0, 0.3)",
   padding: "4px 10px",
   borderRadius: "99px"
@@ -3509,7 +2949,7 @@ var tag4 = style38(__spreadProps(__spreadValues({
 }));
 
 // src/atoms/ShortsBottomInfo/ShortsBottomInfo.tsx
-function ShortsBottomInfo({ video }) {
+function ShortsBottomInfo({ video, locationIconSrc }) {
   return /* @__PURE__ */ React35.createElement("div", { className: bottomInfo }, /* @__PURE__ */ React35.createElement("div", { className: userInfo2 }, /* @__PURE__ */ React35.createElement(
     Image25,
     {
@@ -3519,22 +2959,14 @@ function ShortsBottomInfo({ video }) {
       height: 40,
       className: profileImage4
     }
-  ), /* @__PURE__ */ React35.createElement("div", { className: userName2 }, video.userName)), /* @__PURE__ */ React35.createElement("div", { className: locInfo }, /* @__PURE__ */ React35.createElement("div", { className: location2 }, /* @__PURE__ */ React35.createElement(
-    Image25,
-    {
-      alt: "location",
-      width: 12,
-      height: 12,
-      src: "/assets/icon12/map_filled.svg"
-    }
-  ), video.loc), /* @__PURE__ */ React35.createElement("p", { className: description3 }, video.description), /* @__PURE__ */ React35.createElement("div", { className: tags2 }, video.tags.map((tag5) => /* @__PURE__ */ React35.createElement("span", { key: tag5, className: tag4 }, "#", tag5)))));
+  ), /* @__PURE__ */ React35.createElement("div", { className: userName2 }, video.userName)), /* @__PURE__ */ React35.createElement("div", { className: locInfo }, /* @__PURE__ */ React35.createElement("div", { className: location2 }, locationIconSrc && /* @__PURE__ */ React35.createElement(Image25, { alt: "location", width: 12, height: 12, src: locationIconSrc }), video.loc), /* @__PURE__ */ React35.createElement("p", { className: description3 }, video.description), /* @__PURE__ */ React35.createElement("div", { className: tags2 }, video.tags.map((tag5) => /* @__PURE__ */ React35.createElement("span", { key: tag5, className: tag4 }, "#", tag5)))));
 }
 
 // src/atoms/Skeleton/Skeleton.tsx
 import React36 from "react";
 
 // src/atoms/Skeleton/Skeleton.css.ts
-import { style as style39, keyframes as keyframes5 } from "@vanilla-extract/css";
+import { style as style38, keyframes as keyframes5 } from "@vanilla-extract/css";
 var shimmer = keyframes5({
   "0%": {
     backgroundPosition: "-1000px 0"
@@ -3543,7 +2975,7 @@ var shimmer = keyframes5({
     backgroundPosition: "1000px 0"
   }
 });
-var skeleton = style39({
+var skeleton = style38({
   display: "inline-block",
   width: "100%",
   height: "100%",
@@ -3556,12 +2988,7 @@ var skeleton = style39({
 });
 
 // src/atoms/Skeleton/Skeleton.tsx
-function Skeleton({
-  width = "100%",
-  height = "1em",
-  className,
-  style: style51
-}) {
+function Skeleton({ width = "100%", height = "1em", className, style: style50 }) {
   return /* @__PURE__ */ React36.createElement(
     "span",
     {
@@ -3570,7 +2997,7 @@ function Skeleton({
         width,
         height,
         verticalAlign: "middle"
-      }, style51)
+      }, style50)
     }
   );
 }
@@ -3579,8 +3006,9 @@ function Skeleton({
 import React37 from "react";
 
 // src/atoms/Tabs/style.css.ts
-import { style as style40 } from "@vanilla-extract/css";
-var container8 = style40({
+import { style as style39 } from "@vanilla-extract/css";
+import { recipe as recipe2 } from "@vanilla-extract/recipes";
+var container8 = style39({
   width: "100%",
   display: "flex",
   justifyContent: "space-between",
@@ -3595,7 +3023,7 @@ var container8 = style40({
   msOverflowStyle: "none",
   scrollbarWidth: "none"
 });
-var tab = recipe({
+var tab = recipe2({
   base: __spreadProps(__spreadValues({}, TYPO.BODY2B), {
     padding: "12px 4px",
     flexShrink: 0,
@@ -3633,20 +3061,19 @@ var Tabs = ({ tabs, activeTab, onTabClick, className }) => {
     tab2.label
   )));
 };
-var Tabs_default = Tabs;
 
 // src/atoms/TextField/TextField.tsx
 import React38, { useId as useId3, useMemo as useMemo4, useState as useState7 } from "react";
 
 // src/atoms/TextField/TextField.css.ts
-import { style as style41, styleVariants as styleVariants13 } from "@vanilla-extract/css";
-var root18 = style41({
+import { style as style40, styleVariants as styleVariants12 } from "@vanilla-extract/css";
+var root18 = style40({
   display: "flex",
   flexDirection: "column",
   gap: "6px",
   width: "100%"
 });
-var label5 = style41(__spreadProps(__spreadValues({}, TYPO.LABEL1B), {
+var label5 = style40(__spreadProps(__spreadValues({}, TYPO.LABEL1B), {
   color: COLORS.NEUTRAL600,
   marginBottom: "8px"
 }));
@@ -3660,7 +3087,7 @@ var fieldBase2 = {
   boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL200}`,
   transition: "box-shadow .12s ease, background-color .12s ease"
 };
-var state4 = styleVariants13({
+var state4 = styleVariants12({
   default: __spreadProps(__spreadValues({}, fieldBase2), { boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL300}` }),
   focused: __spreadProps(__spreadValues({}, fieldBase2), { boxShadow: `inset 0 0 0 2px ${COLORS.GREEN600}` }),
   pressed: __spreadProps(__spreadValues({}, fieldBase2), {
@@ -3680,7 +3107,7 @@ var state4 = styleVariants13({
     boxShadow: `inset 0 0 0 1px ${COLORS.NEUTRAL300}`
   })
 });
-var input3 = style41(__spreadValues({
+var input3 = style40(__spreadValues({
   flex: 1,
   width: "100%",
   border: "none",
@@ -3696,11 +3123,11 @@ var input3 = style41(__spreadValues({
     }
   }
 }, TYPO.BODY1M));
-var helperText = style41(__spreadProps(__spreadValues({}, TYPO.CAPTION2B), {
+var helperText = style40(__spreadProps(__spreadValues({}, TYPO.CAPTION2B), {
   color: COLORS.NEUTRAL500,
   padding: "0 4px"
 }));
-var helperError = style41(__spreadProps(__spreadValues({}, TYPO.CAPTION2B), {
+var helperError = style40(__spreadProps(__spreadValues({}, TYPO.CAPTION2B), {
   color: "#E5484D",
   // RED 토큰 나오면 교체
   padding: "0 4px"
@@ -3797,14 +3224,14 @@ function TextField(_a) {
 import React39 from "react";
 
 // src/atoms/Tooltip/Tooltip.css.ts
-import { style as style42, styleVariants as styleVariants14, globalStyle as globalStyle2 } from "@vanilla-extract/css";
+import { style as style41, styleVariants as styleVariants13, globalStyle as globalStyle2 } from "@vanilla-extract/css";
 var arrowSize = 8;
 var gap = 10;
 var tooltipBackgroundColor = "#fff";
 var tooltipColor = COLORS.GREEN700;
 var tooltipZIndex = 50;
 var tooltipMaxWidth = "280px";
-var tooltipWrapper = style42({
+var tooltipWrapper = style41({
   position: "absolute",
   display: "flex",
   flexDirection: "column",
@@ -3820,21 +3247,21 @@ var tooltipWrapper = style42({
   width: 180,
   textAlign: "left"
 });
-var headerContainer2 = style42({
+var headerContainer2 = style41({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-start",
   width: "100%",
   marginBottom: "8px"
 });
-var tooltipTitle = style42(__spreadProps(__spreadValues({}, TYPO.BODY1B), {
+var tooltipTitle = style41(__spreadProps(__spreadValues({}, TYPO.BODY1B), {
   fontFamily: "var(--font-laundry)",
   color: tooltipColor,
   flexGrow: 1,
   marginRight: "8px",
   whiteSpace: "pre-wrap"
 }));
-var closeButton4 = style42({
+var closeButton4 = style41({
   background: "none",
   border: "none",
   cursor: "pointer",
@@ -3848,21 +3275,21 @@ var closeButton4 = style42({
     opacity: 0.8
   }
 });
-var tooltipText = style42({
+var tooltipText = style41({
   fontSize: "11px",
   fontWeight: 500,
   color: COLORS.NEUTRAL500,
   whiteSpace: "pre-wrap",
   width: "100%"
 });
-var tooltipArrow = style42({
+var tooltipArrow = style41({
   position: "absolute",
   width: 0,
   height: 0,
   borderStyle: "solid",
   borderColor: "transparent"
 });
-var positionVariants = styleVariants14({
+var positionVariants = styleVariants13({
   top: {
     bottom: `calc(100% + ${gap}px)`,
     left: "-40%",
@@ -3915,31 +3342,17 @@ globalStyle2(`${positionVariants.right} .${tooltipArrow}`, {
 
 // src/atoms/Tooltip/Tooltip.tsx
 import Image26 from "next/image";
-function Tooltip({
-  title: title13,
-  text: text3,
-  onClose,
-  isVisible,
-  position = "top"
-}) {
+function Tooltip({ title: title13, text: text3, onClose, isVisible, position = "top" }) {
   if (!isVisible) return null;
-  return /* @__PURE__ */ React39.createElement("div", { className: `${tooltipWrapper} ${positionVariants[position]}` }, /* @__PURE__ */ React39.createElement("div", { className: headerContainer2 }, /* @__PURE__ */ React39.createElement("span", { className: tooltipTitle }, title13), /* @__PURE__ */ React39.createElement(
-    "button",
-    {
-      className: closeButton4,
-      onClick: onClose,
-      "aria-label": "\uD234\uD301 \uB2EB\uAE30"
-    },
-    /* @__PURE__ */ React39.createElement(Image26, { src: "/assets/icon12/x.svg", alt: "\uB2EB\uAE30", width: 16, height: 16 })
-  )), text3 && /* @__PURE__ */ React39.createElement("span", { className: tooltipText }, text3), /* @__PURE__ */ React39.createElement("div", { className: tooltipArrow }));
+  return /* @__PURE__ */ React39.createElement("div", { className: `${tooltipWrapper} ${positionVariants[position]}` }, /* @__PURE__ */ React39.createElement("div", { className: headerContainer2 }, /* @__PURE__ */ React39.createElement("span", { className: tooltipTitle }, title13), /* @__PURE__ */ React39.createElement("button", { className: closeButton4, onClick: onClose, "aria-label": "\uD234\uD301 \uB2EB\uAE30" }, /* @__PURE__ */ React39.createElement(Image26, { src: "/assets/icon12/x.svg", alt: "\uB2EB\uAE30", width: 16, height: 16 }))), text3 && /* @__PURE__ */ React39.createElement("span", { className: tooltipText }, text3), /* @__PURE__ */ React39.createElement("div", { className: tooltipArrow }));
 }
 
 // src/atoms/TopBar/TopBar.tsx
 import Image27 from "next/image";
 
 // src/atoms/TopBar/TopBar.css.ts
-import { style as style43 } from "@vanilla-extract/css";
-var root19 = style43({
+import { style as style42 } from "@vanilla-extract/css";
+var root19 = style42({
   width: "100%",
   background: "#fff",
   padding: "16px 18px",
@@ -3948,25 +3361,25 @@ var root19 = style43({
   alignItems: "center",
   gap: 8
 });
-var sticky = style43({
+var sticky = style42({
   position: "sticky",
   top: 0,
   zIndex: 50
 });
-var transparent = style43({
+var transparent = style42({
   background: "transparent"
 });
-var whiteIcon = style43({
+var whiteIcon = style42({
   filter: "brightness(0) invert(1)"
 });
-var iconBox = style43({
+var iconBox = style42({
   width: 24,
   height: 24,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center"
 });
-var iconButton2 = style43({
+var iconButton2 = style42({
   width: 24,
   height: 24,
   display: "inline-flex",
@@ -3979,13 +3392,13 @@ var iconButton2 = style43({
     "&:disabled": { cursor: "default", opacity: 0.5 }
   }
 });
-var sideLeft = style43([
+var sideLeft = style42([
   iconButton2,
   {
     justifySelf: "start"
   }
 ]);
-var center = style43({
+var center = style42({
   minWidth: 0,
   overflow: "hidden",
   textAlign: "left",
@@ -3994,14 +3407,14 @@ var center = style43({
   alignItems: "center",
   justifyContent: "center"
 });
-var title10 = style43(__spreadProps(__spreadValues({}, TYPO.HEADLINE1), {
+var title10 = style42(__spreadProps(__spreadValues({}, TYPO.HEADLINE1), {
   lineHeight: "24px",
   color: COLORS.NEUTRAL600,
   whiteSpace: "nowrap",
   overflow: "hidden",
   textOverflow: "ellipsis"
 }));
-var sideRight = style43({
+var sideRight = style42({
   display: "flex",
   flexDirection: "row-reverse",
   alignItems: "center",
@@ -4011,8 +3424,11 @@ var sideRight = style43({
 // src/atoms/TopBar/TopBar.tsx
 function TopBar({
   backIconHandler,
+  backIconSrc,
   title: title13,
   isShowLogo = false,
+  logoSrc,
+  logoAlt = "",
   rightIcons = [],
   sticky: sticky2 = false,
   transparent: transparent2 = false,
@@ -4022,12 +3438,7 @@ function TopBar({
   return /* @__PURE__ */ React.createElement(
     "header",
     {
-      className: [
-        root19,
-        sticky2 && sticky,
-        transparent2 && transparent,
-        className
-      ].filter(Boolean).join(" "),
+      className: [root19, sticky2 && sticky, transparent2 && transparent, className].filter(Boolean).join(" "),
       role: "banner"
     },
     /* @__PURE__ */ React.createElement("div", { className: sideLeft }, backIconHandler ? /* @__PURE__ */ React.createElement(
@@ -4038,25 +3449,9 @@ function TopBar({
         onClick: backIconHandler,
         "aria-label": "\uB4A4\uB85C\uAC00\uAE30"
       },
-      /* @__PURE__ */ React.createElement(
-        Image27,
-        {
-          src: "/assets/icon24/arrow-left_line.svg",
-          alt: "\uB4A4\uB85C\uAC00\uAE30",
-          width: 24,
-          height: 24
-        }
-      )
+      backIconSrc && /* @__PURE__ */ React.createElement(Image27, { src: backIconSrc, alt: "\uB4A4\uB85C\uAC00\uAE30", width: 24, height: 24 })
     ) : null),
-    /* @__PURE__ */ React.createElement("div", { className: center, "aria-live": "polite" }, isShowLogo ? /* @__PURE__ */ React.createElement(
-      Image27,
-      {
-        src: "/assets/logo/logo-top.svg",
-        alt: "\uB315\uAE00 \uB85C\uACE0",
-        width: 72.56,
-        height: 24
-      }
-    ) : title13 ? /* @__PURE__ */ React.createElement("div", { className: title10, title: title13 }, title13) : null),
+    /* @__PURE__ */ React.createElement("div", { className: center, "aria-live": "polite" }, isShowLogo && logoSrc ? /* @__PURE__ */ React.createElement(Image27, { src: logoSrc, alt: logoAlt, width: 72.56, height: 24 }) : title13 ? /* @__PURE__ */ React.createElement("div", { className: title10, title: title13 }, title13) : null),
     /* @__PURE__ */ React.createElement("nav", { className: sideRight, "aria-label": "topbar-actions" }, rightIcons.map(({ icon: icon5, onClick }, idx) => /* @__PURE__ */ React.createElement(
       "button",
       {
@@ -4070,1726 +3465,24 @@ function TopBar({
     )))
   );
 }
-var TopBar_default = TopBar;
 
 // src/molecules/Carousel/Carousel.tsx
 import React40 from "react";
-
-// ../../node_modules/.pnpm/embla-carousel-react@8.6.0_react@19.1.0/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js
-import { useRef as useRef4, useState as useState8, useCallback, useEffect as useEffect5 } from "react";
-
-// ../../node_modules/.pnpm/embla-carousel-reactive-utils@8.6.0_embla-carousel@8.6.0/node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js
-function isObject(subject) {
-  return Object.prototype.toString.call(subject) === "[object Object]";
-}
-function isRecord(subject) {
-  return isObject(subject) || Array.isArray(subject);
-}
-function canUseDOM() {
-  return !!(typeof window !== "undefined" && window.document && window.document.createElement);
-}
-function areOptionsEqual(optionsA, optionsB) {
-  const optionsAKeys = Object.keys(optionsA);
-  const optionsBKeys = Object.keys(optionsB);
-  if (optionsAKeys.length !== optionsBKeys.length) return false;
-  const breakpointsA = JSON.stringify(Object.keys(optionsA.breakpoints || {}));
-  const breakpointsB = JSON.stringify(Object.keys(optionsB.breakpoints || {}));
-  if (breakpointsA !== breakpointsB) return false;
-  return optionsAKeys.every((key) => {
-    const valueA = optionsA[key];
-    const valueB = optionsB[key];
-    if (typeof valueA === "function") return `${valueA}` === `${valueB}`;
-    if (!isRecord(valueA) || !isRecord(valueB)) return valueA === valueB;
-    return areOptionsEqual(valueA, valueB);
-  });
-}
-function sortAndMapPluginToOptions(plugins) {
-  return plugins.concat().sort((a, b) => a.name > b.name ? 1 : -1).map((plugin) => plugin.options);
-}
-function arePluginsEqual(pluginsA, pluginsB) {
-  if (pluginsA.length !== pluginsB.length) return false;
-  const optionsA = sortAndMapPluginToOptions(pluginsA);
-  const optionsB = sortAndMapPluginToOptions(pluginsB);
-  return optionsA.every((optionA, index) => {
-    const optionB = optionsB[index];
-    return areOptionsEqual(optionA, optionB);
-  });
-}
-
-// ../../node_modules/.pnpm/embla-carousel@8.6.0/node_modules/embla-carousel/esm/embla-carousel.esm.js
-function isNumber(subject) {
-  return typeof subject === "number";
-}
-function isString(subject) {
-  return typeof subject === "string";
-}
-function isBoolean(subject) {
-  return typeof subject === "boolean";
-}
-function isObject2(subject) {
-  return Object.prototype.toString.call(subject) === "[object Object]";
-}
-function mathAbs(n) {
-  return Math.abs(n);
-}
-function mathSign(n) {
-  return Math.sign(n);
-}
-function deltaAbs(valueB, valueA) {
-  return mathAbs(valueB - valueA);
-}
-function factorAbs(valueB, valueA) {
-  if (valueB === 0 || valueA === 0) return 0;
-  if (mathAbs(valueB) <= mathAbs(valueA)) return 0;
-  const diff = deltaAbs(mathAbs(valueB), mathAbs(valueA));
-  return mathAbs(diff / valueB);
-}
-function roundToTwoDecimals(num) {
-  return Math.round(num * 100) / 100;
-}
-function arrayKeys(array) {
-  return objectKeys(array).map(Number);
-}
-function arrayLast(array) {
-  return array[arrayLastIndex(array)];
-}
-function arrayLastIndex(array) {
-  return Math.max(0, array.length - 1);
-}
-function arrayIsLastIndex(array, index) {
-  return index === arrayLastIndex(array);
-}
-function arrayFromNumber(n, startAt = 0) {
-  return Array.from(Array(n), (_, i) => startAt + i);
-}
-function objectKeys(object) {
-  return Object.keys(object);
-}
-function objectsMergeDeep(objectA, objectB) {
-  return [objectA, objectB].reduce((mergedObjects, currentObject) => {
-    objectKeys(currentObject).forEach((key) => {
-      const valueA = mergedObjects[key];
-      const valueB = currentObject[key];
-      const areObjects = isObject2(valueA) && isObject2(valueB);
-      mergedObjects[key] = areObjects ? objectsMergeDeep(valueA, valueB) : valueB;
-    });
-    return mergedObjects;
-  }, {});
-}
-function isMouseEvent(evt, ownerWindow) {
-  return typeof ownerWindow.MouseEvent !== "undefined" && evt instanceof ownerWindow.MouseEvent;
-}
-function Alignment(align, viewSize) {
-  const predefined = {
-    start,
-    center: center2,
-    end
-  };
-  function start() {
-    return 0;
-  }
-  function center2(n) {
-    return end(n) / 2;
-  }
-  function end(n) {
-    return viewSize - n;
-  }
-  function measure(n, index) {
-    if (isString(align)) return predefined[align](n);
-    return align(viewSize, n, index);
-  }
-  const self = {
-    measure
-  };
-  return self;
-}
-function EventStore() {
-  let listeners = [];
-  function add(node, type, handler, options = {
-    passive: true
-  }) {
-    let removeListener;
-    if ("addEventListener" in node) {
-      node.addEventListener(type, handler, options);
-      removeListener = () => node.removeEventListener(type, handler, options);
-    } else {
-      const legacyMediaQueryList = node;
-      legacyMediaQueryList.addListener(handler);
-      removeListener = () => legacyMediaQueryList.removeListener(handler);
-    }
-    listeners.push(removeListener);
-    return self;
-  }
-  function clear() {
-    listeners = listeners.filter((remove) => remove());
-  }
-  const self = {
-    add,
-    clear
-  };
-  return self;
-}
-function Animations(ownerDocument, ownerWindow, update, render) {
-  const documentVisibleHandler = EventStore();
-  const fixedTimeStep = 1e3 / 60;
-  let lastTimeStamp = null;
-  let accumulatedTime = 0;
-  let animationId = 0;
-  function init() {
-    documentVisibleHandler.add(ownerDocument, "visibilitychange", () => {
-      if (ownerDocument.hidden) reset();
-    });
-  }
-  function destroy() {
-    stop();
-    documentVisibleHandler.clear();
-  }
-  function animate(timeStamp) {
-    if (!animationId) return;
-    if (!lastTimeStamp) {
-      lastTimeStamp = timeStamp;
-      update();
-      update();
-    }
-    const timeElapsed = timeStamp - lastTimeStamp;
-    lastTimeStamp = timeStamp;
-    accumulatedTime += timeElapsed;
-    while (accumulatedTime >= fixedTimeStep) {
-      update();
-      accumulatedTime -= fixedTimeStep;
-    }
-    const alpha = accumulatedTime / fixedTimeStep;
-    render(alpha);
-    if (animationId) {
-      animationId = ownerWindow.requestAnimationFrame(animate);
-    }
-  }
-  function start() {
-    if (animationId) return;
-    animationId = ownerWindow.requestAnimationFrame(animate);
-  }
-  function stop() {
-    ownerWindow.cancelAnimationFrame(animationId);
-    lastTimeStamp = null;
-    accumulatedTime = 0;
-    animationId = 0;
-  }
-  function reset() {
-    lastTimeStamp = null;
-    accumulatedTime = 0;
-  }
-  const self = {
-    init,
-    destroy,
-    start,
-    stop,
-    update,
-    render
-  };
-  return self;
-}
-function Axis(axis, contentDirection) {
-  const isRightToLeft = contentDirection === "rtl";
-  const isVertical = axis === "y";
-  const scroll = isVertical ? "y" : "x";
-  const cross = isVertical ? "x" : "y";
-  const sign = !isVertical && isRightToLeft ? -1 : 1;
-  const startEdge = getStartEdge();
-  const endEdge = getEndEdge();
-  function measureSize(nodeRect) {
-    const {
-      height,
-      width
-    } = nodeRect;
-    return isVertical ? height : width;
-  }
-  function getStartEdge() {
-    if (isVertical) return "top";
-    return isRightToLeft ? "right" : "left";
-  }
-  function getEndEdge() {
-    if (isVertical) return "bottom";
-    return isRightToLeft ? "left" : "right";
-  }
-  function direction(n) {
-    return n * sign;
-  }
-  const self = {
-    scroll,
-    cross,
-    startEdge,
-    endEdge,
-    measureSize,
-    direction
-  };
-  return self;
-}
-function Limit(min = 0, max = 0) {
-  const length = mathAbs(min - max);
-  function reachedMin(n) {
-    return n < min;
-  }
-  function reachedMax(n) {
-    return n > max;
-  }
-  function reachedAny(n) {
-    return reachedMin(n) || reachedMax(n);
-  }
-  function constrain(n) {
-    if (!reachedAny(n)) return n;
-    return reachedMin(n) ? min : max;
-  }
-  function removeOffset(n) {
-    if (!length) return n;
-    return n - length * Math.ceil((n - max) / length);
-  }
-  const self = {
-    length,
-    max,
-    min,
-    constrain,
-    reachedAny,
-    reachedMax,
-    reachedMin,
-    removeOffset
-  };
-  return self;
-}
-function Counter(max, start, loop) {
-  const {
-    constrain
-  } = Limit(0, max);
-  const loopEnd = max + 1;
-  let counter = withinLimit(start);
-  function withinLimit(n) {
-    return !loop ? constrain(n) : mathAbs((loopEnd + n) % loopEnd);
-  }
-  function get() {
-    return counter;
-  }
-  function set(n) {
-    counter = withinLimit(n);
-    return self;
-  }
-  function add(n) {
-    return clone().set(get() + n);
-  }
-  function clone() {
-    return Counter(max, get(), loop);
-  }
-  const self = {
-    get,
-    set,
-    add,
-    clone
-  };
-  return self;
-}
-function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTracker, location3, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, baseFriction, watchDrag) {
-  const {
-    cross: crossAxis,
-    direction
-  } = axis;
-  const focusNodes = ["INPUT", "SELECT", "TEXTAREA"];
-  const nonPassiveEvent = {
-    passive: false
-  };
-  const initEvents = EventStore();
-  const dragEvents = EventStore();
-  const goToNextThreshold = Limit(50, 225).constrain(percentOfView.measure(20));
-  const snapForceBoost = {
-    mouse: 300,
-    touch: 400
-  };
-  const freeForceBoost = {
-    mouse: 500,
-    touch: 600
-  };
-  const baseSpeed = dragFree ? 43 : 25;
-  let isMoving = false;
-  let startScroll = 0;
-  let startCross = 0;
-  let pointerIsDown = false;
-  let preventScroll = false;
-  let preventClick = false;
-  let isMouse = false;
-  function init(emblaApi) {
-    if (!watchDrag) return;
-    function downIfAllowed(evt) {
-      if (isBoolean(watchDrag) || watchDrag(emblaApi, evt)) down(evt);
-    }
-    const node = rootNode;
-    initEvents.add(node, "dragstart", (evt) => evt.preventDefault(), nonPassiveEvent).add(node, "touchmove", () => void 0, nonPassiveEvent).add(node, "touchend", () => void 0).add(node, "touchstart", downIfAllowed).add(node, "mousedown", downIfAllowed).add(node, "touchcancel", up).add(node, "contextmenu", up).add(node, "click", click, true);
-  }
-  function destroy() {
-    initEvents.clear();
-    dragEvents.clear();
-  }
-  function addDragEvents() {
-    const node = isMouse ? ownerDocument : rootNode;
-    dragEvents.add(node, "touchmove", move, nonPassiveEvent).add(node, "touchend", up).add(node, "mousemove", move, nonPassiveEvent).add(node, "mouseup", up);
-  }
-  function isFocusNode(node) {
-    const nodeName = node.nodeName || "";
-    return focusNodes.includes(nodeName);
-  }
-  function forceBoost() {
-    const boost = dragFree ? freeForceBoost : snapForceBoost;
-    const type = isMouse ? "mouse" : "touch";
-    return boost[type];
-  }
-  function allowedForce(force, targetChanged) {
-    const next = index.add(mathSign(force) * -1);
-    const baseForce = scrollTarget.byDistance(force, !dragFree).distance;
-    if (dragFree || mathAbs(force) < goToNextThreshold) return baseForce;
-    if (skipSnaps && targetChanged) return baseForce * 0.5;
-    return scrollTarget.byIndex(next.get(), 0).distance;
-  }
-  function down(evt) {
-    const isMouseEvt = isMouseEvent(evt, ownerWindow);
-    isMouse = isMouseEvt;
-    preventClick = dragFree && isMouseEvt && !evt.buttons && isMoving;
-    isMoving = deltaAbs(target.get(), location3.get()) >= 2;
-    if (isMouseEvt && evt.button !== 0) return;
-    if (isFocusNode(evt.target)) return;
-    pointerIsDown = true;
-    dragTracker.pointerDown(evt);
-    scrollBody.useFriction(0).useDuration(0);
-    target.set(location3);
-    addDragEvents();
-    startScroll = dragTracker.readPoint(evt);
-    startCross = dragTracker.readPoint(evt, crossAxis);
-    eventHandler.emit("pointerDown");
-  }
-  function move(evt) {
-    const isTouchEvt = !isMouseEvent(evt, ownerWindow);
-    if (isTouchEvt && evt.touches.length >= 2) return up(evt);
-    const lastScroll = dragTracker.readPoint(evt);
-    const lastCross = dragTracker.readPoint(evt, crossAxis);
-    const diffScroll = deltaAbs(lastScroll, startScroll);
-    const diffCross = deltaAbs(lastCross, startCross);
-    if (!preventScroll && !isMouse) {
-      if (!evt.cancelable) return up(evt);
-      preventScroll = diffScroll > diffCross;
-      if (!preventScroll) return up(evt);
-    }
-    const diff = dragTracker.pointerMove(evt);
-    if (diffScroll > dragThreshold) preventClick = true;
-    scrollBody.useFriction(0.3).useDuration(0.75);
-    animation.start();
-    target.add(direction(diff));
-    evt.preventDefault();
-  }
-  function up(evt) {
-    const currentLocation = scrollTarget.byDistance(0, false);
-    const targetChanged = currentLocation.index !== index.get();
-    const rawForce = dragTracker.pointerUp(evt) * forceBoost();
-    const force = allowedForce(direction(rawForce), targetChanged);
-    const forceFactor = factorAbs(rawForce, force);
-    const speed = baseSpeed - 10 * forceFactor;
-    const friction = baseFriction + forceFactor / 50;
-    preventScroll = false;
-    pointerIsDown = false;
-    dragEvents.clear();
-    scrollBody.useDuration(speed).useFriction(friction);
-    scrollTo.distance(force, !dragFree);
-    isMouse = false;
-    eventHandler.emit("pointerUp");
-  }
-  function click(evt) {
-    if (preventClick) {
-      evt.stopPropagation();
-      evt.preventDefault();
-      preventClick = false;
-    }
-  }
-  function pointerDown() {
-    return pointerIsDown;
-  }
-  const self = {
-    init,
-    destroy,
-    pointerDown
-  };
-  return self;
-}
-function DragTracker(axis, ownerWindow) {
-  const logInterval = 170;
-  let startEvent;
-  let lastEvent;
-  function readTime(evt) {
-    return evt.timeStamp;
-  }
-  function readPoint(evt, evtAxis) {
-    const property = evtAxis || axis.scroll;
-    const coord = `client${property === "x" ? "X" : "Y"}`;
-    return (isMouseEvent(evt, ownerWindow) ? evt : evt.touches[0])[coord];
-  }
-  function pointerDown(evt) {
-    startEvent = evt;
-    lastEvent = evt;
-    return readPoint(evt);
-  }
-  function pointerMove(evt) {
-    const diff = readPoint(evt) - readPoint(lastEvent);
-    const expired = readTime(evt) - readTime(startEvent) > logInterval;
-    lastEvent = evt;
-    if (expired) startEvent = evt;
-    return diff;
-  }
-  function pointerUp(evt) {
-    if (!startEvent || !lastEvent) return 0;
-    const diffDrag = readPoint(lastEvent) - readPoint(startEvent);
-    const diffTime = readTime(evt) - readTime(startEvent);
-    const expired = readTime(evt) - readTime(lastEvent) > logInterval;
-    const force = diffDrag / diffTime;
-    const isFlick = diffTime && !expired && mathAbs(force) > 0.1;
-    return isFlick ? force : 0;
-  }
-  const self = {
-    pointerDown,
-    pointerMove,
-    pointerUp,
-    readPoint
-  };
-  return self;
-}
-function NodeRects() {
-  function measure(node) {
-    const {
-      offsetTop,
-      offsetLeft,
-      offsetWidth,
-      offsetHeight
-    } = node;
-    const offset = {
-      top: offsetTop,
-      right: offsetLeft + offsetWidth,
-      bottom: offsetTop + offsetHeight,
-      left: offsetLeft,
-      width: offsetWidth,
-      height: offsetHeight
-    };
-    return offset;
-  }
-  const self = {
-    measure
-  };
-  return self;
-}
-function PercentOfView(viewSize) {
-  function measure(n) {
-    return viewSize * (n / 100);
-  }
-  const self = {
-    measure
-  };
-  return self;
-}
-function ResizeHandler(container9, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects) {
-  const observeNodes = [container9].concat(slides);
-  let resizeObserver;
-  let containerSize;
-  let slideSizes = [];
-  let destroyed = false;
-  function readSize(node) {
-    return axis.measureSize(nodeRects.measure(node));
-  }
-  function init(emblaApi) {
-    if (!watchResize) return;
-    containerSize = readSize(container9);
-    slideSizes = slides.map(readSize);
-    function defaultCallback(entries) {
-      for (const entry of entries) {
-        if (destroyed) return;
-        const isContainer = entry.target === container9;
-        const slideIndex = slides.indexOf(entry.target);
-        const lastSize = isContainer ? containerSize : slideSizes[slideIndex];
-        const newSize = readSize(isContainer ? container9 : slides[slideIndex]);
-        const diffSize = mathAbs(newSize - lastSize);
-        if (diffSize >= 0.5) {
-          emblaApi.reInit();
-          eventHandler.emit("resize");
-          break;
-        }
-      }
-    }
-    resizeObserver = new ResizeObserver((entries) => {
-      if (isBoolean(watchResize) || watchResize(emblaApi, entries)) {
-        defaultCallback(entries);
-      }
-    });
-    ownerWindow.requestAnimationFrame(() => {
-      observeNodes.forEach((node) => resizeObserver.observe(node));
-    });
-  }
-  function destroy() {
-    destroyed = true;
-    if (resizeObserver) resizeObserver.disconnect();
-  }
-  const self = {
-    init,
-    destroy
-  };
-  return self;
-}
-function ScrollBody(location3, offsetLocation, previousLocation, target, baseDuration, baseFriction) {
-  let scrollVelocity = 0;
-  let scrollDirection = 0;
-  let scrollDuration = baseDuration;
-  let scrollFriction = baseFriction;
-  let rawLocation = location3.get();
-  let rawLocationPrevious = 0;
-  function seek() {
-    const displacement = target.get() - location3.get();
-    const isInstant = !scrollDuration;
-    let scrollDistance = 0;
-    if (isInstant) {
-      scrollVelocity = 0;
-      previousLocation.set(target);
-      location3.set(target);
-      scrollDistance = displacement;
-    } else {
-      previousLocation.set(location3);
-      scrollVelocity += displacement / scrollDuration;
-      scrollVelocity *= scrollFriction;
-      rawLocation += scrollVelocity;
-      location3.add(scrollVelocity);
-      scrollDistance = rawLocation - rawLocationPrevious;
-    }
-    scrollDirection = mathSign(scrollDistance);
-    rawLocationPrevious = rawLocation;
-    return self;
-  }
-  function settled() {
-    const diff = target.get() - offsetLocation.get();
-    return mathAbs(diff) < 1e-3;
-  }
-  function duration() {
-    return scrollDuration;
-  }
-  function direction() {
-    return scrollDirection;
-  }
-  function velocity() {
-    return scrollVelocity;
-  }
-  function useBaseDuration() {
-    return useDuration(baseDuration);
-  }
-  function useBaseFriction() {
-    return useFriction(baseFriction);
-  }
-  function useDuration(n) {
-    scrollDuration = n;
-    return self;
-  }
-  function useFriction(n) {
-    scrollFriction = n;
-    return self;
-  }
-  const self = {
-    direction,
-    duration,
-    velocity,
-    seek,
-    settled,
-    useBaseFriction,
-    useBaseDuration,
-    useFriction,
-    useDuration
-  };
-  return self;
-}
-function ScrollBounds(limit, location3, target, scrollBody, percentOfView) {
-  const pullBackThreshold = percentOfView.measure(10);
-  const edgeOffsetTolerance = percentOfView.measure(50);
-  const frictionLimit = Limit(0.1, 0.99);
-  let disabled = false;
-  function shouldConstrain() {
-    if (disabled) return false;
-    if (!limit.reachedAny(target.get())) return false;
-    if (!limit.reachedAny(location3.get())) return false;
-    return true;
-  }
-  function constrain(pointerDown) {
-    if (!shouldConstrain()) return;
-    const edge = limit.reachedMin(location3.get()) ? "min" : "max";
-    const diffToEdge = mathAbs(limit[edge] - location3.get());
-    const diffToTarget = target.get() - location3.get();
-    const friction = frictionLimit.constrain(diffToEdge / edgeOffsetTolerance);
-    target.subtract(diffToTarget * friction);
-    if (!pointerDown && mathAbs(diffToTarget) < pullBackThreshold) {
-      target.set(limit.constrain(target.get()));
-      scrollBody.useDuration(25).useBaseFriction();
-    }
-  }
-  function toggleActive(active4) {
-    disabled = !active4;
-  }
-  const self = {
-    shouldConstrain,
-    constrain,
-    toggleActive
-  };
-  return self;
-}
-function ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance) {
-  const scrollBounds = Limit(-contentSize + viewSize, 0);
-  const snapsBounded = measureBounded();
-  const scrollContainLimit = findScrollContainLimit();
-  const snapsContained = measureContained();
-  function usePixelTolerance(bound, snap) {
-    return deltaAbs(bound, snap) <= 1;
-  }
-  function findScrollContainLimit() {
-    const startSnap = snapsBounded[0];
-    const endSnap = arrayLast(snapsBounded);
-    const min = snapsBounded.lastIndexOf(startSnap);
-    const max = snapsBounded.indexOf(endSnap) + 1;
-    return Limit(min, max);
-  }
-  function measureBounded() {
-    return snapsAligned.map((snapAligned, index) => {
-      const {
-        min,
-        max
-      } = scrollBounds;
-      const snap = scrollBounds.constrain(snapAligned);
-      const isFirst = !index;
-      const isLast = arrayIsLastIndex(snapsAligned, index);
-      if (isFirst) return max;
-      if (isLast) return min;
-      if (usePixelTolerance(min, snap)) return min;
-      if (usePixelTolerance(max, snap)) return max;
-      return snap;
-    }).map((scrollBound) => parseFloat(scrollBound.toFixed(3)));
-  }
-  function measureContained() {
-    if (contentSize <= viewSize + pixelTolerance) return [scrollBounds.max];
-    if (containScroll === "keepSnaps") return snapsBounded;
-    const {
-      min,
-      max
-    } = scrollContainLimit;
-    return snapsBounded.slice(min, max);
-  }
-  const self = {
-    snapsContained,
-    scrollContainLimit
-  };
-  return self;
-}
-function ScrollLimit(contentSize, scrollSnaps, loop) {
-  const max = scrollSnaps[0];
-  const min = loop ? max - contentSize : arrayLast(scrollSnaps);
-  const limit = Limit(min, max);
-  const self = {
-    limit
-  };
-  return self;
-}
-function ScrollLooper(contentSize, limit, location3, vectors) {
-  const jointSafety = 0.1;
-  const min = limit.min + jointSafety;
-  const max = limit.max + jointSafety;
-  const {
-    reachedMin,
-    reachedMax
-  } = Limit(min, max);
-  function shouldLoop(direction) {
-    if (direction === 1) return reachedMax(location3.get());
-    if (direction === -1) return reachedMin(location3.get());
-    return false;
-  }
-  function loop(direction) {
-    if (!shouldLoop(direction)) return;
-    const loopDistance = contentSize * (direction * -1);
-    vectors.forEach((v) => v.add(loopDistance));
-  }
-  const self = {
-    loop
-  };
-  return self;
-}
-function ScrollProgress(limit) {
-  const {
-    max,
-    length
-  } = limit;
-  function get(n) {
-    const currentLocation = n - max;
-    return length ? currentLocation / -length : 0;
-  }
-  const self = {
-    get
-  };
-  return self;
-}
-function ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll) {
-  const {
-    startEdge,
-    endEdge
-  } = axis;
-  const {
-    groupSlides
-  } = slidesToScroll;
-  const alignments = measureSizes().map(alignment.measure);
-  const snaps = measureUnaligned();
-  const snapsAligned = measureAligned();
-  function measureSizes() {
-    return groupSlides(slideRects).map((rects) => arrayLast(rects)[endEdge] - rects[0][startEdge]).map(mathAbs);
-  }
-  function measureUnaligned() {
-    return slideRects.map((rect) => containerRect[startEdge] - rect[startEdge]).map((snap) => -mathAbs(snap));
-  }
-  function measureAligned() {
-    return groupSlides(snaps).map((g) => g[0]).map((snap, index) => snap + alignments[index]);
-  }
-  const self = {
-    snaps,
-    snapsAligned
-  };
-  return self;
-}
-function SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes) {
-  const {
-    groupSlides
-  } = slidesToScroll;
-  const {
-    min,
-    max
-  } = scrollContainLimit;
-  const slideRegistry = createSlideRegistry();
-  function createSlideRegistry() {
-    const groupedSlideIndexes = groupSlides(slideIndexes);
-    const doNotContain = !containSnaps || containScroll === "keepSnaps";
-    if (scrollSnaps.length === 1) return [slideIndexes];
-    if (doNotContain) return groupedSlideIndexes;
-    return groupedSlideIndexes.slice(min, max).map((group, index, groups) => {
-      const isFirst = !index;
-      const isLast = arrayIsLastIndex(groups, index);
-      if (isFirst) {
-        const range = arrayLast(groups[0]) + 1;
-        return arrayFromNumber(range);
-      }
-      if (isLast) {
-        const range = arrayLastIndex(slideIndexes) - arrayLast(groups)[0] + 1;
-        return arrayFromNumber(range, arrayLast(groups)[0]);
-      }
-      return group;
-    });
-  }
-  const self = {
-    slideRegistry
-  };
-  return self;
-}
-function ScrollTarget(loop, scrollSnaps, contentSize, limit, targetVector) {
-  const {
-    reachedAny,
-    removeOffset,
-    constrain
-  } = limit;
-  function minDistance(distances) {
-    return distances.concat().sort((a, b) => mathAbs(a) - mathAbs(b))[0];
-  }
-  function findTargetSnap(target) {
-    const distance = loop ? removeOffset(target) : constrain(target);
-    const ascDiffsToSnaps = scrollSnaps.map((snap, index2) => ({
-      diff: shortcut(snap - distance, 0),
-      index: index2
-    })).sort((d1, d2) => mathAbs(d1.diff) - mathAbs(d2.diff));
-    const {
-      index
-    } = ascDiffsToSnaps[0];
-    return {
-      index,
-      distance
-    };
-  }
-  function shortcut(target, direction) {
-    const targets = [target, target + contentSize, target - contentSize];
-    if (!loop) return target;
-    if (!direction) return minDistance(targets);
-    const matchingTargets = targets.filter((t) => mathSign(t) === direction);
-    if (matchingTargets.length) return minDistance(matchingTargets);
-    return arrayLast(targets) - contentSize;
-  }
-  function byIndex(index, direction) {
-    const diffToSnap = scrollSnaps[index] - targetVector.get();
-    const distance = shortcut(diffToSnap, direction);
-    return {
-      index,
-      distance
-    };
-  }
-  function byDistance(distance, snap) {
-    const target = targetVector.get() + distance;
-    const {
-      index,
-      distance: targetSnapDistance
-    } = findTargetSnap(target);
-    const reachedBound = !loop && reachedAny(target);
-    if (!snap || reachedBound) return {
-      index,
-      distance
-    };
-    const diffToSnap = scrollSnaps[index] - targetSnapDistance;
-    const snapDistance = distance + shortcut(diffToSnap, 0);
-    return {
-      index,
-      distance: snapDistance
-    };
-  }
-  const self = {
-    byDistance,
-    byIndex,
-    shortcut
-  };
-  return self;
-}
-function ScrollTo(animation, indexCurrent, indexPrevious, scrollBody, scrollTarget, targetVector, eventHandler) {
-  function scrollTo(target) {
-    const distanceDiff = target.distance;
-    const indexDiff = target.index !== indexCurrent.get();
-    targetVector.add(distanceDiff);
-    if (distanceDiff) {
-      if (scrollBody.duration()) {
-        animation.start();
-      } else {
-        animation.update();
-        animation.render(1);
-        animation.update();
-      }
-    }
-    if (indexDiff) {
-      indexPrevious.set(indexCurrent.get());
-      indexCurrent.set(target.index);
-      eventHandler.emit("select");
-    }
-  }
-  function distance(n, snap) {
-    const target = scrollTarget.byDistance(n, snap);
-    scrollTo(target);
-  }
-  function index(n, direction) {
-    const targetIndex = indexCurrent.clone().set(n);
-    const target = scrollTarget.byIndex(targetIndex.get(), direction);
-    scrollTo(target);
-  }
-  const self = {
-    distance,
-    index
-  };
-  return self;
-}
-function SlideFocus(root24, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus) {
-  const focusListenerOptions = {
-    passive: true,
-    capture: true
-  };
-  let lastTabPressTime = 0;
-  function init(emblaApi) {
-    if (!watchFocus) return;
-    function defaultCallback(index) {
-      const nowTime = (/* @__PURE__ */ new Date()).getTime();
-      const diffTime = nowTime - lastTabPressTime;
-      if (diffTime > 10) return;
-      eventHandler.emit("slideFocusStart");
-      root24.scrollLeft = 0;
-      const group = slideRegistry.findIndex((group2) => group2.includes(index));
-      if (!isNumber(group)) return;
-      scrollBody.useDuration(0);
-      scrollTo.index(group, 0);
-      eventHandler.emit("slideFocus");
-    }
-    eventStore.add(document, "keydown", registerTabPress, false);
-    slides.forEach((slide, slideIndex) => {
-      eventStore.add(slide, "focus", (evt) => {
-        if (isBoolean(watchFocus) || watchFocus(emblaApi, evt)) {
-          defaultCallback(slideIndex);
-        }
-      }, focusListenerOptions);
-    });
-  }
-  function registerTabPress(event) {
-    if (event.code === "Tab") lastTabPressTime = (/* @__PURE__ */ new Date()).getTime();
-  }
-  const self = {
-    init
-  };
-  return self;
-}
-function Vector1D(initialValue) {
-  let value = initialValue;
-  function get() {
-    return value;
-  }
-  function set(n) {
-    value = normalizeInput(n);
-  }
-  function add(n) {
-    value += normalizeInput(n);
-  }
-  function subtract(n) {
-    value -= normalizeInput(n);
-  }
-  function normalizeInput(n) {
-    return isNumber(n) ? n : n.get();
-  }
-  const self = {
-    get,
-    set,
-    add,
-    subtract
-  };
-  return self;
-}
-function Translate(axis, container9) {
-  const translate = axis.scroll === "x" ? x : y;
-  const containerStyle = container9.style;
-  let previousTarget = null;
-  let disabled = false;
-  function x(n) {
-    return `translate3d(${n}px,0px,0px)`;
-  }
-  function y(n) {
-    return `translate3d(0px,${n}px,0px)`;
-  }
-  function to(target) {
-    if (disabled) return;
-    const newTarget = roundToTwoDecimals(axis.direction(target));
-    if (newTarget === previousTarget) return;
-    containerStyle.transform = translate(newTarget);
-    previousTarget = newTarget;
-  }
-  function toggleActive(active4) {
-    disabled = !active4;
-  }
-  function clear() {
-    if (disabled) return;
-    containerStyle.transform = "";
-    if (!container9.getAttribute("style")) container9.removeAttribute("style");
-  }
-  const self = {
-    clear,
-    to,
-    toggleActive
-  };
-  return self;
-}
-function SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, location3, slides) {
-  const roundingSafety = 0.5;
-  const ascItems = arrayKeys(slideSizesWithGaps);
-  const descItems = arrayKeys(slideSizesWithGaps).reverse();
-  const loopPoints = startPoints().concat(endPoints());
-  function removeSlideSizes(indexes, from) {
-    return indexes.reduce((a, i) => {
-      return a - slideSizesWithGaps[i];
-    }, from);
-  }
-  function slidesInGap(indexes, gap2) {
-    return indexes.reduce((a, i) => {
-      const remainingGap = removeSlideSizes(a, gap2);
-      return remainingGap > 0 ? a.concat([i]) : a;
-    }, []);
-  }
-  function findSlideBounds(offset) {
-    return snaps.map((snap, index) => ({
-      start: snap - slideSizes[index] + roundingSafety + offset,
-      end: snap + viewSize - roundingSafety + offset
-    }));
-  }
-  function findLoopPoints(indexes, offset, isEndEdge) {
-    const slideBounds = findSlideBounds(offset);
-    return indexes.map((index) => {
-      const initial = isEndEdge ? 0 : -contentSize;
-      const altered = isEndEdge ? contentSize : 0;
-      const boundEdge = isEndEdge ? "end" : "start";
-      const loopPoint = slideBounds[index][boundEdge];
-      return {
-        index,
-        loopPoint,
-        slideLocation: Vector1D(-1),
-        translate: Translate(axis, slides[index]),
-        target: () => location3.get() > loopPoint ? initial : altered
-      };
-    });
-  }
-  function startPoints() {
-    const gap2 = scrollSnaps[0];
-    const indexes = slidesInGap(descItems, gap2);
-    return findLoopPoints(indexes, contentSize, false);
-  }
-  function endPoints() {
-    const gap2 = viewSize - scrollSnaps[0] - 1;
-    const indexes = slidesInGap(ascItems, gap2);
-    return findLoopPoints(indexes, -contentSize, true);
-  }
-  function canLoop() {
-    return loopPoints.every(({
-      index
-    }) => {
-      const otherIndexes = ascItems.filter((i) => i !== index);
-      return removeSlideSizes(otherIndexes, viewSize) <= 0.1;
-    });
-  }
-  function loop() {
-    loopPoints.forEach((loopPoint) => {
-      const {
-        target,
-        translate,
-        slideLocation
-      } = loopPoint;
-      const shiftLocation = target();
-      if (shiftLocation === slideLocation.get()) return;
-      translate.to(shiftLocation);
-      slideLocation.set(shiftLocation);
-    });
-  }
-  function clear() {
-    loopPoints.forEach((loopPoint) => loopPoint.translate.clear());
-  }
-  const self = {
-    canLoop,
-    clear,
-    loop,
-    loopPoints
-  };
-  return self;
-}
-function SlidesHandler(container9, eventHandler, watchSlides) {
-  let mutationObserver;
-  let destroyed = false;
-  function init(emblaApi) {
-    if (!watchSlides) return;
-    function defaultCallback(mutations) {
-      for (const mutation of mutations) {
-        if (mutation.type === "childList") {
-          emblaApi.reInit();
-          eventHandler.emit("slidesChanged");
-          break;
-        }
-      }
-    }
-    mutationObserver = new MutationObserver((mutations) => {
-      if (destroyed) return;
-      if (isBoolean(watchSlides) || watchSlides(emblaApi, mutations)) {
-        defaultCallback(mutations);
-      }
-    });
-    mutationObserver.observe(container9, {
-      childList: true
-    });
-  }
-  function destroy() {
-    if (mutationObserver) mutationObserver.disconnect();
-    destroyed = true;
-  }
-  const self = {
-    init,
-    destroy
-  };
-  return self;
-}
-function SlidesInView(container9, slides, eventHandler, threshold) {
-  const intersectionEntryMap = {};
-  let inViewCache = null;
-  let notInViewCache = null;
-  let intersectionObserver;
-  let destroyed = false;
-  function init() {
-    intersectionObserver = new IntersectionObserver((entries) => {
-      if (destroyed) return;
-      entries.forEach((entry) => {
-        const index = slides.indexOf(entry.target);
-        intersectionEntryMap[index] = entry;
-      });
-      inViewCache = null;
-      notInViewCache = null;
-      eventHandler.emit("slidesInView");
-    }, {
-      root: container9.parentElement,
-      threshold
-    });
-    slides.forEach((slide) => intersectionObserver.observe(slide));
-  }
-  function destroy() {
-    if (intersectionObserver) intersectionObserver.disconnect();
-    destroyed = true;
-  }
-  function createInViewList(inView) {
-    return objectKeys(intersectionEntryMap).reduce((list2, slideIndex) => {
-      const index = parseInt(slideIndex);
-      const {
-        isIntersecting
-      } = intersectionEntryMap[index];
-      const inViewMatch = inView && isIntersecting;
-      const notInViewMatch = !inView && !isIntersecting;
-      if (inViewMatch || notInViewMatch) list2.push(index);
-      return list2;
-    }, []);
-  }
-  function get(inView = true) {
-    if (inView && inViewCache) return inViewCache;
-    if (!inView && notInViewCache) return notInViewCache;
-    const slideIndexes = createInViewList(inView);
-    if (inView) inViewCache = slideIndexes;
-    if (!inView) notInViewCache = slideIndexes;
-    return slideIndexes;
-  }
-  const self = {
-    init,
-    destroy,
-    get
-  };
-  return self;
-}
-function SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow) {
-  const {
-    measureSize,
-    startEdge,
-    endEdge
-  } = axis;
-  const withEdgeGap = slideRects[0] && readEdgeGap;
-  const startGap = measureStartGap();
-  const endGap = measureEndGap();
-  const slideSizes = slideRects.map(measureSize);
-  const slideSizesWithGaps = measureWithGaps();
-  function measureStartGap() {
-    if (!withEdgeGap) return 0;
-    const slideRect = slideRects[0];
-    return mathAbs(containerRect[startEdge] - slideRect[startEdge]);
-  }
-  function measureEndGap() {
-    if (!withEdgeGap) return 0;
-    const style51 = ownerWindow.getComputedStyle(arrayLast(slides));
-    return parseFloat(style51.getPropertyValue(`margin-${endEdge}`));
-  }
-  function measureWithGaps() {
-    return slideRects.map((rect, index, rects) => {
-      const isFirst = !index;
-      const isLast = arrayIsLastIndex(rects, index);
-      if (isFirst) return slideSizes[index] + startGap;
-      if (isLast) return slideSizes[index] + endGap;
-      return rects[index + 1][startEdge] - rect[startEdge];
-    }).map(mathAbs);
-  }
-  const self = {
-    slideSizes,
-    slideSizesWithGaps,
-    startGap,
-    endGap
-  };
-  return self;
-}
-function SlidesToScroll(axis, viewSize, slidesToScroll, loop, containerRect, slideRects, startGap, endGap, pixelTolerance) {
-  const {
-    startEdge,
-    endEdge,
-    direction
-  } = axis;
-  const groupByNumber = isNumber(slidesToScroll);
-  function byNumber(array, groupSize) {
-    return arrayKeys(array).filter((i) => i % groupSize === 0).map((i) => array.slice(i, i + groupSize));
-  }
-  function bySize(array) {
-    if (!array.length) return [];
-    return arrayKeys(array).reduce((groups, rectB, index) => {
-      const rectA = arrayLast(groups) || 0;
-      const isFirst = rectA === 0;
-      const isLast = rectB === arrayLastIndex(array);
-      const edgeA = containerRect[startEdge] - slideRects[rectA][startEdge];
-      const edgeB = containerRect[startEdge] - slideRects[rectB][endEdge];
-      const gapA = !loop && isFirst ? direction(startGap) : 0;
-      const gapB = !loop && isLast ? direction(endGap) : 0;
-      const chunkSize = mathAbs(edgeB - gapB - (edgeA + gapA));
-      if (index && chunkSize > viewSize + pixelTolerance) groups.push(rectB);
-      if (isLast) groups.push(array.length);
-      return groups;
-    }, []).map((currentSize, index, groups) => {
-      const previousSize = Math.max(groups[index - 1] || 0);
-      return array.slice(previousSize, currentSize);
-    });
-  }
-  function groupSlides(array) {
-    return groupByNumber ? byNumber(array, slidesToScroll) : bySize(array);
-  }
-  const self = {
-    groupSlides
-  };
-  return self;
-}
-function Engine(root24, container9, slides, ownerDocument, ownerWindow, options, eventHandler) {
-  const {
-    align,
-    axis: scrollAxis,
-    direction,
-    startIndex,
-    loop,
-    duration,
-    dragFree,
-    dragThreshold,
-    inViewThreshold,
-    slidesToScroll: groupSlides,
-    skipSnaps,
-    containScroll,
-    watchResize,
-    watchSlides,
-    watchDrag,
-    watchFocus
-  } = options;
-  const pixelTolerance = 2;
-  const nodeRects = NodeRects();
-  const containerRect = nodeRects.measure(container9);
-  const slideRects = slides.map(nodeRects.measure);
-  const axis = Axis(scrollAxis, direction);
-  const viewSize = axis.measureSize(containerRect);
-  const percentOfView = PercentOfView(viewSize);
-  const alignment = Alignment(align, viewSize);
-  const containSnaps = !loop && !!containScroll;
-  const readEdgeGap = loop || !!containScroll;
-  const {
-    slideSizes,
-    slideSizesWithGaps,
-    startGap,
-    endGap
-  } = SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow);
-  const slidesToScroll = SlidesToScroll(axis, viewSize, groupSlides, loop, containerRect, slideRects, startGap, endGap, pixelTolerance);
-  const {
-    snaps,
-    snapsAligned
-  } = ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll);
-  const contentSize = -arrayLast(snaps) + arrayLast(slideSizesWithGaps);
-  const {
-    snapsContained,
-    scrollContainLimit
-  } = ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance);
-  const scrollSnaps = containSnaps ? snapsContained : snapsAligned;
-  const {
-    limit
-  } = ScrollLimit(contentSize, scrollSnaps, loop);
-  const index = Counter(arrayLastIndex(scrollSnaps), startIndex, loop);
-  const indexPrevious = index.clone();
-  const slideIndexes = arrayKeys(slides);
-  const update = ({
-    dragHandler,
-    scrollBody: scrollBody2,
-    scrollBounds,
-    options: {
-      loop: loop2
-    }
-  }) => {
-    if (!loop2) scrollBounds.constrain(dragHandler.pointerDown());
-    scrollBody2.seek();
-  };
-  const render = ({
-    scrollBody: scrollBody2,
-    translate,
-    location: location4,
-    offsetLocation: offsetLocation2,
-    previousLocation: previousLocation2,
-    scrollLooper,
-    slideLooper,
-    dragHandler,
-    animation: animation2,
-    eventHandler: eventHandler2,
-    scrollBounds,
-    options: {
-      loop: loop2
-    }
-  }, alpha) => {
-    const shouldSettle = scrollBody2.settled();
-    const withinBounds = !scrollBounds.shouldConstrain();
-    const hasSettled = loop2 ? shouldSettle : shouldSettle && withinBounds;
-    const hasSettledAndIdle = hasSettled && !dragHandler.pointerDown();
-    if (hasSettledAndIdle) animation2.stop();
-    const interpolatedLocation = location4.get() * alpha + previousLocation2.get() * (1 - alpha);
-    offsetLocation2.set(interpolatedLocation);
-    if (loop2) {
-      scrollLooper.loop(scrollBody2.direction());
-      slideLooper.loop();
-    }
-    translate.to(offsetLocation2.get());
-    if (hasSettledAndIdle) eventHandler2.emit("settle");
-    if (!hasSettled) eventHandler2.emit("scroll");
-  };
-  const animation = Animations(ownerDocument, ownerWindow, () => update(engine), (alpha) => render(engine, alpha));
-  const friction = 0.68;
-  const startLocation = scrollSnaps[index.get()];
-  const location3 = Vector1D(startLocation);
-  const previousLocation = Vector1D(startLocation);
-  const offsetLocation = Vector1D(startLocation);
-  const target = Vector1D(startLocation);
-  const scrollBody = ScrollBody(location3, offsetLocation, previousLocation, target, duration, friction);
-  const scrollTarget = ScrollTarget(loop, scrollSnaps, contentSize, limit, target);
-  const scrollTo = ScrollTo(animation, index, indexPrevious, scrollBody, scrollTarget, target, eventHandler);
-  const scrollProgress = ScrollProgress(limit);
-  const eventStore = EventStore();
-  const slidesInView = SlidesInView(container9, slides, eventHandler, inViewThreshold);
-  const {
-    slideRegistry
-  } = SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes);
-  const slideFocus = SlideFocus(root24, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus);
-  const engine = {
-    ownerDocument,
-    ownerWindow,
-    eventHandler,
-    containerRect,
-    slideRects,
-    animation,
-    axis,
-    dragHandler: DragHandler(axis, root24, ownerDocument, ownerWindow, target, DragTracker(axis, ownerWindow), location3, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, friction, watchDrag),
-    eventStore,
-    percentOfView,
-    index,
-    indexPrevious,
-    limit,
-    location: location3,
-    offsetLocation,
-    previousLocation,
-    options,
-    resizeHandler: ResizeHandler(container9, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects),
-    scrollBody,
-    scrollBounds: ScrollBounds(limit, offsetLocation, target, scrollBody, percentOfView),
-    scrollLooper: ScrollLooper(contentSize, limit, offsetLocation, [location3, offsetLocation, previousLocation, target]),
-    scrollProgress,
-    scrollSnapList: scrollSnaps.map(scrollProgress.get),
-    scrollSnaps,
-    scrollTarget,
-    scrollTo,
-    slideLooper: SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, offsetLocation, slides),
-    slideFocus,
-    slidesHandler: SlidesHandler(container9, eventHandler, watchSlides),
-    slidesInView,
-    slideIndexes,
-    slideRegistry,
-    slidesToScroll,
-    target,
-    translate: Translate(axis, container9)
-  };
-  return engine;
-}
-function EventHandler() {
-  let listeners = {};
-  let api;
-  function init(emblaApi) {
-    api = emblaApi;
-  }
-  function getListeners(evt) {
-    return listeners[evt] || [];
-  }
-  function emit(evt) {
-    getListeners(evt).forEach((e) => e(api, evt));
-    return self;
-  }
-  function on(evt, cb) {
-    listeners[evt] = getListeners(evt).concat([cb]);
-    return self;
-  }
-  function off(evt, cb) {
-    listeners[evt] = getListeners(evt).filter((e) => e !== cb);
-    return self;
-  }
-  function clear() {
-    listeners = {};
-  }
-  const self = {
-    init,
-    emit,
-    off,
-    on,
-    clear
-  };
-  return self;
-}
-var defaultOptions = {
-  align: "center",
-  axis: "x",
-  container: null,
-  slides: null,
-  containScroll: "trimSnaps",
-  direction: "ltr",
-  slidesToScroll: 1,
-  inViewThreshold: 0,
-  breakpoints: {},
-  dragFree: false,
-  dragThreshold: 10,
-  loop: false,
-  skipSnaps: false,
-  duration: 25,
-  startIndex: 0,
-  active: true,
-  watchDrag: true,
-  watchResize: true,
-  watchSlides: true,
-  watchFocus: true
-};
-function OptionsHandler(ownerWindow) {
-  function mergeOptions(optionsA, optionsB) {
-    return objectsMergeDeep(optionsA, optionsB || {});
-  }
-  function optionsAtMedia(options) {
-    const optionsAtMedia2 = options.breakpoints || {};
-    const matchedMediaOptions = objectKeys(optionsAtMedia2).filter((media) => ownerWindow.matchMedia(media).matches).map((media) => optionsAtMedia2[media]).reduce((a, mediaOption) => mergeOptions(a, mediaOption), {});
-    return mergeOptions(options, matchedMediaOptions);
-  }
-  function optionsMediaQueries(optionsList) {
-    return optionsList.map((options) => objectKeys(options.breakpoints || {})).reduce((acc, mediaQueries) => acc.concat(mediaQueries), []).map(ownerWindow.matchMedia);
-  }
-  const self = {
-    mergeOptions,
-    optionsAtMedia,
-    optionsMediaQueries
-  };
-  return self;
-}
-function PluginsHandler(optionsHandler) {
-  let activePlugins = [];
-  function init(emblaApi, plugins) {
-    activePlugins = plugins.filter(({
-      options
-    }) => optionsHandler.optionsAtMedia(options).active !== false);
-    activePlugins.forEach((plugin) => plugin.init(emblaApi, optionsHandler));
-    return plugins.reduce((map, plugin) => Object.assign(map, {
-      [plugin.name]: plugin
-    }), {});
-  }
-  function destroy() {
-    activePlugins = activePlugins.filter((plugin) => plugin.destroy());
-  }
-  const self = {
-    init,
-    destroy
-  };
-  return self;
-}
-function EmblaCarousel(root24, userOptions, userPlugins) {
-  const ownerDocument = root24.ownerDocument;
-  const ownerWindow = ownerDocument.defaultView;
-  const optionsHandler = OptionsHandler(ownerWindow);
-  const pluginsHandler = PluginsHandler(optionsHandler);
-  const mediaHandlers = EventStore();
-  const eventHandler = EventHandler();
-  const {
-    mergeOptions,
-    optionsAtMedia,
-    optionsMediaQueries
-  } = optionsHandler;
-  const {
-    on,
-    off,
-    emit
-  } = eventHandler;
-  const reInit = reActivate;
-  let destroyed = false;
-  let engine;
-  let optionsBase = mergeOptions(defaultOptions, EmblaCarousel.globalOptions);
-  let options = mergeOptions(optionsBase);
-  let pluginList = [];
-  let pluginApis;
-  let container9;
-  let slides;
-  function storeElements() {
-    const {
-      container: userContainer,
-      slides: userSlides
-    } = options;
-    const customContainer = isString(userContainer) ? root24.querySelector(userContainer) : userContainer;
-    container9 = customContainer || root24.children[0];
-    const customSlides = isString(userSlides) ? container9.querySelectorAll(userSlides) : userSlides;
-    slides = [].slice.call(customSlides || container9.children);
-  }
-  function createEngine(options2) {
-    const engine2 = Engine(root24, container9, slides, ownerDocument, ownerWindow, options2, eventHandler);
-    if (options2.loop && !engine2.slideLooper.canLoop()) {
-      const optionsWithoutLoop = Object.assign({}, options2, {
-        loop: false
-      });
-      return createEngine(optionsWithoutLoop);
-    }
-    return engine2;
-  }
-  function activate(withOptions, withPlugins) {
-    if (destroyed) return;
-    optionsBase = mergeOptions(optionsBase, withOptions);
-    options = optionsAtMedia(optionsBase);
-    pluginList = withPlugins || pluginList;
-    storeElements();
-    engine = createEngine(options);
-    optionsMediaQueries([optionsBase, ...pluginList.map(({
-      options: options2
-    }) => options2)]).forEach((query) => mediaHandlers.add(query, "change", reActivate));
-    if (!options.active) return;
-    engine.translate.to(engine.location.get());
-    engine.animation.init();
-    engine.slidesInView.init();
-    engine.slideFocus.init(self);
-    engine.eventHandler.init(self);
-    engine.resizeHandler.init(self);
-    engine.slidesHandler.init(self);
-    if (engine.options.loop) engine.slideLooper.loop();
-    if (container9.offsetParent && slides.length) engine.dragHandler.init(self);
-    pluginApis = pluginsHandler.init(self, pluginList);
-  }
-  function reActivate(withOptions, withPlugins) {
-    const startIndex = selectedScrollSnap();
-    deActivate();
-    activate(mergeOptions({
-      startIndex
-    }, withOptions), withPlugins);
-    eventHandler.emit("reInit");
-  }
-  function deActivate() {
-    engine.dragHandler.destroy();
-    engine.eventStore.clear();
-    engine.translate.clear();
-    engine.slideLooper.clear();
-    engine.resizeHandler.destroy();
-    engine.slidesHandler.destroy();
-    engine.slidesInView.destroy();
-    engine.animation.destroy();
-    pluginsHandler.destroy();
-    mediaHandlers.clear();
-  }
-  function destroy() {
-    if (destroyed) return;
-    destroyed = true;
-    mediaHandlers.clear();
-    deActivate();
-    eventHandler.emit("destroy");
-    eventHandler.clear();
-  }
-  function scrollTo(index, jump, direction) {
-    if (!options.active || destroyed) return;
-    engine.scrollBody.useBaseFriction().useDuration(jump === true ? 0 : options.duration);
-    engine.scrollTo.index(index, direction || 0);
-  }
-  function scrollNext(jump) {
-    const next = engine.index.add(1).get();
-    scrollTo(next, jump, -1);
-  }
-  function scrollPrev(jump) {
-    const prev = engine.index.add(-1).get();
-    scrollTo(prev, jump, 1);
-  }
-  function canScrollNext() {
-    const next = engine.index.add(1).get();
-    return next !== selectedScrollSnap();
-  }
-  function canScrollPrev() {
-    const prev = engine.index.add(-1).get();
-    return prev !== selectedScrollSnap();
-  }
-  function scrollSnapList() {
-    return engine.scrollSnapList;
-  }
-  function scrollProgress() {
-    return engine.scrollProgress.get(engine.offsetLocation.get());
-  }
-  function selectedScrollSnap() {
-    return engine.index.get();
-  }
-  function previousScrollSnap() {
-    return engine.indexPrevious.get();
-  }
-  function slidesInView() {
-    return engine.slidesInView.get();
-  }
-  function slidesNotInView() {
-    return engine.slidesInView.get(false);
-  }
-  function plugins() {
-    return pluginApis;
-  }
-  function internalEngine() {
-    return engine;
-  }
-  function rootNode() {
-    return root24;
-  }
-  function containerNode() {
-    return container9;
-  }
-  function slideNodes() {
-    return slides;
-  }
-  const self = {
-    canScrollNext,
-    canScrollPrev,
-    containerNode,
-    internalEngine,
-    destroy,
-    off,
-    on,
-    emit,
-    plugins,
-    previousScrollSnap,
-    reInit,
-    rootNode,
-    scrollNext,
-    scrollPrev,
-    scrollProgress,
-    scrollSnapList,
-    scrollTo,
-    selectedScrollSnap,
-    slideNodes,
-    slidesInView,
-    slidesNotInView
-  };
-  activate(userOptions, userPlugins);
-  setTimeout(() => eventHandler.emit("init"), 0);
-  return self;
-}
-EmblaCarousel.globalOptions = void 0;
-
-// ../../node_modules/.pnpm/embla-carousel-react@8.6.0_react@19.1.0/node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js
-function useEmblaCarousel(options = {}, plugins = []) {
-  const storedOptions = useRef4(options);
-  const storedPlugins = useRef4(plugins);
-  const [emblaApi, setEmblaApi] = useState8();
-  const [viewport, setViewport] = useState8();
-  const reInit = useCallback(() => {
-    if (emblaApi) emblaApi.reInit(storedOptions.current, storedPlugins.current);
-  }, [emblaApi]);
-  useEffect5(() => {
-    if (areOptionsEqual(storedOptions.current, options)) return;
-    storedOptions.current = options;
-    reInit();
-  }, [options, reInit]);
-  useEffect5(() => {
-    if (arePluginsEqual(storedPlugins.current, plugins)) return;
-    storedPlugins.current = plugins;
-    reInit();
-  }, [plugins, reInit]);
-  useEffect5(() => {
-    if (canUseDOM() && viewport) {
-      EmblaCarousel.globalOptions = useEmblaCarousel.globalOptions;
-      const newEmblaApi = EmblaCarousel(viewport, storedOptions.current, storedPlugins.current);
-      setEmblaApi(newEmblaApi);
-      return () => newEmblaApi.destroy();
-    } else {
-      setEmblaApi(void 0);
-    }
-  }, [viewport, setEmblaApi]);
-  return [setViewport, emblaApi];
-}
-useEmblaCarousel.globalOptions = void 0;
+import useEmblaCarousel from "embla-carousel-react";
 
 // src/molecules/Carousel/Carousel.css.ts
-import { style as style44 } from "@vanilla-extract/css";
-var embla = style44({
+import { style as style43 } from "@vanilla-extract/css";
+var embla = style43({
   overflow: "hidden",
   // 네이티브 스크롤 숨김
   width: "100%"
 });
-var embla__container = style44({
+var embla__container = style43({
   display: "flex",
   padding: "16px 0"
   // 기존 상하 패딩 유지
 });
-var embla__slide = style44({
+var embla__slide = style43({
   position: "relative",
   flexShrink: 0,
   // 아이템이 줄어들지 않도록 설정
@@ -5832,29 +3525,28 @@ function Carousel({
     ))
   ));
 }
-var Carousel_default = Carousel;
 
 // src/molecules/FilterSection/FilterSection.tsx
 import React41 from "react";
 
 // src/molecules/FilterSection/FilterSection.css.ts
-import { style as style45 } from "@vanilla-extract/css";
-var root20 = style45({
+import { style as style44 } from "@vanilla-extract/css";
+var root20 = style44({
   width: "100%",
   boxSizing: "border-box",
   display: "flex",
   flexDirection: "column"
 });
-var title11 = style45(__spreadProps(__spreadValues({}, TYPO.BODY1B), {
+var title11 = style44(__spreadProps(__spreadValues({}, TYPO.BODY1B), {
   color: "#000",
   padding: "12px 0px"
 }));
-var desc3 = style45(__spreadProps(__spreadValues({
+var desc3 = style44(__spreadProps(__spreadValues({
   paddingLeft: "4px"
 }, TYPO.CAPTION1M), {
   color: COLORS.GREEN700
 }));
-var chipsContainer = style45({
+var chipsContainer = style44({
   display: "flex",
   flexWrap: "wrap",
   gap: "8px"
@@ -5869,7 +3561,7 @@ function FilterSection({
   onChipClick
 }) {
   return /* @__PURE__ */ React41.createElement("div", { className: root20 }, /* @__PURE__ */ React41.createElement("div", { className: title11 }, title13, /* @__PURE__ */ React41.createElement("span", { className: desc3 }, " ", multiSelect ? "\uC911\uBCF5 \uAC00\uB2A5" : void 0)), /* @__PURE__ */ React41.createElement("div", { className: chipsContainer }, chips.map((chip3) => /* @__PURE__ */ React41.createElement(
-    FilterChipExpand_default,
+    FilterChipExpand,
     {
       key: chip3.id,
       title: chip3.title,
@@ -5879,14 +3571,13 @@ function FilterSection({
     }
   ))));
 }
-var FilterSection_default = FilterSection;
 
 // src/molecules/Grid/Grid.tsx
 import React42 from "react";
 
 // src/molecules/Grid/Grid.css.ts
-import { style as style46 } from "@vanilla-extract/css";
-var root21 = style46({
+import { style as style45 } from "@vanilla-extract/css";
+var root21 = style45({
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(162px, 1fr))",
   gap: "16px",
@@ -5898,15 +3589,14 @@ function Grid({ children, className }) {
   const combinedClassName = [root21, className].filter(Boolean).join(" ");
   return /* @__PURE__ */ React42.createElement("div", { className: combinedClassName }, children);
 }
-var Grid_default = Grid;
 
 // src/molecules/MapFloatingButtons/MapFloatingButtons.tsx
 import React43 from "react";
 import Image28 from "next/image";
 
 // src/molecules/MapFloatingButtons/MapFloatingButtons.css.ts
-import { style as style47, keyframes as keyframes6 } from "@vanilla-extract/css";
-var root22 = style47({
+import { style as style46, keyframes as keyframes6 } from "@vanilla-extract/css";
+var root22 = style46({
   position: "absolute",
   width: "100%",
   maxWidth: "500px",
@@ -5920,7 +3610,7 @@ var root22 = style47({
   alignItems: "center",
   zIndex: 11
 });
-var gpsButton = style47({
+var gpsButton = style46({
   width: "36px",
   height: "36px",
   borderRadius: "50%",
@@ -5941,19 +3631,20 @@ var pulseAnimation = keyframes6({
   "50%": { transform: "scale(1.1)" },
   "100%": { transform: "scale(1)" }
 });
-var fabPulse = style47({
+var fabPulse = style46({
   animationName: pulseAnimation,
   animationDuration: "0.7s",
   animationIterationCount: 3,
   animationTimingFunction: "ease-in-out"
 });
-var fabWithTooltipContainer = style47({
+var fabWithTooltipContainer = style46({
   position: "relative"
 });
 
 // src/molecules/MapFloatingButtons/MapFloatingButtons.tsx
 function MapFloatingButtons({
   onGpsClick,
+  gpsIconSrc,
   chipMapListProps,
   fabProps,
   tooltipProps
@@ -5961,25 +3652,16 @@ function MapFloatingButtons({
   const animatedFabProps = __spreadProps(__spreadValues({}, fabProps), {
     className: [fabProps.className, fabPulse].filter(Boolean).join(" ")
   });
-  return /* @__PURE__ */ React43.createElement("div", { className: root22 }, /* @__PURE__ */ React43.createElement("div", null, /* @__PURE__ */ React43.createElement("button", { className: gpsButton, onClick: onGpsClick }, /* @__PURE__ */ React43.createElement(
-    Image28,
-    {
-      src: "/assets/icon24/gps.svg",
-      alt: "\uD604\uC7AC \uC704\uCE58",
-      width: 24,
-      height: 24
-    }
-  ))), /* @__PURE__ */ React43.createElement("div", null, /* @__PURE__ */ React43.createElement(ChipMapList, __spreadValues({}, chipMapListProps))), /* @__PURE__ */ React43.createElement("div", { className: fabWithTooltipContainer }, /* @__PURE__ */ React43.createElement(Fab, __spreadValues({}, animatedFabProps)), /* @__PURE__ */ React43.createElement(Tooltip, __spreadValues({}, tooltipProps))));
+  return /* @__PURE__ */ React43.createElement("div", { className: root22 }, /* @__PURE__ */ React43.createElement("div", null, /* @__PURE__ */ React43.createElement("button", { className: gpsButton, onClick: onGpsClick }, gpsIconSrc && /* @__PURE__ */ React43.createElement(Image28, { src: gpsIconSrc, alt: "\uD604\uC7AC \uC704\uCE58", width: 24, height: 24 }))), /* @__PURE__ */ React43.createElement("div", null, /* @__PURE__ */ React43.createElement(ChipMapList, __spreadValues({}, chipMapListProps))), /* @__PURE__ */ React43.createElement("div", { className: fabWithTooltipContainer }, /* @__PURE__ */ React43.createElement(Fab, __spreadValues({}, animatedFabProps)), /* @__PURE__ */ React43.createElement(Tooltip, __spreadValues({}, tooltipProps))));
 }
-var MapFloatingButtons_default = MapFloatingButtons;
 
 // src/molecules/SearchHeader/SearchHeader.tsx
 import React44 from "react";
 import Image29 from "next/image";
 
 // src/molecules/SearchHeader/SearchHeader.css.ts
-import { style as style48, styleVariants as styleVariants15 } from "@vanilla-extract/css";
-var root23 = style48({
+import { style as style47, styleVariants as styleVariants14 } from "@vanilla-extract/css";
+var root23 = style47({
   width: "100%",
   padding: "8px 18px",
   boxSizing: "border-box",
@@ -5987,22 +3669,22 @@ var root23 = style48({
   alignItems: "center",
   gap: "12px"
 });
-var backButton = style48({
+var backButton = style47({
   background: "none",
   border: "none",
   padding: "0",
   cursor: "pointer",
   flexShrink: 0
 });
-var searchFieldWrapperBase = style48({
+var searchFieldWrapperBase = style47({
   flex: 1,
   position: "relative"
 });
-var searchFieldWrapper = styleVariants15({
+var searchFieldWrapper = styleVariants14({
   fullWidth: [searchFieldWrapperBase, { width: "100%" }],
   withBackButton: [searchFieldWrapperBase, { width: "calc(100% - 48px)" }]
 });
-var clickOverlay = style48({
+var clickOverlay = style47({
   position: "absolute",
   top: 0,
   left: 0,
@@ -6020,23 +3702,15 @@ function SearchHeader({
   onClick
 }) {
   const iconSrc = backIconColor === "white" ? "/assets/icon24/arrow-left_line_white.svg" : "/assets/icon24/arrow-left_line.svg";
-  return /* @__PURE__ */ React44.createElement("div", { className: root23 }, backIconHandler && /* @__PURE__ */ React44.createElement("button", { className: backButton, onClick: backIconHandler }, /* @__PURE__ */ React44.createElement(Image29, { src: iconSrc, alt: "\uB4A4\uB85C\uAC00\uAE30", width: 24, height: 24 })), /* @__PURE__ */ React44.createElement(
-    "div",
-    {
-      className: searchFieldWrapper[backIconHandler ? "withBackButton" : "fullWidth"]
-    },
-    /* @__PURE__ */ React44.createElement(SearchField_default, __spreadProps(__spreadValues({}, searchFieldProps), { readOnly: !!onClick })),
-    onClick && /* @__PURE__ */ React44.createElement("div", { className: clickOverlay, onClick })
-  ));
+  return /* @__PURE__ */ React44.createElement("div", { className: root23 }, backIconHandler && /* @__PURE__ */ React44.createElement("button", { className: backButton, onClick: backIconHandler }, /* @__PURE__ */ React44.createElement(Image29, { src: iconSrc, alt: "\uB4A4\uB85C\uAC00\uAE30", width: 24, height: 24 })), /* @__PURE__ */ React44.createElement("div", { className: searchFieldWrapper[backIconHandler ? "withBackButton" : "fullWidth"] }, /* @__PURE__ */ React44.createElement(SearchField, __spreadProps(__spreadValues({}, searchFieldProps), { readOnly: !!onClick })), onClick && /* @__PURE__ */ React44.createElement("div", { className: clickOverlay, onClick })));
 }
-var SearchHeader_default = SearchHeader;
 
 // src/molecules/ShortsOverlay/ShortsOverlay.tsx
 import React45 from "react";
 
 // src/molecules/ShortsOverlay/ShortsOverlay.css.ts
-import { style as style49 } from "@vanilla-extract/css";
-var overlayContainer = style49({
+import { style as style48 } from "@vanilla-extract/css";
+var overlayContainer = style48({
   position: "absolute",
   inset: 0,
   zIndex: 10,
@@ -6053,15 +3727,15 @@ function ShortsOverlay({ children }) {
 }
 
 // src/molecules/WelcomeOverlay/WelcomeOverlay.tsx
-import React46, { useEffect as useEffect6, useState as useState9 } from "react";
+import React46, { useEffect as useEffect5, useState as useState8 } from "react";
 
 // src/molecules/WelcomeOverlay/style.css.ts
-import { style as style50, keyframes as keyframes7 } from "@vanilla-extract/css";
+import { style as style49, keyframes as keyframes7 } from "@vanilla-extract/css";
 var fadeIn = keyframes7({
   "0%": { opacity: 0, transform: "scale(0.9)" },
   "100%": { opacity: 1, transform: "scale(1)" }
 });
-var overlay5 = style50({
+var overlay5 = style49({
   position: "fixed",
   inset: 0,
   backgroundColor: "rgba(255, 255, 255, 0.35)",
@@ -6072,7 +3746,7 @@ var overlay5 = style50({
   zIndex: 1e3,
   animation: `${fadeIn} 0.4s ease`
 });
-var modalCard = style50({
+var modalCard = style49({
   background: COLORS.NEUTRAL0,
   borderRadius: "20px",
   boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
@@ -6083,15 +3757,15 @@ var modalCard = style50({
   flexDirection: "column",
   alignItems: "center"
 });
-var title12 = style50(__spreadProps(__spreadValues({}, TYPO.HEADING1), {
+var title12 = style49(__spreadProps(__spreadValues({}, TYPO.HEADING1), {
   color: COLORS.NEUTRAL800,
   marginBottom: "6px"
 }));
-var subtitle2 = style50(__spreadProps(__spreadValues({}, TYPO.BODY2M), {
+var subtitle2 = style49(__spreadProps(__spreadValues({}, TYPO.BODY2M), {
   color: COLORS.NEUTRAL500,
   marginBottom: "20px"
 }));
-var checkList = style50({
+var checkList = style49({
   listStyle: "none",
   padding: 0,
   width: "100%",
@@ -6100,7 +3774,7 @@ var checkList = style50({
   gap: "10px",
   marginBottom: "24px"
 });
-var listItem2 = style50(__spreadProps(__spreadValues({}, TYPO.BODY3), {
+var listItem2 = style49(__spreadProps(__spreadValues({}, TYPO.BODY3), {
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-start",
@@ -6112,19 +3786,19 @@ var listItem2 = style50(__spreadProps(__spreadValues({}, TYPO.BODY3), {
   transition: "all 0.3s ease",
   fontWeight: 600
 }));
-var active3 = style50({
+var active3 = style49({
   background: COLORS.GREEN50,
   color: COLORS.GREEN700,
   fontWeight: 600
 });
-var icon4 = style50({
+var icon4 = style49({
   width: "24px",
   height: "24px",
   display: "flex",
   justifyContent: "center",
   alignItems: "center"
 });
-var startButton = style50({
+var startButton = style49({
   width: "100%",
   borderRadius: "12px",
   padding: "12px 0",
@@ -6133,19 +3807,19 @@ var startButton = style50({
   border: "none",
   transition: "all 0.3s ease"
 });
-var buttonDisabled = style50({
+var buttonDisabled = style49({
   background: COLORS.NEUTRAL200,
   color: COLORS.NEUTRAL500,
   cursor: "not-allowed",
   opacity: 0.6
 });
-var buttonActive = style50({
+var buttonActive = style49({
   background: COLORS.GREEN600,
   color: COLORS.NEUTRAL0,
   cursor: "pointer",
   ":hover": { opacity: 0.85 }
 });
-var errorText = style50({
+var errorText = style49({
   marginTop: "10px",
   fontSize: "12px",
   fontWeight: 600,
@@ -6154,37 +3828,37 @@ var errorText = style50({
 
 // src/molecules/WelcomeOverlay/WelcomeOverlay.tsx
 import Image30 from "next/image";
-var STEPS = [
-  "\uBC18\uB824\uB3D9\uBB3C \uC815\uBCF4 \uBD84\uC11D \uC911",
-  "\uC5EC\uD589 \uCDE8\uD5A5 \uBD84\uC11D \uC911",
-  "\uC704\uCE58 \uC815\uBCF4 \uD655\uC778 \uC911(\uC120\uD0DD)"
-];
 function WelcomeOverlay({
   onFetchLocation,
   latitude,
   longitude,
   isLoading,
-  error
+  error,
+  logoImageSrc,
+  logoAlt = "",
+  title: title13 = "\u{1F389} \uD658\uC601\uD569\uB2C8\uB2E4",
+  subtitle: subtitle3,
+  steps,
+  ctaText = "\uC2DC\uC791\uD558\uAE30",
+  loadingText = "\uC704\uCE58 \uCC3E\uB294 \uC911..."
 }) {
-  const [currentStep, setCurrentStep] = useState9(0);
-  const [completed, setCompleted] = useState9(
-    new Array(STEPS.length).fill(false)
-  );
-  const [isVisible, setIsVisible] = useState9(true);
-  const [isReadyToAnimate, setIsReadyToAnimate] = useState9(false);
-  useEffect6(() => {
+  const [currentStep, setCurrentStep] = useState8(0);
+  const [completed, setCompleted] = useState8(new Array(steps.length).fill(false));
+  const [isVisible, setIsVisible] = useState8(true);
+  const [isReadyToAnimate, setIsReadyToAnimate] = useState8(false);
+  useEffect5(() => {
     const timer = setTimeout(() => {
       setIsReadyToAnimate(true);
     }, 1e3);
     return () => clearTimeout(timer);
   }, []);
-  useEffect6(() => {
+  useEffect5(() => {
     if (!isReadyToAnimate) {
       return;
     }
     const interval = setInterval(() => {
       setCurrentStep((prev) => {
-        if (prev < STEPS.length) {
+        if (prev < steps.length) {
           setCompleted((old) => {
             const updated = [...old];
             updated[prev] = true;
@@ -6196,26 +3870,18 @@ function WelcomeOverlay({
       });
     }, 500);
     return () => clearInterval(interval);
-  }, [isReadyToAnimate]);
-  useEffect6(() => {
-    if (currentStep === STEPS.length) {
+  }, [isReadyToAnimate, steps.length]);
+  useEffect5(() => {
+    if (currentStep === steps.length) {
       onFetchLocation().catch(() => {
       });
     }
-  }, [currentStep, onFetchLocation]);
+  }, [currentStep, onFetchLocation, steps.length]);
   if (!isVisible) return null;
-  const isButtonEnabled = currentStep === STEPS.length && !isLoading;
-  const buttonText = isLoading && currentStep === STEPS.length ? "\uC704\uCE58 \uCC3E\uB294 \uC911..." : "\uB315\uAE00\uC81C\uC8FC \uD0D0\uC0C9\uD558\uAE30";
+  const isButtonEnabled = currentStep === steps.length && !isLoading;
+  const buttonText = isLoading && currentStep === steps.length ? loadingText : ctaText;
   const buttonStatus = isButtonEnabled ? "primary" /* PRIMARY */ : "disabled" /* DISABLED */;
-  return /* @__PURE__ */ React46.createElement("div", { className: overlay5 }, /* @__PURE__ */ React46.createElement("div", { className: modalCard }, /* @__PURE__ */ React46.createElement(
-    Image30,
-    {
-      src: "/assets/footprint.png",
-      alt: "\uB315\uAE00\uC81C\uC8FC",
-      width: 150,
-      height: 150
-    }
-  ), /* @__PURE__ */ React46.createElement("h2", { className: title12 }, "\u{1F389} \uD658\uC601\uD569\uB2C8\uB2E4"), /* @__PURE__ */ React46.createElement("p", { className: subtitle2 }, "\uB315\uB315\uC774\uC640 \uD568\uAED8\uD560 \uC5EC\uD589\uC744 \uC900\uBE44\uD558\uACE0 \uC788\uC5B4\uC694"), /* @__PURE__ */ React46.createElement("ul", { className: checkList }, STEPS.map((text3, i) => /* @__PURE__ */ React46.createElement(
+  return /* @__PURE__ */ React46.createElement("div", { className: overlay5 }, /* @__PURE__ */ React46.createElement("div", { className: modalCard }, /* @__PURE__ */ React46.createElement(Image30, { src: logoImageSrc, alt: logoAlt, width: 150, height: 150 }), /* @__PURE__ */ React46.createElement("h2", { className: title12 }, title13), subtitle3 && /* @__PURE__ */ React46.createElement("p", { className: subtitle2 }, subtitle3), /* @__PURE__ */ React46.createElement("ul", { className: checkList }, steps.map((text3, i) => /* @__PURE__ */ React46.createElement(
     "li",
     {
       key: i,
@@ -6238,11 +3904,6 @@ function WelcomeOverlay({
       status: buttonStatus,
       text: buttonText,
       onClick: () => {
-        if (latitude && longitude) {
-          console.log("\uC704\uCE58 \uC800\uC7A5\uB428:", latitude, longitude);
-        } else {
-          console.log("\uC704\uCE58 \uC815\uBCF4 \uC5C6\uC774 \uC2DC\uC791");
-        }
         setIsVisible(false);
       }
     }
@@ -6250,52 +3911,52 @@ function WelcomeOverlay({
 }
 export {
   AiProfileHeader,
-  AvatarPicker_default as AvatarPicker,
+  AvatarPicker,
   BottomSheet,
   Button,
-  Carousel_default as Carousel,
+  Carousel,
   ChatInput,
   Chip,
-  ChipKeyword_default as ChipKeyword,
+  ChipKeyword,
   ChipMapList,
   DangleCard,
   DangleItem,
-  DanglePlace_default as DanglePlace,
+  DanglePlace,
   DanglePlay,
   DangleReview,
-  DangleVideo_default as DangleVideo,
+  DangleVideo,
   Dropdown,
-  EmptyState_default as EmptyState,
+  EmptyState,
   Fab,
   FilterChip,
-  FilterChipExpand_default as FilterChipExpand,
-  FilterSection_default as FilterSection,
-  Grid_default as Grid,
-  Header_default as Header,
+  FilterChipExpand,
+  FilterSection,
+  Grid,
+  Header,
   LoadingSpinner,
-  Location_default as Location,
+  Location,
   LoginButton,
-  MapFloatingButtons_default as MapFloatingButtons,
+  MapFloatingButtons,
   MessageBox,
   Modal,
-  NavBar_default as NavBar,
-  NoticeBox_default as NoticeBox,
+  NavBar,
+  NoticeBox,
   Pagination,
-  ProfileCard_default as ProfileCard,
+  ProfileCard,
   ProgressCircle,
   RadioGroup,
-  SearchField_default as SearchField,
-  SearchHeader_default as SearchHeader,
-  SegmentedControl_default as SegmentedControl,
+  SearchField,
+  SearchHeader,
+  SegmentedControl,
   SelectField,
   ShortsBottomInfo,
   ShortsOverlay,
   Skeleton,
-  Tabs_default as Tabs,
+  Tabs,
   TextField,
   ThinkingBubble,
   Tooltip,
-  TopBar_default as TopBar,
+  TopBar,
   TopicSelector,
   WelcomeOverlay
 };

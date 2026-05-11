@@ -20,6 +20,9 @@ coverage
 # production
 /build
 
+# package build output
+packages/daenggle-ui/dist/
+
 # misc
 .DS_Store
 *.pem
