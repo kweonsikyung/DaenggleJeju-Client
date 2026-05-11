@@ -2,16 +2,14 @@
   "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
   "files": {
     "includes": [
-      "apps/**/*.ts",
-      "apps/**/*.tsx",
-      "packages/**/*.ts",
-      "packages/**/*.tsx",
+      "**",
       "!**/node_modules/**",
       "!**/dist/**",
       "!**/.next/**",
       "!**/storybook-static/**",
       "!**/*.stories.ts",
-      "!**/*.stories.tsx"
+      "!**/*.stories.tsx",
+      "!**/pnpm-lock.yaml"
     ]
   },
   "formatter": {
