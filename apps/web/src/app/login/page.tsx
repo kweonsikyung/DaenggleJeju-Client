@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import * as s from "./style.css";
-import { LoginButton } from "@/ui/atoms/Buttons/LoginButton/LoginButton";
+import { LoginButton, LoadingSpinner } from "daenggle-ui";
 import { LOGIN_TYPE } from "@/types/LoginType";
 import { useRouter } from "next/navigation";
 import { useDevLogin, useKakaoLogin } from "@/hooks/api/useAuth";
 import React from "react";
-import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
 
 const LOGIN_CONFIG = [
   { type: LOGIN_TYPE.KAKAO, title: "Kakao로 시작하기" },
@@ -50,6 +49,7 @@ export default function Login() {
               key={type}
               provider={type}
               title={title}
+              iconSrc={`/assets/login/${type}.svg`}
               onClick={() => {
                 if (type === LOGIN_TYPE.KAKAO) kakaoLogin();
               }}

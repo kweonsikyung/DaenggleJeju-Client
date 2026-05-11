@@ -6,15 +6,18 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 //components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { Header } from "@/ui/atoms/Header/Header";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { DangleItem } from "@/ui/atoms/Dangle/DangleItem/DangleItem";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DangleCard } from "@/ui/atoms/Dangle/DangleCard/DangleCard";
-import { Carousel } from "@/ui/molecules/Carousel/Carousel";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
+import {
+  TopBar,
+  Header,
+  NavBar,
+  NavBarItem,
+  DangleItem,
+  DanglePlay,
+  DangleCard,
+  Carousel,
+  Grid,
+  EmptyState,
+} from "daenggle-ui";
 
 //hooks
 import { useDaenggleAccommodations, useDaenggleTrending } from "@/hooks/api/useDaenggle";
@@ -25,6 +28,44 @@ import { regionContextMap, conceptBanners, getThumbnailUrl } from "./_util";
 import { JEJU_DATA } from "@/utils/dummy_data";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 댕글추천 페이지
@@ -67,7 +108,10 @@ export default function Page() {
         backIconHandler={() => {
           router.back();
         }}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         isShowLogo
+        logoSrc="/assets/logo/logo-top.svg"
+        logoAlt="댕글제주"
         rightIcons={[
           {
             icon: <Image alt="검색" height={24} width={24} src="/assets/icon24/search.svg" />,
@@ -196,7 +240,7 @@ export default function Page() {
       </div>
 
       {/* Nav */}
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }

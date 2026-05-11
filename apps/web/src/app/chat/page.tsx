@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 import * as s from "./style.css";
 
 //components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { AiProfileHeader } from "@/ui/atoms/Chat/AiProfileHeader/AiProfileHeader";
-import { MessageBox } from "@/ui/atoms/Chat/MessageBox/MessageBox";
-import { TopicSelector } from "@/ui/atoms/Chat/TopicSelector/TopicSelector";
-import { NoticeBox } from "@/ui/atoms/NoticeBox/NoticeBox";
-import { ThinkingBubble } from "@/ui/atoms/Chat/ThinkingBubble/ThinkingBubble";
-import { ChatInput } from "@/ui/atoms/Chat/ChatInput/ChatInput";
+import {
+  TopBar,
+  NavBar,
+  NavBarItem,
+  AiProfileHeader,
+  MessageBox,
+  TopicSelector,
+  NoticeBox,
+  ThinkingBubble,
+  ChatInput,
+} from "daenggle-ui";
 
 //hooks
 import { useTypingEffect } from "@/hooks/useTypingEffect";
@@ -24,6 +27,44 @@ import { travelCareData, Topic } from "./_util";
 
 /** type */
 const initialTopics = Object.keys(travelCareData) as Topic[];
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 // 모든 메시지 통합 관리
 type ChatMessage = {
@@ -249,7 +290,7 @@ export default function Page() {
         <ChatInput onSend={handleFreeFormSubmit} disabled={isInputDisabled} />
       </div>
 
-      <NavBar activePage="ai" />
+      <NavBar activeId="ai" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }

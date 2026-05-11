@@ -3,12 +3,15 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import * as s from "./style.css";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { MapFloatingButtons } from "@/ui/molecules/MapFloatingButtons/MapFloatingButtons";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import {
+  BottomSheet,
+  FilterChip,
+  NavBar,
+  NavBarItem,
+  MapFloatingButtons,
+  FilterSection,
+  Button,
+} from "daenggle-ui";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 import {
   MARKER_IMAGES,
@@ -18,8 +21,7 @@ import {
   FILTER_CHIP_ID_TO_CONTENT_TYPE_ID,
   FILTER_OPTION_ID_TO_API_PARAM,
 } from "./_util";
-import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
+import { SearchHeader, DanglePlace } from "daenggle-ui";
 import { usePlaceMap } from "@/hooks/api/usePlaces";
 import { usePostScrap } from "@/hooks/api/useScraps";
 import { GetPlaceMapReq, PlaceItem } from "@/types/place";
@@ -27,11 +29,48 @@ import { normalizeChips } from "@/utils/normalizeChips";
 import { mutate } from "swr";
 import { useDaengglePlacesMap } from "@/hooks/api/useDaenggle";
 import { useKakaoMap } from "@/hooks/useKakaoMap";
-import { WelcomeOverlay } from "@/ui/molecules/WelcomeOverlay/WelcomeOverlay";
-import { LoadingSpinner } from "@/ui/atoms/LoadingSpinner/LoadingSpinner";
+import { WelcomeOverlay, LoadingSpinner } from "daenggle-ui";
 import { useLocationStore } from "@/stores/locationStore";
 
 const LOCAL_STORAGE_KEY = "hasVisitedMap";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 내근처(지도) 페이지
@@ -291,7 +330,7 @@ export default function MapPage() {
             cnt: totalCount,
             onLocationListClick: handleLocationListClick,
           }}
-          fabProps={{ onClick: handleDangleRecommendClick }}
+          fabProps={{ onClick: handleDangleRecommendClick, imageSrc: "/assets/map/fab.svg" }}
           tooltipProps={{
             title: "댕글제주 PICK!",
             text: "제주의 다양한 영상을 지역, 테마, 인기별로 발견해보세요.",
@@ -303,11 +342,18 @@ export default function MapPage() {
       </div>
 
       {/* nav */}
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
 
       {/* WelcomeOverlay 컴포넌트 */}
       {showWelcomeOverlay && (
         <WelcomeOverlay
+          logoImageSrc="/assets/footprint.png"
+          logoAlt="댕글제주"
+          title="🎉 환영합니다"
+          subtitle="댕댕이와 함께할 여행을 준비하고 있어요"
+          steps={["반려동물 정보 분석 중", "여행 취향 분석 중", "위치 정보 확인 중(선택)"]}
+          ctaText="댕글제주 탐색하기"
+          loadingText="위치 찾는 중..."
           onFetchLocation={fetchLocation}
           latitude={latitude}
           longitude={longitude}

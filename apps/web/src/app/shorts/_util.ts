@@ -1,6 +1,9 @@
 import { DaenggleVideoItem } from "@/types/daenggle";
 import { VideoData } from "@/utils/dummy_data";
-import { DropdownOption } from "@/ui/atoms/Dropdown/Dropdown";
+interface DropdownOption {
+  value: string;
+  label: string;
+}
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 
 export const JEJU_REGIONS: DropdownOption[] = [

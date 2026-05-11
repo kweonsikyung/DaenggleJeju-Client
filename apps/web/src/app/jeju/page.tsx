@@ -3,14 +3,49 @@
 import React, { Suspense, useState, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
+import { TopBar, NavBar, NavBarItem, NoticeBox, ProgressCircle } from "daenggle-ui";
 import * as s from "./style.css";
 import { jejuOptions } from "./_util";
 import { useWebShare } from "@/hooks/useWebShare";
 import { useNotice } from "@/hooks/useNotice";
-import { NoticeBox } from "@/ui/atoms/NoticeBox/NoticeBox";
-import { ProgressCircle } from "@/ui/atoms/ProgressCircle/ProgressCircle";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 제주 이동 방법 메인 & 상세 페이지
@@ -77,6 +112,7 @@ function JejuPageContent() {
         <TopBar
           transparent
           backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
           rightIcons={[
             {
               icon: (
@@ -133,7 +169,11 @@ function JejuPageContent() {
   const renderMainPage = () => {
     return (
       <>
-        <TopBar transparent backIconHandler={() => router.back()} />
+        <TopBar
+          transparent
+          backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
+        />
         <div className={s.container}>
           <Image src={"/assets/jeju.png"} width={274} height={190} alt="제주" />
           <div className={s.title}>
@@ -167,7 +207,7 @@ function JejuPageContent() {
   return (
     <div className={s.page}>
       {type ? renderDetailPage() : renderMainPage()}
-      <NavBar activePage="jeju" />
+      <NavBar activeId="jeju" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -178,7 +218,11 @@ function JejuPageContent() {
 export default function JejuPage() {
   const FallbackUI = (
     <div className={s.page}>
-      <TopBar transparent backIconHandler={() => {}} />
+      <TopBar
+        transparent
+        backIconHandler={() => {}}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
+      />
       <div className={s.container}>
         <Image src={"/assets/jeju.png"} width={274} height={190} alt="제주" />
         <div className={s.title}>
@@ -187,7 +231,7 @@ export default function JejuPage() {
           쉽게 안내해 드릴게요
         </div>
       </div>
-      <NavBar activePage="jeju" />
+      <NavBar activeId="jeju" items={NAV_ITEMS} onNavigate={() => {}} />
     </div>
   );
 

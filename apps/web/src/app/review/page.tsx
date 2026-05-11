@@ -6,11 +6,7 @@ import Image from "next/image";
 import * as s from "./style.css";
 
 // components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { RadioGroup } from "@/ui/atoms/RadioGroup/RadioGroup";
-import { TextField } from "@/ui/atoms/TextField/TextField";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import { TopBar, RadioGroup, TextField, FilterSection, Button } from "daenggle-ui";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
 // utils & data
@@ -124,6 +120,7 @@ function LeaveFootprintPage() {
       <TopBar
         title={isSubmitted ? "" : "발자국 남기기"}
         backIconHandler={() => (isSubmitted ? router.push("/") : router.back())}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
       />
       {isSubmitted ? (
         <>

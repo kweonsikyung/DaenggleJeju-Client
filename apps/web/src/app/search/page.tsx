@@ -6,18 +6,21 @@ import * as s from "./style.css";
 import { mutate } from "swr";
 
 // components
-import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { ChipKeyword } from "@/ui/atoms/Chip/ChipKeyword/ChipKeyword";
-import { DangleVideo } from "@/ui/atoms/Dangle/DangleVideo/DangleVideo";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import {
+  SearchHeader,
+  NavBar,
+  NavBarItem,
+  ChipKeyword,
+  DangleVideo,
+  DanglePlay,
+  DanglePlace,
+  FilterChip,
+  EmptyState,
+  Grid,
+  BottomSheet,
+  FilterSection,
+  Button,
+} from "daenggle-ui";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
 
 // hooks
@@ -37,6 +40,44 @@ import type { GetDaenggleSearchReq } from "@/types/daenggle";
 import { extractHashtags, findLocationInfo } from "@/utils/textParsing";
 import { getThumbnailUrl } from "../dangle/_util";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 검색 페이지
@@ -431,7 +472,7 @@ function SearchPageContent() {
           </>
         )}
       </div>
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       {/* 바텀시트 */}
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen} title="필터">
         <div className={s.bottomSheetContent}>

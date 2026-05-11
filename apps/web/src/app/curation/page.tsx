@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
+import { TopBar, Button } from "daenggle-ui";
 import * as s from "./style.css";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 import Step1 from "./_step/step1";
 import Step2 from "./_step/step2";
@@ -140,6 +139,7 @@ export default function Curation() {
     <div className={s.page}>
       <TopBar
         backIconHandler={() => (step > 1 ? setStep(step - 1) : router.back())}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         rightIcons={[
           {
             icon: <Image alt="닫기" height={24} src="/assets/icon24/x_line.svg" width={24} />,

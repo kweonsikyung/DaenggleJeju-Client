@@ -2,11 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import * as s from "../style.css";
-import { TextField } from "@/ui/atoms/TextField/TextField";
-import { SelectField } from "@/ui/atoms/SelectField/SelectField";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
+import { TextField, SelectField, BottomSheet, AvatarPicker } from "daenggle-ui";
 import { BREED_OPTIONS, WEIGHT_OPTIONS } from "../_util";
-import { AvatarPicker } from "@/ui/atoms/AvatarPicker/AvatarPicker";
 
 interface Step1Props {
   setIsValid: (isValid: boolean) => void;

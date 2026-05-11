@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import * as s from "../style.css";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import { Button } from "daenggle-ui";
 import { STYLE_OPTIONS } from "../_util";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 

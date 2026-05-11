@@ -5,15 +5,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import * as s from "./style.css";
 
 //components
-import { SearchHeader } from "@/ui/molecules/SearchHeader/SearchHeader";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { FilterChip } from "@/ui/atoms/FilterChip/FilterChip";
-import { BottomSheet } from "@/ui/atoms/BottomSheet/BottomSheet";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { FilterSection } from "@/ui/molecules/FilterSection/FilterSection";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { DanglePlaceSkeleton } from "@/ui/views/Skeletons/DangleSkeletons";
+import {
+  SearchHeader,
+  NavBar,
+  NavBarItem,
+  FilterChip,
+  BottomSheet,
+  Button,
+  DanglePlace,
+  FilterSection,
+  EmptyState,
+} from "daenggle-ui";
+import { DanglePlaceSkeleton } from "@/components/Skeletons/DangleSkeletons";
 //hooks
 import { usePlaceList } from "@/hooks/api/usePlaces";
 
@@ -26,6 +29,44 @@ import {
 } from "../map/_util";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 import { GetPlaceListReq } from "@/types/place";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 내근처(리스트) 페이지
@@ -166,7 +207,7 @@ export default function ListClientPage() {
       </div>
 
       {/* nav */}
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
 
       {/* bottomSheet */}
       <BottomSheet open={isBottomSheetOpen} onOpenChange={setIsBottomSheetOpen} title="필터">

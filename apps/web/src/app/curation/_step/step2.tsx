@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Location } from "@/ui/atoms/Buttons/Location/Location";
+import { Location } from "daenggle-ui";
 import * as s from "../style.css";
 import {
   LOCATION_OPTION,

@@ -1,5 +1,12 @@
-import { Tab } from "@/ui/atoms/Tabs/Tabs";
-import { SegmentedControlOption } from "@/ui/atoms/SegmentedControl/SegmentedControl";
+interface Tab {
+  id: string;
+  label: string;
+}
+
+interface SegmentedControlOption {
+  id: string;
+  label: string;
+}
 
 export const mainTabs: SegmentedControlOption[] = [
   { id: "saved", label: "저장" },

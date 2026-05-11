@@ -6,13 +6,17 @@ import Image from "next/image";
 import * as s from "./style.css";
 
 // components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Carousel } from "@/ui/molecules/Carousel/Carousel";
-import { Modal } from "@/ui/atoms/Modal/Modal";
+import {
+  TopBar,
+  NavBar,
+  NavBarItem,
+  DanglePlay,
+  DangleReview,
+  EmptyState,
+  Carousel,
+  Modal,
+  Button,
+} from "daenggle-ui";
 import { ButtonSize, ButtonStatus } from "@/constants/ButtonVariant";
 
 // hooks
@@ -25,8 +29,45 @@ import { useModal } from "@/hooks/useModal";
 // utils
 import { copyToClipboard, callPhoneNumber } from "@/utils/interaction";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
 const MAX_LENGTH = 200;
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 장소 상세 페이지 (내부 로직)
@@ -188,6 +229,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
     <div className={s.page}>
       <TopBar
         backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         rightIcons={[
           {
             icon: (
@@ -413,7 +455,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
                     key={review.footprintId}
                     profileImageUrl={getRandomAvatar()}
                     userName={review.writer.pet?.name || "댕글제주"}
-                    dogInfo={
+                    userSubInfo={
                       `${review.writer.pet?.breedNameKo} · ${review.writer.pet?.sizeLabelKo}` ||
                       "중형견(6~15kg)"
                     }
@@ -467,7 +509,7 @@ function PlaceDetailClient({ contentId }: { contentId: number }) {
         </div>
       </Modal>
 
-      <NavBar activePage="near" />
+      <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -484,11 +526,14 @@ export default function DetailPage() {
   if (contentId === null) {
     return (
       <div className={s.page}>
-        <TopBar backIconHandler={() => router.back()} />
+        <TopBar
+          backIconHandler={() => router.back()}
+          backIconSrc="/assets/icon24/arrow-left_line.svg"
+        />
         <div className={s.container}>
           <EmptyState title="페이지 준비 중" description="정보를 불러오고 있습니다" />
         </div>
-        <NavBar activePage="near" />
+        <NavBar activeId="near" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }

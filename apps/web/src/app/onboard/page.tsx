@@ -5,8 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Pagination } from "@/ui/atoms/Pagination/Pagination";
-import { Chip } from "@/ui/atoms/Chip/Chip/Chip";
+import { Pagination, Chip } from "daenggle-ui";
 import * as s from "./style.css";
 import { slides } from "./_util";
 

@@ -6,18 +6,21 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 //components
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { ProfileCard } from "@/ui/atoms/ProfileCard/ProfileCard";
-import { SegmentedControl } from "@/ui/atoms/SegmentedControl/SegmentedControl";
-import { Tabs } from "@/ui/atoms/Tabs/Tabs";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Button } from "@/ui/atoms/Buttons/Button/Button";
+import {
+  TopBar,
+  NavBar,
+  NavBarItem,
+  ProfileCard,
+  SegmentedControl,
+  Tabs,
+  EmptyState,
+  Button,
+  DanglePlay,
+  DanglePlace,
+  Grid,
+  DangleReview,
+} from "daenggle-ui";
 import { ButtonStatus, ButtonSize } from "@/constants/ButtonVariant";
-import { DanglePlay } from "@/ui/atoms/Dangle/DanglePlay/DanglePlay";
-import { DanglePlace } from "@/ui/atoms/Dangle/DanglePlace/DanglePlace";
-import { Grid } from "@/ui/molecules/Grid/Grid";
-import { DangleReview } from "@/ui/atoms/Dangle/DangleReview/DangleReview";
 
 //utils and hooks
 import { mainTabs, subTabs, emptyStateContent } from "./_util";
@@ -27,6 +30,44 @@ import { useMyFootprints } from "@/hooks/api/useFootprints";
 import { ScrapPlaceItem, ScrapDangleItem } from "@/types/scrap";
 import { getRandomAvatar } from "@/utils/getRandomAvatar";
 import { extractHashtags } from "@/utils/textParsing";
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 마이 페이지
@@ -95,7 +136,11 @@ export default function Page() {
 
   return (
     <div className={s.page}>
-      <TopBar backIconHandler={() => router.back()} title="마이댕글" />
+      <TopBar
+        backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
+        title="마이댕글"
+      />
       <div className={s.container}>
         <div className={s.contentWrapper}>
           {isPetProfileLoading ? (
@@ -209,7 +254,7 @@ export default function Page() {
       </div>
 
       {/* Nav */}
-      <NavBar activePage="my" />
+      <NavBar activeId="my" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }

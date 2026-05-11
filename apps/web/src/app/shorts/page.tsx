@@ -8,12 +8,15 @@ import type { Swiper as SwiperCore } from "swiper";
 import "swiper/css";
 
 //components
-import { NavBar } from "@/ui/atoms/NavBar/NavBar";
-import { TopBar } from "@/ui/atoms/TopBar/TopBar";
-import { ShortsOverlay } from "@/ui/molecules/ShortsOverlay/ShortsOverlay";
-import { ShortsBottomInfo } from "@/ui/atoms/ShortsBottomInfo/ShortsBottomInfo";
-import { EmptyState } from "@/ui/atoms/EmptyState/EmptyState";
-import { Dropdown } from "@/ui/atoms/Dropdown/Dropdown";
+import {
+  NavBar,
+  NavBarItem,
+  TopBar,
+  ShortsOverlay,
+  ShortsBottomInfo,
+  EmptyState,
+  Dropdown,
+} from "daenggle-ui";
 
 //hooks
 import {
@@ -62,6 +65,44 @@ namespace YT {
     };
   }
 }
+
+const NAV_ITEMS: NavBarItem[] = [
+  {
+    id: "near",
+    text: "내근처",
+    activeIconSrc: "/assets/nav/map_active.svg",
+    inactiveIconSrc: "/assets/nav/map.svg",
+    path: "/map",
+  },
+  {
+    id: "dangle",
+    text: "댕글영상",
+    activeIconSrc: "/assets/nav/video_active.svg",
+    inactiveIconSrc: "/assets/nav/video.svg",
+    path: "/shorts?contextId=PLACE_jeju_si",
+  },
+  {
+    id: "ai",
+    text: "AI여행케어",
+    activeIconSrc: "/assets/nav/ai_active.svg",
+    inactiveIconSrc: "/assets/nav/ai.svg",
+    path: "/chat",
+  },
+  {
+    id: "jeju",
+    text: "제주이동",
+    activeIconSrc: "/assets/nav/move_active.svg",
+    inactiveIconSrc: "/assets/nav/move.svg",
+    path: "/jeju",
+  },
+  {
+    id: "my",
+    text: "마이",
+    activeIconSrc: "/assets/nav/my_active.svg",
+    inactiveIconSrc: "/assets/nav/my.svg",
+    path: "/my",
+  },
+];
 
 /**
  * 영상 재생 래퍼 및 재생 페이지
@@ -216,7 +257,7 @@ function ShortsPageContent() {
     return (
       <div className={s.page}>
         <EmptyState title="로딩 중" description="잠시만 기다려 주세요." />
-        <NavBar activePage="dangle" />
+        <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }
@@ -225,7 +266,7 @@ function ShortsPageContent() {
     return (
       <div className={s.page}>
         <EmptyState title="에러 발생" description="잠시 후 다시 시도해주세요" />
-        <NavBar activePage="dangle" />
+        <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
       </div>
     );
   }
@@ -270,6 +311,7 @@ function ShortsPageContent() {
         transparent
         whiteIcon
         backIconHandler={() => router.back()}
+        backIconSrc="/assets/icon24/arrow-left_line.svg"
         rightIcons={[
           {
             icon: <Image alt="검색" height={24} src="/assets/icon16/search_line.svg" width={24} />,
@@ -459,7 +501,7 @@ function ShortsPageContent() {
   return (
     <div className={s.page}>
       {renderContent()}
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={(path) => router.push(path)} />
     </div>
   );
 }
@@ -471,7 +513,7 @@ export default function ShortsPage() {
   const FallbackUI = (
     <div className={s.page}>
       <EmptyState title="로딩 중" description="잠시만 기다려 주세요." />
-      <NavBar activePage="dangle" />
+      <NavBar activeId="dangle" items={NAV_ITEMS} onNavigate={() => {}} />
     </div>
   );
   return (
