@@ -16,7 +16,7 @@ import {
   FilterSection,
   EmptyState,
 } from "daenggle-ui";
-import { DanglePlaceSkeleton } from "@/components/Skeletons/DangleSkeletons";
+import { DanglePlaceSkeleton } from "@/ui/views/Skeletons/DangleSkeletons";
 //hooks
 import { usePlaceList } from "@/hooks/api/usePlaces";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { AiCareSkeleton } from "@/components/Skeletons/AiCareSkeleton";
+import { AiCareSkeleton } from "@/ui/views/Skeletons/AiCareSkeleton";
 
 export default function Loading() {
   return <AiCareSkeleton />;
