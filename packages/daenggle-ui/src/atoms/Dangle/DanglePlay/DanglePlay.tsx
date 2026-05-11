@@ -11,6 +11,8 @@ export interface DanglePlayProps {
   width?: string | number;
   /** 배경 이미지 URL */
   imageUrl: string;
+  /** 이미지 로드 실패 시 대체 이미지 URL */
+  fallbackImageUrl?: string;
   /** 프로필 이미지 URL */
   profileImageUrl?: string;
   /** 사용자 이름 */
@@ -29,6 +31,10 @@ export interface DanglePlayProps {
   timeAgo?: string;
   /** 해시태그 (medium 타입 전용) */
   tags?: string[];
+  /** 조회수 아이콘 src */
+  viewIconSrc?: string;
+  /** 댓글 아이콘 src */
+  commentIconSrc?: string;
   /** 클릭 이벤트 핸들러 */
   onClick?: () => void;
 }
@@ -37,6 +43,7 @@ export function DanglePlay({
   type,
   width = "100%",
   imageUrl,
+  fallbackImageUrl,
   profileImageUrl,
   name,
   location,
@@ -46,14 +53,14 @@ export function DanglePlay({
   comments,
   timeAgo,
   tags,
+  viewIconSrc,
+  commentIconSrc,
   onClick,
 }: DanglePlayProps) {
   const isSmall = type === "small";
   const isMedium = type === "medium";
   const isShort = type === "short";
 
-  // 타입에 따른 이미지 크기 동적 할당
-  // small (기본값)
   let imageWidth = 150;
   let imageHeight = 225;
   if (isMedium || isShort) {
@@ -62,25 +69,27 @@ export function DanglePlay({
   }
 
   const isValidImageUrl =
-    typeof imageUrl === "string" && imageUrl !== "사진 없음" && /^https?:\/\//i.test(imageUrl);
-  const imageSrc = isValidImageUrl ? imageUrl : "/assets/jeju.png";
+    typeof imageUrl === "string" && /^https?:\/\//i.test(imageUrl);
+  const imageSrc = isValidImageUrl ? imageUrl : (fallbackImageUrl ?? null);
 
   return (
     <div className={s.root[type]} style={{ width }} onClick={onClick}>
       <div className={s.imageWrapper[type]}>
-        <Image
-          src={imageSrc}
-          alt={"이미지"}
-          width={imageWidth}
-          height={imageHeight}
-          className={s.image}
-        />
+        {imageSrc && (
+          <Image
+            src={imageSrc}
+            alt={"이미지"}
+            width={imageWidth}
+            height={imageHeight}
+            className={s.image}
+          />
+        )}
         {!isShort && profileImageUrl && (
           <div className={s.profileOverlay}>
             <div className={s.profileContainer}>
               <Image
                 src={profileImageUrl}
-                alt={`${name}의 프로필 이미지`}
+                alt={name ? `${name}의 프로필 이미지` : "프로필 이미지"}
                 width={22}
                 height={22}
                 className={s.profileImage}
@@ -115,12 +124,16 @@ export function DanglePlay({
           {views && (
             <div className={s.stats}>
               <div className={s.statItem}>
-                <Image src="/assets/icon12/eye-outlined.svg" alt="조회수" width={12} height={12} />
+                {viewIconSrc && (
+                  <Image src={viewIconSrc} alt="조회수" width={12} height={12} />
+                )}
                 <span className={s.statValue}>{views?.toLocaleString()}</span>
               </div>
               <div className={s.statItem}>·</div>
               <div className={s.statItem}>
-                <Image alt="댓글" width={12} height={12} src="/assets/icon12/bookmark_filled.svg" />
+                {commentIconSrc && (
+                  <Image alt="댓글" width={12} height={12} src={commentIconSrc} />
+                )}
                 <span className={s.statValue}>{comments?.toLocaleString()}</span>
               </div>
               <div className={s.statItem}>·</div>
@@ -130,7 +143,6 @@ export function DanglePlay({
         </div>
       )}
 
-      {/* short 타입일 때의 위치 정보 */}
       {isShort && (
         <div className={s.content}>
           <div className={s.location}>

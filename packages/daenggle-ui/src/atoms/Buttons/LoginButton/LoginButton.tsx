@@ -8,9 +8,10 @@ export interface LoginButtonProps extends Omit<
 > {
   provider: LoginType;
   title: string;
+  iconSrc: string;
 }
 
-export function LoginButton({ provider, title, className, ...rest }: LoginButtonProps) {
+export function LoginButton({ provider, title, iconSrc, className, ...rest }: LoginButtonProps) {
   return (
     <button
       type="button"
@@ -19,7 +20,7 @@ export function LoginButton({ provider, title, className, ...rest }: LoginButton
       {...rest}
     >
       <Image
-        src={`/assets/login/${provider}.svg`}
+        src={iconSrc}
         alt=""
         width={24}
         height={24}

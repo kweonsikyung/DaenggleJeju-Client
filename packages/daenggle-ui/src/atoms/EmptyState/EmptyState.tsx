@@ -14,8 +14,8 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({
-  imageUrl = "/assets/dog_bag.png",
-  title = "장소가 없습니다.",
+  imageUrl,
+  title = "결과가 없습니다.",
   description = "조건을 변경하거나 다른 검색어로 다시 시도해 보세요.",
 }: EmptyStateProps) {
   return (

@@ -19,6 +19,10 @@ export interface AvatarPickerProps {
   disabled?: boolean;
   /** 추가 className */
   className?: string;
+  /** 기본 아바타 이미지 src (미리보기 없을 때 표시) */
+  placeholderImageSrc?: string;
+  /** 카메라 버튼 아이콘 src */
+  cameraIconSrc?: string;
 }
 
 export function AvatarPicker({
@@ -29,6 +33,8 @@ export function AvatarPicker({
   accept = "image/*",
   disabled,
   className,
+  placeholderImageSrc,
+  cameraIconSrc,
 }: AvatarPickerProps) {
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -77,16 +83,16 @@ export function AvatarPicker({
       {/* 이미지 영역 */}
       {previewUrl ? (
         <img src={previewUrl} alt={"아바타"} className={s.avatarImg} />
-      ) : (
+      ) : placeholderImageSrc ? (
         <Image
-          src={"/assets/curation/avatar.svg"}
+          src={placeholderImageSrc}
           alt=""
           width={size}
           height={size}
           className={s.avatarImg}
           priority
         />
-      )}
+      ) : null}
 
       {/* 숨김 파일 입력 */}
       <input
@@ -101,7 +107,7 @@ export function AvatarPicker({
 
       {/* 카메라 버튼 */}
       <div className={s.cameraBtn} onClick={openPicker} aria-label="아바타 변경">
-        <Image src={"/assets/curation/camera.svg"} alt="" width={28} height={28} />
+        {cameraIconSrc && <Image src={cameraIconSrc} alt="" width={28} height={28} />}
       </div>
     </div>
   );

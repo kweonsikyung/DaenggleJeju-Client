@@ -19,6 +19,12 @@ export interface DangleVideoProps {
   onClick?: () => void;
   /** 해시태그 */
   tags?: string[];
+  /** 조회수 아이콘 src */
+  viewIconSrc?: string;
+  /** 댓글 아이콘 src */
+  commentIconSrc?: string;
+  /** 재생 버튼 아이콘 src */
+  playIconSrc?: string;
 }
 
 export function DangleVideo({
@@ -26,9 +32,12 @@ export function DangleVideo({
   title,
   views = 0,
   comments = 0,
-  timeAgo = "1개월 전",
+  timeAgo,
   tags,
   onClick,
+  viewIconSrc,
+  commentIconSrc,
+  playIconSrc,
 }: DangleVideoProps) {
   return (
     <div className={s.root} onClick={onClick}>
@@ -54,21 +63,31 @@ export function DangleVideo({
         )}
         <div className={s.stats}>
           <div className={s.statItem}>
-            <Image src="/assets/icon12/eye-outlined.svg" alt="조회수" width={12} height={12} />
+            {viewIconSrc && (
+              <Image src={viewIconSrc} alt="조회수" width={12} height={12} />
+            )}
             <span className={s.statValue}>{views.toLocaleString()}</span>
           </div>
           <span className={s.divider}>·</span>
           <div className={s.statItem}>
-            <Image alt="댓글" width={12} height={12} src="/assets/icon12/bookmark_filled.svg" />
+            {commentIconSrc && (
+              <Image alt="댓글" width={12} height={12} src={commentIconSrc} />
+            )}
             <span className={s.statValue}>{comments.toLocaleString()}</span>
           </div>
-          <span className={s.divider}>·</span>
-          <span className={s.timeAgo}>{timeAgo}</span>
+          {timeAgo && (
+            <>
+              <span className={s.divider}>·</span>
+              <span className={s.timeAgo}>{timeAgo}</span>
+            </>
+          )}
         </div>
       </div>
-      <div className={s.playButtonWrapper}>
-        <Image src="/assets/icon32/play-btn.svg" alt="재생" width={32} height={32} />
-      </div>
+      {playIconSrc && (
+        <div className={s.playButtonWrapper}>
+          <Image src={playIconSrc} alt="재생" width={32} height={32} />
+        </div>
+      )}
     </div>
   );
 }

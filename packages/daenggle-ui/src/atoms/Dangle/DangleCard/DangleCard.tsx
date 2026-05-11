@@ -9,6 +9,8 @@ export interface DangleCardProps {
   imageUrl: string;
   /** 좋아요(조회수) 수 */
   views?: number;
+  /** 조회수 아이콘 src */
+  viewIconSrc?: string;
   /** 카드 제목 */
   title: string;
   /** 해시태그 텍스트 */
@@ -17,7 +19,14 @@ export interface DangleCardProps {
   onClick?: () => void;
 }
 
-export function DangleCard({ imageUrl, views = 0, title, hashtag, onClick }: DangleCardProps) {
+export function DangleCard({
+  imageUrl,
+  views = 0,
+  viewIconSrc,
+  title,
+  hashtag,
+  onClick,
+}: DangleCardProps) {
   return (
     <button className={s.root} onClick={onClick}>
       <div className={s.imageWrapper}>
@@ -25,12 +34,7 @@ export function DangleCard({ imageUrl, views = 0, title, hashtag, onClick }: Dan
         <div className={s.overlay}>
           {views > 0 && (
             <div className={s.views}>
-              <Image
-                src="/assets/icon24/eye-outlined-white.svg"
-                alt="조회수"
-                width={24}
-                height={24}
-              />
+              {viewIconSrc && <Image src={viewIconSrc} alt="조회수" width={24} height={24} />}
               <span>{views.toLocaleString()}</span>
             </div>
           )}

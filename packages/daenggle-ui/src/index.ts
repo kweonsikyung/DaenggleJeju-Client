@@ -53,6 +53,7 @@ export { Modal } from "./atoms/Modal/Modal";
 
 // atoms - NavBar
 export { NavBar } from "./atoms/NavBar/NavBar";
+export type { NavBarItem } from "./atoms/NavBar/NavBar";
 
 // atoms - NoticeBox
 export { NoticeBox } from "./atoms/NoticeBox/NoticeBox";
